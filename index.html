@@ -180,18 +180,11 @@
     </div>
 
     <script>
-        // Новый URL скрипта (рабочий)
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnjiqKWznABpb_vB9os9kR8P-8Df3-AEH-KFjdVX1NLje3Svu9COWTdzZ1HPPOkj3CIw/exec';
 
         const sectionDescriptions = {
             'Проектная документация(технологическая разработка спектакля)': 'Планировки, разрезы, монтажные листы, ведомости декораций.',
             'Проектная документация(световая разработка спектакля)': 'Световые карты, паспорта приборов, схемы подвеса.',
-            'Проектная документация (художник-технолог сцены)': 'Планы сцены, разрезы, монтажные листы, ведомости декораций.',
-            'Проектная документация (художник по свету)': 'Световые карты, паспорта приборов, схемы подвеса.',
-            'Рабочая документация': 'Чертежи узлов, деталировочные листы, спецификации материалов.',
-            'Гастрольная документация': 'Технический райдер, схемы застройки, паспорта площадок.',
-            'Расчёт театральных конструкций': 'Нагрузки, подбор сечений, примеры расчётов ферм и балок.',
-            'Организация театрального дела': 'Должностные инструкции, графики выпуска спектакля, нормативы.'
         };
 
         function toggleElement(id) {
@@ -216,7 +209,6 @@
             
             let inner = '';
             
-            // Подпапки
             (section.folders || []).forEach((sub, si) => {
                 const subId = 'sub-' + index + '-' + si;
                 inner += `
@@ -229,7 +221,6 @@
                 `;
             });
             
-            // Файлы в корне раздела
             inner += renderFiles(section.files || []);
 
             if (!inner) inner = '<div class="empty-message">Раздел пуст</div>';
@@ -243,20 +234,26 @@
             `;
         }
 
-        async function loadLibrary() {
+        function loadLibrary() {
             const container = document.getElementById('sections-container');
-            try {
-                const res = await fetch(SCRIPT_URL);
-                if (!res.ok) throw new Error('Ошибка ' + res.status);
-                const sections = await res.json();
+            const callbackName = 'jsonp_callback_' + Date.now();
+            
+            window[callbackName] = function(sections) {
                 if (!sections.length) {
                     container.innerHTML = '<div class="loading">Папки не найдены.</div>';
                     return;
                 }
                 container.innerHTML = sections.map((s, i) => renderSection(s, i)).join('');
-            } catch (e) {
-                container.innerHTML = `<div class="loading">Ошибка: ${e.message}</div>`;
-            }
+                delete window[callbackName];
+            };
+
+            const script = document.createElement('script');
+            script.src = SCRIPT_URL + '?callback=' + callbackName;
+            script.onerror = function() {
+                container.innerHTML = '<div class="loading">Ошибка загрузки библиотеки.</div>';
+                delete window[callbackName];
+            };
+            document.body.appendChild(script);
         }
 
         loadLibrary();

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Библиотека факультета Сценографии и Театральной технологии</title>
-    <!-- Шрифт, близкий к Myriad Pro Condensed -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;700&display=swap" rel="stylesheet">
@@ -27,7 +26,6 @@
         body {
             font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
             background-color: #f5f2eb;
-            /* Чертёжный фон — миллиметровка */
             background-image:
                 repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(184, 165, 122, 0.08) 19px, rgba(184, 165, 122, 0.08) 20px),
                 repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(184, 165, 122, 0.08) 19px, rgba(184, 165, 122, 0.08) 20px);
@@ -190,11 +188,8 @@
     </div>
 
     <script>
-        // ID корневой папки "Библиотека" на Google Диске
-        const ROOT_FOLDER_ID = '1Fo75mVIDkxWJTAdnSk8WHCsVrA00spzX';
-        
-        // Ключ API для доступа к Google Drive (публичный, только для чтения)
-        const API_KEY = 'AIzaSyD_fA8mKRI6tFmBxUaYlBrMYB5bwOa4OWA';
+        // URL вашего Google Apps Script веб-приложения
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQg3qTxnDcjdc4kUe77Z-P2bBLMOfCSoXJZZ49-SgeTquqhAmpwLErahilccx6gY26jw/exec';
 
         const sectionDescriptions = {
             'Проектная документация(технологическая разработка спектакля)': 'Планировки, разрезы, монтажные листы, ведомости декораций.',
@@ -206,90 +201,55 @@
             'Организация театрального дела': 'Должностные инструкции, графики выпуска спектакля, нормативы.'
         };
 
-        async function fetchFromDrive(folderId) {
-            const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents&key=${API_KEY}&fields=files(id,name,mimeType,webViewLink,webContentLink)`;
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`Ошибка ${response.status}`);
-            }
-            return response.json();
-        }
-
         async function loadLibrary() {
             const container = document.getElementById('sections-container');
             
             try {
-                // Получаем список папок в корневой папке "Библиотека"
-                const rootData = await fetchFromDrive(ROOT_FOLDER_ID);
-                const folders = rootData.files?.filter(file => file.mimeType === 'application/vnd.google-apps.folder') || [];
+                const response = await fetch(SCRIPT_URL);
+                if (!response.ok) {
+                    throw new Error(`Ошибка ${response.status}`);
+                }
+                const sections = await response.json();
 
-                if (folders.length === 0) {
+                if (sections.length === 0) {
                     container.innerHTML = '<div class="loading">Папки не найдены. Проверьте структуру Google Диска.</div>';
                     return;
                 }
 
                 container.innerHTML = '';
 
-                for (const folder of folders) {
-                    const sectionName = folder.name;
+                sections.forEach((section, index) => {
+                    const sectionName = section.name;
                     const description = sectionDescriptions[sectionName] || 'Материалы раздела.';
-                    const sectionId = 'section-' + folder.name.replace(/[^a-zA-Zа-яА-Я0-9]/g, '-');
+                    const sectionId = 'section-' + index;
+
+                    let filesHTML = '';
+                    if (section.files.length === 0) {
+                        filesHTML = '<div class="file-item"><span class="name">Файлы временно отсутствуют</span></div>';
+                    } else {
+                        section.files.forEach(file => {
+                            filesHTML += `
+                                <div class="file-item">
+                                    <span class="name">${file.name}</span>
+                                    <a href="${file.url}" class="download-link" target="_blank">Скачать</a>
+                                </div>
+                            `;
+                        });
+                    }
 
                     const sectionHTML = `
                         <div class="section" onclick="toggleFiles('${sectionId}')">
                             <h2>${sectionName}</h2>
                             <p class="desc">${description}</p>
                             <div id="${sectionId}" class="files">
-                                <div class="loading">Загрузка файлов...</div>
+                                ${filesHTML}
                             </div>
                         </div>
                     `;
                     container.insertAdjacentHTML('beforeend', sectionHTML);
-
-                    // Загружаем файлы внутри этой папки
-                    loadFilesForSection(folder.id, sectionId);
-                }
+                });
             } catch (error) {
                 container.innerHTML = `<div class="loading">Ошибка загрузки библиотеки: ${error.message}</div>`;
-            }
-        }
-
-        async function loadFilesForSection(folderId, sectionId) {
-            const filesContainer = document.getElementById(sectionId);
-            if (!filesContainer) return;
-
-            try {
-                const data = await fetchFromDrive(folderId);
-                const files = data.files?.filter(file => file.mimeType !== 'application/vnd.google-apps.folder') || [];
-
-                if (files.length === 0) {
-                    filesContainer.innerHTML = '<div class="file-item"><span class="name">Файлы временно отсутствуют</span></div>';
-                    return;
-                }
-
-                filesContainer.innerHTML = '';
-
-                for (const file of files) {
-                    // Для файлов Google (документы, таблицы) используем webViewLink
-                    // Для обычных файлов используем прямую ссылку на скачивание
-                    let downloadUrl;
-                    if (file.mimeType.startsWith('application/vnd.google-apps.')) {
-                        downloadUrl = file.webViewLink;
-                    } else {
-                        // Формируем прямую ссылку на скачивание
-                        downloadUrl = `https://drive.google.com/uc?export=download&id=${file.id}`;
-                    }
-
-                    const fileHTML = `
-                        <div class="file-item">
-                            <span class="name">${file.name}</span>
-                            <a href="${downloadUrl}" class="download-link" target="_blank">Скачать</a>
-                        </div>
-                    `;
-                    filesContainer.insertAdjacentHTML('beforeend', fileHTML);
-                }
-            } catch (error) {
-                filesContainer.innerHTML = `<div class="file-item"><span class="name">Ошибка загрузки: ${error.message}</span></div>`;
             }
         }
 

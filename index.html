@@ -153,6 +153,7 @@
             border-radius: 3px;
             transition: background 0.15s, color 0.15s;
             background: transparent;
+            cursor: pointer;
         }
 
         .download-link:hover {
@@ -288,7 +289,7 @@
                         const fileHTML = `
                             <div class="file-item">
                                 <span class="name">${file.name}</span>
-                                <a href="${downloadUrl}" class="download-link" target="_blank">Скачать</a>
+                                <a href="${downloadUrl}" class="download-link" download>Скачать</a>
                             </div>
                         `;
                         filesContainer.insertAdjacentHTML('beforeend', fileHTML);

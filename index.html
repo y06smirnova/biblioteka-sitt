@@ -160,13 +160,6 @@
             color: #fff;
         }
 
-        .loading {
-            text-align: center;
-            color: #9a9488;
-            padding: 1rem;
-            font-style: italic;
-        }
-
         .note {
             margin-top: 2rem;
             font-style: italic;
@@ -180,112 +173,74 @@
     <div class="container">
         <h1>Библиотека факультета Сценографии и Театральной технологии</h1>
 
-        <!-- Разделы будут заполнены автоматически -->
-        <div id="sections-container">
-            <div class="loading">Загрузка файлов из библиотеки...</div>
+        <!-- Раздел 1 -->
+        <div class="section" onclick="toggleFiles('files1')">
+            <h2>Проектная документация (художник-технолог сцены)</h2>
+            <p class="desc">Планы сцены, разрезы, монтажные листы, ведомости декораций.</p>
+            <div id="files1" class="files">
+                <div class="file-item"><span class="name">Элементы</span><a href="https://disk.yandex.ru/d/hHxO7CM1_t7fQg?_force=1" class="download-link">Скачать</a></div>
+            </div>
         </div>
 
-        <p class="note">Файлы автоматически подгружаются из облачного хранилища.<br>Добавьте новый файл в соответствующую папку на Яндекс.Диске — и он появится здесь.</p>
+        <!-- Раздел 2 -->
+        <div class="section" onclick="toggleFiles('files2')">
+            <h2>Проектная документация (художник по свету)</h2>
+            <p class="desc">Световые карты, паспорта приборов, схемы подвеса.</p>
+            <div id="files2" class="files">
+                <div class="file-item"><span class="name">Световая карта (шаблон)</span><a href="#" class="download-link">Скачать</a></div>
+                <div class="file-item"><span class="name">Схема подвеса приборов</span><a href="#" class="download-link">Скачать</a></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3 -->
+        <div class="section" onclick="toggleFiles('files3')">
+            <h2>Рабочая документация</h2>
+            <p class="desc">Чертежи узлов, деталировочные листы, спецификации материалов.</p>
+            <div id="files3" class="files">
+                <div class="file-item"><span class="name">Узел крепления портала</span><a href="#" class="download-link">Скачать</a></div>
+                <div class="file-item"><span class="name">Спецификация на деревянные конструкции</span><a href="#" class="download-link">Скачать</a></div>
+                <div class="file-item"><span class="name">Деталировка фермы</span><a href="#" class="download-link">Скачать</a></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4 -->
+        <div class="section" onclick="toggleFiles('files4')">
+            <h2>Гастрольная документация</h2>
+            <p class="desc">Технический райдер, схемы застройки, паспорта площадок.</p>
+            <div id="files4" class="files">
+                <div class="file-item"><span class="name">Технический райдер театра (шаблон)</span><a href="#" class="download-link">Скачать</a></div>
+                <div class="file-item"><span class="name">Схема застройки сцены</span><a href="#" class="download-link">Скачать</a></div>
+            </div>
+        </div>
+
+        <!-- Раздел 5 -->
+        <div class="section" onclick="toggleFiles('files5')">
+            <h2>Расчёт театральных конструкций</h2>
+            <p class="desc">Нагрузки, подбор сечений, примеры расчётов ферм и балок.</p>
+            <div id="files5" class="files">
+                <div class="file-item"><span class="name">Расчёт фермы перекрытия (Excel)</span><a href="#" class="download-link">Скачать</a></div>
+                <div class="file-item"><span class="name">Нагрузки на штанкет (таблица)</span><a href="#" class="download-link">Скачать</a></div>
+                <div class="file-item"><span class="name">Пример расчёта балки настила</span><a href="#" class="download-link">Скачать</a></div>
+            </div>
+        </div>
+
+        <!-- Раздел 6 -->
+        <div class="section" onclick="toggleFiles('files6')">
+            <h2>Организация театрального дела</h2>
+            <p class="desc">Должностные инструкции, графики выпуска спектакля, нормативы.</p>
+            <div id="files6" class="files">
+                <div class="file-item"><span class="name">График выпуска спектакля (шаблон)</span><a href="#" class="download-link">Скачать</a></div>
+                <div class="file-item"><span class="name">Инструкция по охране труда на сцене</span><a href="#" class="download-link">Скачать</a></div>
+                <div class="file-item"><span class="name">Положение о ХПЧ</span><a href="#" class="download-link">Скачать</a></div>
+            </div>
+        </div>
+
+        <p class="note">Файлы хранятся в облаке. Если ссылка не открывается, убедитесь, что доступ к файлу на Яндекс.Диске включён.</p>
     </div>
 
     <script>
-        // Публичный ключ папки "Библиотека" на Яндекс.Диске
-        const PUBLIC_KEY = 'wKE_qpXGwaAvzg';
-        const BASE_API_URL = 'https://cloud-api.yandex.net/v1/disk/public/resources';
-
-        // Сопоставление названий подпапок с описаниями разделов
-        const sectionDescriptions = {
-            'Проектная документация (художник-технолог сцены)': 'Планы сцены, разрезы, монтажные листы, ведомости декораций.',
-            'Проектная документация (художник по свету)': 'Световые карты, паспорта приборов, схемы подвеса.',
-            'Рабочая документация': 'Чертежи узлов, деталировочные листы, спецификации материалов.',
-            'Гастрольная документация': 'Технический райдер, схемы застройки, паспорта площадок.',
-            'Расчёт театральных конструкций': 'Нагрузки, подбор сечений, примеры расчётов ферм и балок.',
-            'Организация театрального дела': 'Должностные инструкции, графики выпуска спектакля, нормативы.'
-        };
-
-        // Основная функция загрузки структуры
-        async function loadLibrary() {
-            const container = document.getElementById('sections-container');
-
-            try {
-                // Получаем содержимое корневой папки
-                const rootResponse = await fetch(`${BASE_API_URL}?public_key=${PUBLIC_KEY}`);
-                if (!rootResponse.ok) throw new Error('Не удалось загрузить библиотеку');
-                const rootData = await rootResponse.json();
-
-                // Ищем вложенные папки
-                const folders = rootData._embedded?.items?.filter(item => item.type === 'dir') || [];
-
-                if (folders.length === 0) {
-                    container.innerHTML = '<div class="loading">Папки не найдены. Проверьте структуру Яндекс.Диска.</div>';
-                    return;
-                }
-
-                // Создаём HTML для каждой папки-раздела
-                container.innerHTML = '';
-
-                for (const folder of folders) {
-                    const sectionName = folder.name;
-                    const description = sectionDescriptions[sectionName] || 'Материалы раздела.';
-                    const sectionId = 'section-' + folder.name.replace(/[^a-zA-Zа-яА-Я0-9]/g, '-');
-
-                    // Создаём блок раздела
-                    const sectionHTML = `
-                        <div class="section" onclick="toggleFiles('${sectionId}')">
-                            <h2>${sectionName}</h2>
-                            <p class="desc">${description}</p>
-                            <div id="${sectionId}" class="files">
-                                <div class="loading">Загрузка файлов...</div>
-                            </div>
-                        </div>
-                    `;
-                    container.insertAdjacentHTML('beforeend', sectionHTML);
-
-                    // Загружаем файлы внутри этой папки
-                    loadFilesForSection(folder.path, sectionId);
-                }
-            } catch (error) {
-                container.innerHTML = `<div class="loading">Ошибка загрузки библиотеки: ${error.message}</div>`;
-            }
-        }
-
-        // Загрузка файлов для конкретного раздела
-        async function loadFilesForSection(path, sectionId) {
-            const filesContainer = document.getElementById(sectionId);
-            if (!filesContainer) return;
-
-            try {
-                const response = await fetch(`${BASE_API_URL}?public_key=${PUBLIC_KEY}&path=${encodeURIComponent(path)}`);
-                if (!response.ok) throw new Error('Не удалось загрузить файлы');
-                const data = await response.json();
-
-                const items = data._embedded?.items || [];
-                const files = items.filter(item => item.type === 'file');
-
-                if (files.length === 0) {
-                    filesContainer.innerHTML = '<div class="file-item"><span class="name">Файлы временно отсутствуют</span></div>';
-                    return;
-                }
-
-                filesContainer.innerHTML = files.map(file => {
-                    const fileName = file.name;
-                    const downloadUrl = file.file; // Прямая ссылка на скачивание
-                    return `
-                        <div class="file-item">
-                            <span class="name">${fileName}</span>
-                            <a href="${downloadUrl}" class="download-link" target="_blank">Скачать</a>
-                        </div>
-                    `;
-                }).join('');
-            } catch (error) {
-                filesContainer.innerHTML = `<div class="file-item"><span class="name">Ошибка загрузки: ${error.message}</span></div>`;
-            }
-        }
-
-        // Функция сворачивания/разворачивания разделов
         function toggleFiles(id) {
             const el = document.getElementById(id);
-            if (!el) return;
             if (el.classList.contains('active')) {
                 el.classList.remove('active');
             } else {
@@ -293,9 +248,6 @@
                 el.classList.add('active');
             }
         }
-
-        // Запускаем загрузку при открытии страницы
-        loadLibrary();
     </script>
 </body>
 </html>

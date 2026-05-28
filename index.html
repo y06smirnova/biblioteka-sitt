@@ -1,1 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Библиотека факультета Сценографии и Театральной технологии</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #082924;
+            --green-hover: #0b3b33;
+            --gold: #b8a57a;
+            --paper: #fdfaf5;
+            --text: #2c2c2c;
+            --text-light: #5c5c5c;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
+            background-color: #f5f2eb;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(184, 165, 122, 0.08) 19px, rgba(184, 165, 122, 0.08) 20px),
+                repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(184, 165, 122, 0.08) 19px, rgba(184, 165, 122, 0.08) 20px);
+            padding: 2rem;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 860px;
+            background: var(--paper);
+            padding: 2.5rem 2.2rem;
+            border-radius: 4px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            display: block;
+            height: 2px;
+            background: var(--gold);
+            margin-bottom: 2rem;
+            opacity: 0.6;
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--green);
+            margin-bottom: 0.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(184, 165, 122, 0.35);
+        }
+
+        .section {
+            background: #fffefb;
+            border: 1px solid #e5ded0;
+            border-left: 4px solid var(--green);
+            border-radius: 2px;
+            padding: 1.1rem 1.4rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: background 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+        }
+
+        .section:hover {
+            background: #f9f6f0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .section h2 {
+            font-size: 1.25rem;
+            font-weight: 400;
+            letter-spacing: 0.8px;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .section h2::before {
+            content: '▸';
+            display: inline-block;
+            color: var(--green);
+            font-size: 1.1rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .section .desc {
+            margin-top: 0.25rem;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+
+        .files {
+            display: none;
+            margin-top: 1rem;
+            padding-left: 1.2rem;
+            border-left: 2px solid rgba(184, 165, 122, 0.3);
+        }
+
+        .files.active {
+            display: block;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 0;
+            border-bottom: 1px dashed #e0d7c6;
+            font-size: 0.95rem;
+        }
+
+        .file-item .name {
+            flex: 1;
+            color: #3d3d3d;
+        }
+
+        .file-item .name::before {
+            content: '— ';
+            color: var(--gold);
+            font-weight: bold;
+            margin-right: 0.3rem;
+        }
+
+        .download-link {
+            color: var(--green);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 2px 10px;
+            border: 1px solid var(--green);
+            border-radius: 3px;
+            transition: background 0.15s, color 0.15s;
+            background: transparent;
+        }
+
+        .download-link:hover {
+            background: var(--green-hover);
+            color: #fff;
+        }
+
+        .loading {
+            text-align: center;
+            color: #9a9488;
+            padding: 1rem;
+            font-style: italic;
+        }
+
+        .note {
+            margin-top: 2rem;
+            font-style: italic;
+            color: #9a9488;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Библиотека факультета Сценографии и Театральной технологии</h1>
+
+        <!-- Разделы будут заполнены автоматически -->
+        <div id="sections-container">
+            <div class="loading">Загрузка файлов из библиотеки...</div>
+        </div>
+
+        <p class="note">Файлы автоматически подгружаются из облачного хранилища.<br>Добавьте новый файл в соответствующую папку на Яндекс.Диске — и он появится здесь.</p>
+    </div>
+
+    <script>
+        // Публичный ключ папки "Библиотека" на Яндекс.Диске
+        const PUBLIC_KEY = 'wKE_qpXGwaAvzg';
+        const BASE_API_URL = 'https://cloud-api.yandex.net/v1/disk/public/resources';
+
+        // Сопоставление названий подпапок с описаниями разделов
+        const sectionDescriptions = {
+            'Проектная документация (художник-технолог сцены)': 'Планы сцены, разрезы, монтажные листы, ведомости декораций.',
+            'Проектная документация (художник по свету)': 'Световые карты, паспорта приборов, схемы подвеса.',
+            'Рабочая документация': 'Чертежи узлов, деталировочные листы, спецификации материалов.',
+            'Гастрольная документация': 'Технический райдер, схемы застройки, паспорта площадок.',
+            'Расчёт театральных конструкций': 'Нагрузки, подбор сечений, примеры расчётов ферм и балок.',
+            'Организация театрального дела': 'Должностные инструкции, графики выпуска спектакля, нормативы.'
+        };
+
+        // Основная функция загрузки структуры
+        async function loadLibrary() {
+            const container = document.getElementById('sections-container');
+
+            try {
+                // Получаем содержимое корневой папки
+                const rootResponse = await fetch(`${BASE_API_URL}?public_key=${PUBLIC_KEY}`);
+                if (!rootResponse.ok) throw new Error('Не удалось загрузить библиотеку');
+                const rootData = await rootResponse.json();
+
+                // Ищем вложенные папки
+                const folders = rootData._embedded?.items?.filter(item => item.type === 'dir') || [];
+
+                if (folders.length === 0) {
+                    container.innerHTML = '<div class="loading">Папки не найдены. Проверьте структуру Яндекс.Диска.</div>';
+                    return;
+                }
+
+                // Создаём HTML для каждой папки-раздела
+                container.innerHTML = '';
+
+                for (const folder of folders) {
+                    const sectionName = folder.name;
+                    const description = sectionDescriptions[sectionName] || 'Материалы раздела.';
+                    const sectionId = 'section-' + folder.name.replace(/[^a-zA-Zа-яА-Я0-9]/g, '-');
+
+                    // Создаём блок раздела
+                    const sectionHTML = `
+                        <div class="section" onclick="toggleFiles('${sectionId}')">
+                            <h2>${sectionName}</h2>
+                            <p class="desc">${description}</p>
+                            <div id="${sectionId}" class="files">
+                                <div class="loading">Загрузка файлов...</div>
+                            </div>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', sectionHTML);
+
+                    // Загружаем файлы внутри этой папки
+                    loadFilesForSection(folder.path, sectionId);
+                }
+            } catch (error) {
+                container.innerHTML = `<div class="loading">Ошибка загрузки библиотеки: ${error.message}</div>`;
+            }
+        }
+
+        // Загрузка файлов для конкретного раздела
+        async function loadFilesForSection(path, sectionId) {
+            const filesContainer = document.getElementById(sectionId);
+            if (!filesContainer) return;
+
+            try {
+                const response = await fetch(`${BASE_API_URL}?public_key=${PUBLIC_KEY}&path=${encodeURIComponent(path)}`);
+                if (!response.ok) throw new Error('Не удалось загрузить файлы');
+                const data = await response.json();
+
+                const items = data._embedded?.items || [];
+                const files = items.filter(item => item.type === 'file');
+
+                if (files.length === 0) {
+                    filesContainer.innerHTML = '<div class="file-item"><span class="name">Файлы временно отсутствуют</span></div>';
+                    return;
+                }
+
+                filesContainer.innerHTML = files.map(file => {
+                    const fileName = file.name;
+                    const downloadUrl = file.file; // Прямая ссылка на скачивание
+                    return `
+                        <div class="file-item">
+                            <span class="name">${fileName}</span>
+                            <a href="${downloadUrl}" class="download-link" target="_blank">Скачать</a>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                filesContainer.innerHTML = `<div class="file-item"><span class="name">Ошибка загрузки: ${error.message}</span></div>`;
+            }
+        }
+
+        // Функция сворачивания/разворачивания разделов
+        function toggleFiles(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (el.classList.contains('active')) {
+                el.classList.remove('active');
+            } else {
+                document.querySelectorAll('.files').forEach(f => f.classList.remove('active'));
+                el.classList.add('active');
+            }
+        }
+
+        // Запускаем загрузку при открытии страницы
+        loadLibrary();
+    </script>
+</body>
+</html>

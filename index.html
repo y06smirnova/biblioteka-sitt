@@ -160,6 +160,13 @@
             color: #fff;
         }
 
+        .loading {
+            text-align: center;
+            color: #9a9488;
+            padding: 1rem;
+            font-style: italic;
+        }
+
         .note {
             margin-top: 2rem;
             font-style: italic;
@@ -173,71 +180,136 @@
     <div class="container">
         <h1>Библиотека факультета Сценографии и Театральной технологии</h1>
 
-        <!-- Раздел 1: Проектная документация (технологическая разработка спектакля) -->
-        <div class="section" onclick="toggleFiles('files1')">
-            <h2>Проектная документация (технологическая разработка спектакля)</h2>
-            <p class="desc">Планировки, разрезы, монтажные листы, ведомости декораций.</p>
-            <div id="files1" class="files">
-                <div class="file-item"><span class="name">Планировки_ЗонтикиV1.dwg</span><a href="https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=https://disk.yandex.ru/d/6GjcasMZqICG5Q" class="download-link" target="_blank">Скачать</a></div>
-            </div>
+        <div id="sections-container">
+            <div class="loading">Загрузка библиотеки...</div>
         </div>
 
-        <!-- Остальные разделы пока с заглушками -->
-        <div class="section" onclick="toggleFiles('files2')">
-            <h2>Проектная документация (художник-технолог сцены)</h2>
-            <p class="desc">Планы сцены, разрезы, монтажные листы, ведомости декораций.</p>
-            <div id="files2" class="files">
-                <div class="file-item"><span class="name">План сцены МХТ (пример)</span><a href="#" class="download-link">Скачать</a></div>
-                <div class="file-item"><span class="name">Монтажный лист спектакля</span><a href="#" class="download-link">Скачать</a></div>
-            </div>
-        </div>
-
-        <div class="section" onclick="toggleFiles('files3')">
-            <h2>Проектная документация (художник по свету)</h2>
-            <p class="desc">Световые карты, паспорта приборов, схемы подвеса.</p>
-            <div id="files3" class="files">
-                <div class="file-item"><span class="name">Световая карта (шаблон)</span><a href="#" class="download-link">Скачать</a></div>
-            </div>
-        </div>
-
-        <div class="section" onclick="toggleFiles('files4')">
-            <h2>Рабочая документация</h2>
-            <p class="desc">Чертежи узлов, деталировочные листы, спецификации материалов.</p>
-            <div id="files4" class="files">
-                <div class="file-item"><span class="name">Узел крепления портала</span><a href="#" class="download-link">Скачать</a></div>
-            </div>
-        </div>
-
-        <div class="section" onclick="toggleFiles('files5')">
-            <h2>Гастрольная документация</h2>
-            <p class="desc">Технический райдер, схемы застройки, паспорта площадок.</p>
-            <div id="files5" class="files">
-                <div class="file-item"><span class="name">Технический райдер театра (шаблон)</span><a href="#" class="download-link">Скачать</a></div>
-            </div>
-        </div>
-
-        <div class="section" onclick="toggleFiles('files6')">
-            <h2>Расчёт театральных конструкций</h2>
-            <p class="desc">Нагрузки, подбор сечений, примеры расчётов ферм и балок.</p>
-            <div id="files6" class="files">
-                <div class="file-item"><span class="name">Расчёт фермы перекрытия (Excel)</span><a href="#" class="download-link">Скачать</a></div>
-            </div>
-        </div>
-
-        <div class="section" onclick="toggleFiles('files7')">
-            <h2>Организация театрального дела</h2>
-            <p class="desc">Должностные инструкции, графики выпуска спектакля, нормативы.</p>
-            <div id="files7" class="files">
-                <div class="file-item"><span class="name">График выпуска спектакля (шаблон)</span><a href="#" class="download-link">Скачать</a></div>
-            </div>
-        </div>
-
-        <p class="note">Файлы хранятся в облаке. Если ссылка не открывается, убедитесь, что доступ к файлу на Яндекс.Диске включён.</p>
+        <p class="note">Файлы автоматически подгружаются из облачного хранилища.<br>Добавьте новый файл в соответствующую папку на Яндекс.Диске — и он появится здесь.</p>
     </div>
 
     <script>
+        const TOKEN = 'y0__wgBEPWSg8UGGLfSQiD9nZTaF-rm5zQE5geTQ13Zc0qhy-s5M0CQ';
+        const BASE_URL = 'https://cloud-api.yandex.net/v1/disk/resources';
+        const ROOT_PATH = '/Библиотека';
+
+        const sectionDescriptions = {
+            'Проектная документация(технологическая разработка спектакля)': 'Планировки, разрезы, монтажные листы, ведомости декораций.',
+            'Проектная документация (художник-технолог сцены)': 'Планы сцены, разрезы, монтажные листы, ведомости декораций.',
+            'Проектная документация (художник по свету)': 'Световые карты, паспорта приборов, схемы подвеса.',
+            'Рабочая документация': 'Чертежи узлов, деталировочные листы, спецификации материалов.',
+            'Гастрольная документация': 'Технический райдер, схемы застройки, паспорта площадок.',
+            'Расчёт театральных конструкций': 'Нагрузки, подбор сечений, примеры расчётов ферм и балок.',
+            'Организация театрального дела': 'Должностные инструкции, графики выпуска спектакля, нормативы.'
+        };
+
+        async function fetchFromDisk(path) {
+            const url = `${BASE_URL}?path=${encodeURIComponent(path)}`;
+            const response = await fetch(url, {
+                headers: {
+                    'Authorization': `OAuth ${TOKEN}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`Ошибка ${response.status}`);
+            }
+            return response.json();
+        }
+
+        async function getDirectDownloadLink(path) {
+            const url = `${BASE_URL}/download?path=${encodeURIComponent(path)}`;
+            const response = await fetch(url, {
+                headers: {
+                    'Authorization': `OAuth ${TOKEN}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`Не удалось получить ссылку для скачивания`);
+            }
+            const data = await response.json();
+            return data.href;
+        }
+
+        async function loadLibrary() {
+            const container = document.getElementById('sections-container');
+            
+            try {
+                const rootData = await fetchFromDisk(ROOT_PATH);
+                const folders = rootData._embedded?.items?.filter(item => item.type === 'dir') || [];
+
+                if (folders.length === 0) {
+                    container.innerHTML = '<div class="loading">Папки не найдены. Проверьте структуру Яндекс.Диска.</div>';
+                    return;
+                }
+
+                container.innerHTML = '';
+
+                for (const folder of folders) {
+                    const sectionName = folder.name;
+                    const description = sectionDescriptions[sectionName] || 'Материалы раздела.';
+                    const sectionId = 'section-' + folder.name.replace(/[^a-zA-Zа-яА-Я0-9]/g, '-');
+
+                    const sectionHTML = `
+                        <div class="section" onclick="toggleFiles('${sectionId}')">
+                            <h2>${sectionName}</h2>
+                            <p class="desc">${description}</p>
+                            <div id="${sectionId}" class="files">
+                                <div class="loading">Загрузка файлов...</div>
+                            </div>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', sectionHTML);
+
+                    loadFilesForSection(folder.path, sectionId);
+                }
+            } catch (error) {
+                container.innerHTML = `<div class="loading">Ошибка загрузки библиотеки: ${error.message}</div>`;
+            }
+        }
+
+        async function loadFilesForSection(path, sectionId) {
+            const filesContainer = document.getElementById(sectionId);
+            if (!filesContainer) return;
+
+            try {
+                const data = await fetchFromDisk(path);
+                const items = data._embedded?.items || [];
+                const files = items.filter(item => item.type === 'file');
+
+                if (files.length === 0) {
+                    filesContainer.innerHTML = '<div class="file-item"><span class="name">Файлы временно отсутствуют</span></div>';
+                    return;
+                }
+
+                filesContainer.innerHTML = '';
+
+                for (const file of files) {
+                    try {
+                        const downloadUrl = await getDirectDownloadLink(file.path);
+                        const fileHTML = `
+                            <div class="file-item">
+                                <span class="name">${file.name}</span>
+                                <a href="${downloadUrl}" class="download-link" target="_blank">Скачать</a>
+                            </div>
+                        `;
+                        filesContainer.insertAdjacentHTML('beforeend', fileHTML);
+                    } catch (err) {
+                        const errorHTML = `
+                            <div class="file-item">
+                                <span class="name">${file.name} (ошибка загрузки)</span>
+                                <span class="download-link" style="opacity:0.5; cursor:default;">Недоступен</span>
+                            </div>
+                        `;
+                        filesContainer.insertAdjacentHTML('beforeend', errorHTML);
+                    }
+                }
+            } catch (error) {
+                filesContainer.innerHTML = `<div class="file-item"><span class="name">Ошибка загрузки: ${error.message}</span></div>`;
+            }
+        }
+
         function toggleFiles(id) {
             const el = document.getElementById(id);
+            if (!el) return;
             if (el.classList.contains('active')) {
                 el.classList.remove('active');
             } else {
@@ -245,6 +317,8 @@
                 el.classList.add('active');
             }
         }
+
+        loadLibrary();
     </script>
 </body>
 </html>

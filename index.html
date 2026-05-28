@@ -67,6 +67,7 @@
             border-bottom: 1px solid rgba(184, 165, 122, 0.35);
         }
 
+        /* Основной раздел */
         .section {
             background: #fffefb;
             border: 1px solid #e5ded0;
@@ -110,22 +111,65 @@
             letter-spacing: 0.3px;
         }
 
-        .files {
+        .section-content {
             display: none;
             margin-top: 1rem;
             padding-left: 1.2rem;
             border-left: 2px solid rgba(184, 165, 122, 0.3);
         }
 
-        .files.active {
+        .section-content.active {
             display: block;
         }
 
+        /* Вложенная папка */
+        .subfolder {
+            background: #faf8f2;
+            border: 1px solid #e0d8c0;
+            border-left: 3px solid var(--gold);
+            border-radius: 2px;
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .subfolder:hover {
+            background: #f5f0e5;
+        }
+
+        .subfolder h3 {
+            font-size: 1.05rem;
+            font-weight: 400;
+            color: #5e4a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .subfolder h3::before {
+            content: '▹';
+            color: var(--gold);
+            font-size: 1rem;
+        }
+
+        .subfolder-content {
+            display: none;
+            margin-top: 0.6rem;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(184, 165, 122, 0.2);
+        }
+
+        .subfolder-content.active {
+            display: block;
+        }
+
+        /* Файлы */
         .file-item {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.55rem 0;
+            padding: 0.5rem 0;
             border-bottom: 1px dashed #e0d7c6;
             font-size: 0.95rem;
         }
@@ -153,11 +197,18 @@
             border-radius: 3px;
             transition: background 0.15s, color 0.15s;
             background: transparent;
+            white-space: nowrap;
         }
 
         .download-link:hover {
             background: var(--green-hover);
             color: #fff;
+        }
+
+        .empty-message {
+            color: #b0a590;
+            font-style: italic;
+            padding: 0.4rem 0;
         }
 
         .loading {
@@ -184,11 +235,10 @@
             <div class="loading">Загрузка библиотеки...</div>
         </div>
 
-        <p class="note">Файлы автоматически подгружаются из облачного хранилища.<br>Добавьте новый файл в нужную папку на Google Диске — и он появится здесь.</p>
+        <p class="note">Файлы автоматически подгружаются из облачного хранилища.<br>Добавьте новый файл или папку на Google Диске — и они появятся здесь.</p>
     </div>
 
     <script>
-        // URL вашего Google Apps Script веб-приложения
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQg3qTxnDcjdc4kUe77Z-P2bBLMOfCSoXJZZ49-SgeTquqhAmpwLErahilccx6gY26jw/exec';
 
         const sectionDescriptions = {
@@ -201,6 +251,104 @@
             'Организация театрального дела': 'Должностные инструкции, графики выпуска спектакля, нормативы.'
         };
 
+        // Генератор уникальных ID
+        function generateId(prefix) {
+            return prefix + '-' + Math.random().toString(36).substring(2, 10);
+        }
+
+        // Отрисовка списка файлов
+        function renderFiles(files) {
+            if (!files || files.length === 0) {
+                return '<div class="empty-message">Нет файлов</div>';
+            }
+            return files.map(file => `
+                <div class="file-item">
+                    <span class="name">${file.name}</span>
+                    <a href="${file.url}" class="download-link" target="_blank">Скачать</a>
+                </div>
+            `).join('');
+        }
+
+        // Отрисовка вложенной папки (рекурсивно)
+        function renderSubfolder(folder) {
+            const subfolderContentId = generateId('subfolder-content');
+            
+            let innerHTML = '';
+            // Файлы в этой папке
+            if (folder.files && folder.files.length > 0) {
+                innerHTML += renderFiles(folder.files);
+            }
+            // Вложенные папки
+            if (folder.folders && folder.folders.length > 0) {
+                folder.folders.forEach(sub => {
+                    innerHTML += renderSubfolder(sub);
+                });
+            }
+            if (!innerHTML) {
+                innerHTML = '<div class="empty-message">Пусто</div>';
+            }
+
+            return `
+                <div class="subfolder" onclick="event.stopPropagation(); toggleSubfolder('${subfolderContentId}')">
+                    <h3>${folder.name}</h3>
+                    <div id="${subfolderContentId}" class="subfolder-content">
+                        ${innerHTML}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Отрисовка основного раздела
+        function renderSection(section) {
+            const sectionContentId = generateId('section-content');
+            const description = sectionDescriptions[section.name] || 'Материалы раздела.';
+            
+            let innerHTML = '';
+            // Вложенные папки
+            if (section.folders && section.folders.length > 0) {
+                section.folders.forEach(folder => {
+                    innerHTML += renderSubfolder(folder);
+                });
+            }
+            // Файлы в корне раздела
+            if (section.files && section.files.length > 0) {
+                innerHTML += renderFiles(section.files);
+            }
+            if (!innerHTML) {
+                innerHTML = '<div class="empty-message">Раздел пуст</div>';
+            }
+
+            return `
+                <div class="section" onclick="toggleSection('${sectionContentId}')">
+                    <h2>${section.name}</h2>
+                    <p class="desc">${description}</p>
+                    <div id="${sectionContentId}" class="section-content">
+                        ${innerHTML}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Переключение видимости раздела
+        function toggleSection(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const isActive = el.classList.contains('active');
+            // Закрываем все разделы
+            document.querySelectorAll('.section-content').forEach(f => f.classList.remove('active'));
+            if (!isActive) {
+                el.classList.add('active');
+            }
+        }
+
+        // Переключение видимости вложенной папки
+        function toggleSubfolder(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.toggle('active');
+        }
+
+        // Загрузка библиотеки
         async function loadLibrary() {
             const container = document.getElementById('sections-container');
             
@@ -216,55 +364,12 @@
                     return;
                 }
 
-                container.innerHTML = '';
-
-                sections.forEach((section, index) => {
-                    const sectionName = section.name;
-                    const description = sectionDescriptions[sectionName] || 'Материалы раздела.';
-                    const sectionId = 'section-' + index;
-
-                    let filesHTML = '';
-                    if (section.files.length === 0) {
-                        filesHTML = '<div class="file-item"><span class="name">Файлы временно отсутствуют</span></div>';
-                    } else {
-                        section.files.forEach(file => {
-                            filesHTML += `
-                                <div class="file-item">
-                                    <span class="name">${file.name}</span>
-                                    <a href="${file.url}" class="download-link" target="_blank">Скачать</a>
-                                </div>
-                            `;
-                        });
-                    }
-
-                    const sectionHTML = `
-                        <div class="section" onclick="toggleFiles('${sectionId}')">
-                            <h2>${sectionName}</h2>
-                            <p class="desc">${description}</p>
-                            <div id="${sectionId}" class="files">
-                                ${filesHTML}
-                            </div>
-                        </div>
-                    `;
-                    container.insertAdjacentHTML('beforeend', sectionHTML);
-                });
+                container.innerHTML = sections.map(section => renderSection(section)).join('');
             } catch (error) {
-                container.innerHTML = `<div class="loading">Ошибка загрузки библиотеки: ${error.message}</div>`;
+                container.innerHTML = `<div class="loading">Ошибка загрузки: ${error.message}</div>`;
             }
         }
 
-        function toggleFiles(id) {
-            const el = document.getElementById(id);
-            if (!el) return;
-            if (el.classList.contains('active')) {
-                el.classList.remove('active');
-            } else {
-                document.querySelectorAll('.files').forEach(f => f.classList.remove('active'));
-                el.classList.add('active');
-            }
-        }
-
-        // Запускаем загрузку при открытии страницы
         loadLibrary();
     </script>
 </body>

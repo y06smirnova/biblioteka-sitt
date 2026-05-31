@@ -278,9 +278,6 @@
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnjiqKWznABpb_vB9os9kR8P-8Df3-AEH-KFjdVX1NLje3Svu9COWTdzZ1HPPOkj3CIw/exec';
-        
-        // Используем только один надёжный прокси
-        const PROXY_URL = 'https://corsproxy.io/?' + encodeURIComponent(SCRIPT_URL);
 
         const sectionDescriptions = {
             '1. Проектная документация (технология)': 'Шаблоны для создания графической и текстовой документации : чертежи общего вида, монтировочная опись, лист развески',
@@ -339,27 +336,31 @@
             `;
         }
 
-        async function loadLibrary() {
+        function loadLibrary() {
             const container = document.getElementById('sections-container');
-            try {
-                const response = await fetch(PROXY_URL);
-                if (!response.ok) throw new Error('Ошибка ' + response.status);
-                let text = await response.text();
-                // Убираем JSONP-обёртку если есть
-                const start = text.indexOf('(');
-                const end = text.lastIndexOf(')');
-                if (start !== -1 && end !== -1 && start < end) {
-                    text = text.substring(start + 1, end);
-                }
-                const sections = JSON.parse(text);
+            const callbackName = 'jsonp_callback_' + Date.now();
+            const timeout = setTimeout(function() {
+                container.innerHTML = '<div class="loading">Превышено время ожидания. <a href="javascript:location.reload()" style="color:var(--green);">Обновить</a></div>';
+                delete window[callbackName];
+            }, 15000);
+            window[callbackName] = function(sections) {
+                clearTimeout(timeout);
                 if (!sections || !sections.length) {
-                    container.innerHTML = '<div class="loading">Папки не найдены. Проверьте структуру Google Диска.</div>';
+                    container.innerHTML = '<div class="loading">Папки не найдены.</div>';
+                    delete window[callbackName];
                     return;
                 }
                 container.innerHTML = sections.map((s, i) => renderSection(s, i)).join('');
-            } catch (e) {
-                container.innerHTML = `<div class="loading">Ошибка загрузки: ${e.message}. <a href="javascript:location.reload()" style="color:var(--green);">Обновить</a></div>`;
-            }
+                delete window[callbackName];
+            };
+            const script = document.createElement('script');
+            script.src = SCRIPT_URL + '?callback=' + callbackName;
+            script.onerror = function() {
+                clearTimeout(timeout);
+                container.innerHTML = '<div class="loading">Ошибка загрузки. <a href="javascript:location.reload()" style="color:var(--green);">Обновить</a></div>';
+                delete window[callbackName];
+            };
+            document.body.appendChild(script);
         }
 
         function toggleTheme() {
@@ -387,7 +388,7 @@
         }
 
         loadTheme();
-        loadLibrary();
+        setTimeout(loadLibrary, 300);
     </script>
 </body>
 </html>

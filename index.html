@@ -216,11 +216,6 @@
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnjiqKWznABpb_vB9os9kR8P-8Df3-AEH-KFjdVX1NLje3Svu9COWTdzZ1HPPOkj3CIw/exec';
-        
-        const PROXY_URLS = [
-            'https://api.allorigins.win/raw?url=' + encodeURIComponent(SCRIPT_URL),
-            'https://corsproxy.io/?' + encodeURIComponent(SCRIPT_URL)
-        ];
 
         const sectionDescriptions = {
             '1. Проектная документация (технология)': 'Планировки, разрезы, монтажные листы, ведомости декораций.',
@@ -279,49 +274,39 @@
             `;
         }
 
-        // Функция для очистки JSONP-обёртки (убирает callback(...))
-        function unwrapJSONP(text) {
-            // Ищем содержимое между первой открывающей скобкой и последней закрывающей
-            const start = text.indexOf('(');
-            const end = text.lastIndexOf(')');
-            if (start !== -1 && end !== -1 && start < end) {
-                return text.substring(start + 1, end);
-            }
-            return text; // Если не нашли — возвращаем как есть
-        }
-
-        async function tryFetchWithProxies(urls) {
-            for (const url of urls) {
-                try {
-                    const response = await fetch(url);
-                    if (!response.ok) continue;
-                    let text = await response.text();
-                    // Пробуем убрать JSONP-обёртку
-                    text = unwrapJSONP(text);
-                    const data = JSON.parse(text);
-                    return data;
-                } catch (e) {
-                    continue;
-                }
-            }
-            throw new Error('Все прокси недоступны');
-        }
-
-        async function loadLibrary() {
+        function loadLibrary() {
             const container = document.getElementById('sections-container');
-            try {
-                const sections = await tryFetchWithProxies(PROXY_URLS);
-                if (!sections.length) {
+            const callbackName = 'jsonp_callback_' + Date.now();
+            
+            // Устанавливаем таймаут на случай, если скрипт не ответит
+            const timeout = setTimeout(function() {
+                container.innerHTML = '<div class="loading">Превышено время ожидания. <a href="javascript:location.reload()" style="color:var(--green);">Обновить</a></div>';
+                delete window[callbackName];
+            }, 15000); // 15 секунд
+            
+            window[callbackName] = function(sections) {
+                clearTimeout(timeout);
+                if (!sections || !sections.length) {
                     container.innerHTML = '<div class="loading">Папки не найдены. Проверьте структуру Google Диска.</div>';
+                    delete window[callbackName];
                     return;
                 }
                 container.innerHTML = sections.map((s, i) => renderSection(s, i)).join('');
-            } catch (e) {
-                container.innerHTML = `<div class="loading">Ошибка загрузки: ${e.message}. Попробуйте обновить страницу.</div>`;
-            }
+                delete window[callbackName];
+            };
+
+            const script = document.createElement('script');
+            script.src = SCRIPT_URL + '?callback=' + callbackName;
+            script.onerror = function() {
+                clearTimeout(timeout);
+                container.innerHTML = '<div class="loading">Ошибка загрузки. <a href="javascript:location.reload()" style="color:var(--green);">Попробуйте обновить страницу</a></div>';
+                delete window[callbackName];
+            };
+            document.body.appendChild(script);
         }
 
-        loadLibrary();
+        // Запускаем с небольшой задержкой для стабильности на мобильных
+        setTimeout(loadLibrary, 300);
     </script>
 </body>
 </html>

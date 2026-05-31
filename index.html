@@ -27,13 +27,19 @@
         body {
             font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
             background-color: #f5f2eb;
+            /* Фон — симметричные линии сцены, расходящиеся от центра */
             background-image:
+                /* Горизонтальные линии */
                 repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(18, 92, 95, 0.08) 39px, rgba(18, 92, 95, 0.08) 40px),
                 repeating-linear-gradient(0deg, transparent, transparent 119px, rgba(18, 92, 95, 0.12) 119px, rgba(18, 92, 95, 0.12) 120px),
-                repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(18, 92, 95, 0.06) 49px, rgba(18, 92, 95, 0.06) 50px),
-                repeating-linear-gradient(90deg, transparent, transparent 199px, rgba(18, 92, 95, 0.09) 199px, rgba(18, 92, 95, 0.09) 200px),
-                linear-gradient(135deg, transparent 49.7%, rgba(18, 92, 95, 0.04) 49.7%, rgba(18, 92, 95, 0.04) 50.3%, transparent 50.3%);
-            background-size: 200px 200px;
+                /* Вертикальные линии — расходятся от центра */
+                repeating-linear-gradient(90deg, transparent 0px, transparent 199px, rgba(18, 92, 95, 0.06) 199px, rgba(18, 92, 95, 0.06) 200px, transparent 200px, transparent 399px, rgba(18, 92, 95, 0.06) 399px, rgba(18, 92, 95, 0.06) 400px),
+                repeating-linear-gradient(90deg, transparent 0px, transparent 49px, rgba(18, 92, 95, 0.04) 49px, rgba(18, 92, 95, 0.04) 50px, transparent 50px, transparent 349px, rgba(18, 92, 95, 0.04) 349px, rgba(18, 92, 95, 0.04) 350px),
+                /* Диагонали — зеркальные от центра */
+                linear-gradient(135deg, transparent 49.7%, rgba(18, 92, 95, 0.04) 49.7%, rgba(18, 92, 95, 0.04) 50.3%, transparent 50.3%),
+                linear-gradient(45deg, transparent 49.7%, rgba(18, 92, 95, 0.04) 49.7%, rgba(18, 92, 95, 0.04) 50.3%, transparent 50.3%);
+            background-size: 400px 200px;
+            background-position: center top;
             padding: 2rem;
             color: var(--text);
             min-height: 100vh;

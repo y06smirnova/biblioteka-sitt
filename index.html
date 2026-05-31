@@ -13,8 +13,7 @@
             --green-dark: #0d4547;
             --green-light: #1a7a7e;
             --green-lighter: #208f94;
-            --green-bg: #e8f2f2;
-            --green-bg-hover: #d4e8e8;
+            --green-bg: #f5f9f9;
             --gold: #b8a57a;
             --gold-light: #d4c9a8;
             --paper: #fdfaf5;
@@ -27,10 +26,14 @@
 
         body {
             font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
-            background-color: #0e494b;
+            background-color: #f5f2eb;
             background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(184, 165, 122, 0.05) 19px, rgba(184, 165, 122, 0.05) 20px),
-                repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(184, 165, 122, 0.05) 19px, rgba(184, 165, 122, 0.05) 20px);
+                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(18, 92, 95, 0.08) 39px, rgba(18, 92, 95, 0.08) 40px),
+                repeating-linear-gradient(0deg, transparent, transparent 119px, rgba(18, 92, 95, 0.12) 119px, rgba(18, 92, 95, 0.12) 120px),
+                repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(18, 92, 95, 0.06) 49px, rgba(18, 92, 95, 0.06) 50px),
+                repeating-linear-gradient(90deg, transparent, transparent 199px, rgba(18, 92, 95, 0.09) 199px, rgba(18, 92, 95, 0.09) 200px),
+                linear-gradient(135deg, transparent 49.7%, rgba(18, 92, 95, 0.04) 49.7%, rgba(18, 92, 95, 0.04) 50.3%, transparent 50.3%);
+            background-size: 200px 200px;
             padding: 2rem;
             color: var(--text);
             min-height: 100vh;
@@ -45,49 +48,50 @@
             background: var(--white);
             padding: 2.5rem 2.2rem;
             border-radius: 4px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
 
         .container::before {
             content: '';
             display: block;
-            height: 3px;
-            background: linear-gradient(90deg, var(--green), var(--gold), var(--green));
+            height: 2px;
+            background: var(--green);
             margin-bottom: 2rem;
+            opacity: 0.7;
         }
 
         h1 {
-            font-size: 1.9rem;
+            font-size: 1.7rem;
             font-weight: 400;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--green);
             margin-bottom: 0.5rem;
             padding-bottom: 0.8rem;
-            border-bottom: 2px solid var(--green);
+            border-bottom: 1px solid var(--gold-light);
         }
 
         .section {
-            background: var(--green-bg);
-            border: 2px solid var(--green);
-            border-left: 6px solid var(--green);
-            border-radius: 4px;
-            padding: 1.1rem 1.4rem;
-            margin-bottom: 1rem;
+            background: transparent;
+            border: none;
+            border-left: 3px solid var(--green);
+            border-radius: 0;
+            padding: 0.9rem 1.2rem;
+            margin-bottom: 0.6rem;
             cursor: pointer;
-            transition: background 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 6px rgba(18, 92, 95, 0.1);
+            transition: background 0.2s, border-color 0.2s;
+            box-shadow: none;
         }
 
         .section:hover {
-            background: var(--green-bg-hover);
-            box-shadow: 0 4px 12px rgba(18, 92, 95, 0.2);
+            background: #f9fbfb;
+            border-left-color: var(--green-light);
         }
 
         .section h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: 0.8px;
+            font-size: 1.15rem;
+            font-weight: 400;
+            letter-spacing: 0.6px;
             color: var(--green-dark);
             display: flex;
             align-items: center;
@@ -97,46 +101,47 @@
         .section h2::before {
             content: '▸';
             color: var(--green);
-            font-size: 1.2rem;
+            font-size: 1rem;
+            font-weight: 400;
         }
 
         .section .desc {
-            color: var(--green-light);
-            font-size: 0.95rem;
-            margin-top: 0.25rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 0.15rem;
             font-weight: 400;
         }
 
         .section-content {
             display: none;
-            margin-top: 1rem;
+            margin-top: 0.8rem;
             padding-left: 1.2rem;
-            border-left: 3px solid var(--green);
+            border-left: 1px solid var(--gold-light);
         }
 
         .section-content.active { display: block; }
 
         .subfolder {
-            background: var(--white);
-            border: 1px solid var(--green);
-            border-left: 4px solid var(--gold);
-            border-radius: 3px;
-            padding: 0.8rem 1rem;
-            margin: 0.5rem 0;
+            background: transparent;
+            border: none;
+            border-left: 2px solid var(--gold);
+            border-radius: 0;
+            padding: 0.6rem 0.8rem;
+            margin: 0.3rem 0;
             cursor: pointer;
-            transition: background 0.2s, box-shadow 0.2s;
-            box-shadow: 0 1px 3px rgba(18, 92, 95, 0.05);
+            transition: background 0.2s, border-color 0.2s;
+            box-shadow: none;
         }
 
         .subfolder:hover {
-            background: #f5f7f5;
-            box-shadow: 0 2px 6px rgba(18, 92, 95, 0.1);
+            background: #fdfdfb;
+            border-left-color: var(--green);
         }
 
         .subfolder h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--green-dark);
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text);
         }
 
         .subfolder h3::before {
@@ -146,9 +151,9 @@
 
         .subfolder-content {
             display: none;
-            margin-top: 0.5rem;
+            margin-top: 0.4rem;
             padding-left: 1rem;
-            border-left: 2px solid var(--gold-light);
+            border-left: 1px solid rgba(184, 165, 122, 0.3);
         }
 
         .subfolder-content.active { display: block; }
@@ -157,9 +162,9 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px dashed var(--gold-light);
-            font-size: 0.95rem;
+            padding: 0.45rem 0;
+            border-bottom: 1px dotted rgba(184, 165, 122, 0.3);
+            font-size: 0.9rem;
         }
 
         .file-item .name {
@@ -171,38 +176,36 @@
         .file-item .name::before {
             content: '— ';
             color: var(--green);
-            font-weight: bold;
         }
 
         .download-link {
-            color: var(--white);
+            color: var(--green);
             text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 700;
+            font-size: 0.75rem;
+            font-weight: 400;
             letter-spacing: 0.5px;
             text-transform: uppercase;
-            padding: 4px 14px;
-            background: var(--green);
-            border: 2px solid var(--green);
+            padding: 3px 10px;
+            border: 1px solid var(--green);
             border-radius: 3px;
             transition: all 0.2s;
+            background: transparent;
         }
 
         .download-link:hover {
-            background: var(--green-lighter);
-            border-color: var(--green-lighter);
+            background: var(--green);
             color: var(--white);
         }
 
-        .empty-message { color: var(--text-light); font-style: italic; padding: 0.4rem 0; }
-        .loading { text-align: center; color: var(--green-light); padding: 1rem; font-style: italic; }
+        .empty-message { color: var(--text-light); font-style: italic; padding: 0.4rem 0; font-size: 0.9rem; }
+        .loading { text-align: center; color: var(--text-light); padding: 1rem; font-style: italic; }
         .note {
             margin-top: 2rem;
             font-style: italic;
             color: var(--text-light);
             text-align: center;
-            font-size: 0.9rem;
-            border-top: 1px solid var(--gold-light);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(184, 165, 122, 0.3);
             padding-top: 1.5rem;
         }
     </style>
@@ -218,13 +221,13 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnjiqKWznABpb_vB9os9kR8P-8Df3-AEH-KFjdVX1NLje3Svu9COWTdzZ1HPPOkj3CIw/exec';
 
         const sectionDescriptions = {
-            '1. Проектная документация (технология)': 'Планировки, разрезы, монтажные листы, ведомости декораций.',
-            '2. Проектная документация (свет)': 'Световые карты, паспорта приборов, схемы подвеса.',
-            '3. Рабочая документация': 'Чертежи узлов, деталировочные листы, спецификации материалов.',
-            '4. Гастрольная документация': 'Технический райдер, схемы застройки, паспорта площадок.',
-            '5. Расчёт театральных конструкций': 'Нагрузки, подбор сечений, примеры расчётов ферм и балок.',
-            '6. 3D-моделирование и визуализация': '3D-модели, визуализации, сцены.',
-            '7. Организация театрального дела': 'Должностные инструкции, графики выпуска спектакля, нормативы.'
+            '1. Проектная документация (технология)': 'Шаблоны для создания графической и текстовой документации : чертежи общего вида, монтировочная опись, лист развески',
+            '2. Проектная документация (свет)': 'LightPlot, системы управления, элементы электробутафории',
+            '3. Рабочая документация': 'Стандартные изделия, механика',
+            '4. Гастрольная документация': 'Технический райдер, распределение груза',
+            '5. Расчёт театральных конструкций': 'Расчёты ферм, станков, лестниц, каркасов',
+            '6. 3D-моделирование и визуализация': 'Аддоны для Blender и Cinema-4D',
+            '7. Организация театрального дела': 'Сметы по спектаклям, нормативные документы'
         };
 
         function toggleElement(id) {
@@ -278,16 +281,15 @@
             const container = document.getElementById('sections-container');
             const callbackName = 'jsonp_callback_' + Date.now();
             
-            // Устанавливаем таймаут на случай, если скрипт не ответит
             const timeout = setTimeout(function() {
                 container.innerHTML = '<div class="loading">Превышено время ожидания. <a href="javascript:location.reload()" style="color:var(--green);">Обновить</a></div>';
                 delete window[callbackName];
-            }, 15000); // 15 секунд
+            }, 15000);
             
             window[callbackName] = function(sections) {
                 clearTimeout(timeout);
                 if (!sections || !sections.length) {
-                    container.innerHTML = '<div class="loading">Папки не найдены. Проверьте структуру Google Диска.</div>';
+                    container.innerHTML = '<div class="loading">Папки не найдены.</div>';
                     delete window[callbackName];
                     return;
                 }
@@ -299,13 +301,12 @@
             script.src = SCRIPT_URL + '?callback=' + callbackName;
             script.onerror = function() {
                 clearTimeout(timeout);
-                container.innerHTML = '<div class="loading">Ошибка загрузки. <a href="javascript:location.reload()" style="color:var(--green);">Попробуйте обновить страницу</a></div>';
+                container.innerHTML = '<div class="loading">Ошибка загрузки. <a href="javascript:location.reload()" style="color:var(--green);">Обновить</a></div>';
                 delete window[callbackName];
             };
             document.body.appendChild(script);
         }
 
-        // Запускаем с небольшой задержкой для стабильности на мобильных
         setTimeout(loadLibrary, 300);
     </script>
 </body>

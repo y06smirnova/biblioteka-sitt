@@ -20,22 +20,43 @@
             --text: #2c2c2c;
             --text-light: #5c5c5c;
             --white: #ffffff;
+            --bg: #f5f2eb;
+            --card-bg: #ffffff;
+            --section-hover: #f9fbfb;
+            --subfolder-hover: #fdfdfb;
+            --border-light: rgba(184, 165, 122, 0.3);
+        }
+
+        /* Тёмная тема */
+        body.dark {
+            --green: #208f94;
+            --green-dark: #1a7a7e;
+            --green-light: #125c5f;
+            --green-lighter: #28a0a5;
+            --green-bg: #1a2a2a;
+            --gold: #9e8b5c;
+            --gold-light: #6b5d3e;
+            --paper: #2c2c2c;
+            --text: #e0dcd0;
+            --text-light: #b0a890;
+            --white: #1e1e1e;
+            --bg: #151515;
+            --card-bg: #1e1e1e;
+            --section-hover: #252525;
+            --subfolder-hover: #252525;
+            --border-light: rgba(158, 139, 92, 0.3);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
-            background-color: #f5f2eb;
-            /* Фон — симметричные линии сцены, расходящиеся от центра */
+            background-color: var(--bg);
             background-image:
-                /* Горизонтальные линии */
                 repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(18, 92, 95, 0.08) 39px, rgba(18, 92, 95, 0.08) 40px),
                 repeating-linear-gradient(0deg, transparent, transparent 119px, rgba(18, 92, 95, 0.12) 119px, rgba(18, 92, 95, 0.12) 120px),
-                /* Вертикальные линии — расходятся от центра */
                 repeating-linear-gradient(90deg, transparent 0px, transparent 199px, rgba(18, 92, 95, 0.06) 199px, rgba(18, 92, 95, 0.06) 200px, transparent 200px, transparent 399px, rgba(18, 92, 95, 0.06) 399px, rgba(18, 92, 95, 0.06) 400px),
                 repeating-linear-gradient(90deg, transparent 0px, transparent 49px, rgba(18, 92, 95, 0.04) 49px, rgba(18, 92, 95, 0.04) 50px, transparent 50px, transparent 349px, rgba(18, 92, 95, 0.04) 349px, rgba(18, 92, 95, 0.04) 350px),
-                /* Диагонали — зеркальные от центра */
                 linear-gradient(135deg, transparent 49.7%, rgba(18, 92, 95, 0.04) 49.7%, rgba(18, 92, 95, 0.04) 50.3%, transparent 50.3%),
                 linear-gradient(45deg, transparent 49.7%, rgba(18, 92, 95, 0.04) 49.7%, rgba(18, 92, 95, 0.04) 50.3%, transparent 50.3%);
             background-size: 400px 200px;
@@ -46,15 +67,18 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .container {
             width: 100%;
             max-width: 860px;
-            background: var(--white);
+            background: var(--card-bg);
             padding: 2.5rem 2.2rem;
             border-radius: 4px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
         .container::before {
@@ -66,6 +90,31 @@
             opacity: 0.7;
         }
 
+        /* Переключатель темы */
+        .theme-toggle {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: 1px solid var(--green);
+            color: var(--green);
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, color 0.2s;
+            line-height: 1;
+        }
+
+        .theme-toggle:hover {
+            background: var(--green);
+            color: var(--white);
+        }
+
         h1 {
             font-size: 1.7rem;
             font-weight: 400;
@@ -75,6 +124,7 @@
             margin-bottom: 0.5rem;
             padding-bottom: 0.8rem;
             border-bottom: 1px solid var(--gold-light);
+            padding-right: 3rem; /* чтобы не наезжало на кнопку темы */
         }
 
         .section {
@@ -90,7 +140,7 @@
         }
 
         .section:hover {
-            background: #f9fbfb;
+            background: var(--section-hover);
             border-left-color: var(--green-light);
         }
 
@@ -140,7 +190,7 @@
         }
 
         .subfolder:hover {
-            background: #fdfdfb;
+            background: var(--subfolder-hover);
             border-left-color: var(--green);
         }
 
@@ -159,7 +209,7 @@
             display: none;
             margin-top: 0.4rem;
             padding-left: 1rem;
-            border-left: 1px solid rgba(184, 165, 122, 0.3);
+            border-left: 1px solid var(--border-light);
         }
 
         .subfolder-content.active { display: block; }
@@ -169,8 +219,15 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.45rem 0;
-            border-bottom: 1px dotted rgba(184, 165, 122, 0.3);
+            border-bottom: 1px dotted var(--border-light);
             font-size: 0.9rem;
+        }
+
+        .file-item .icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+            width: 20px;
+            text-align: center;
         }
 
         .file-item .name {
@@ -196,6 +253,7 @@
             border-radius: 3px;
             transition: all 0.2s;
             background: transparent;
+            white-space: nowrap;
         }
 
         .download-link:hover {
@@ -211,13 +269,16 @@
             color: var(--text-light);
             text-align: center;
             font-size: 0.85rem;
-            border-top: 1px solid rgba(184, 165, 122, 0.3);
+            border-top: 1px solid var(--border-light);
             padding-top: 1.5rem;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Кнопка переключения темы -->
+        <button class="theme-toggle" id="themeToggle" title="Переключить тему" onclick="toggleTheme()">☀️</button>
+
         <h1>Библиотека факультета Сценографии и Театральной технологии</h1>
         <div id="sections-container"><div class="loading">Загрузка библиотеки...</div></div>
         <p class="note">Добавьте файл или папку на Google Диск — и они появятся здесь автоматически.</p>
@@ -236,6 +297,35 @@
             '7. Организация театрального дела': 'Сметы по спектаклям, нормативные документы'
         };
 
+        // Определение иконки по расширению файла
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const icons = {
+                'pdf': '📄',
+                'dwg': '📐',
+                'sldprt': '⚙️',
+                'sldasm': '⚙️',
+                'slddrw': '⚙️',
+                'docx': '📝',
+                'doc': '📝',
+                'png': '🖼️',
+                'jpg': '🖼️',
+                'jpeg': '🖼️',
+                'zip': '🗜️',
+                'rar': '🗜️',
+                '7z': '🗜️',
+                'xlsx': '📊',
+                'xlsm': '📊',
+                'xls': '📊'
+            };
+            return icons[ext] || '📁';
+        }
+
+        // Естественная сортировка (1, 2, 10, а не 1, 10, 2)
+        function naturalSort(a, b) {
+            return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
+        }
+
         function toggleElement(id) {
             const el = document.getElementById(id);
             if (!el) return;
@@ -244,8 +334,11 @@
 
         function renderFiles(files) {
             if (!files.length) return '<div class="empty-message">Нет файлов</div>';
-            return files.map(f => `
+            // Сортируем файлы по алфавиту с учётом цифр
+            const sorted = [...files].sort(naturalSort);
+            return sorted.map(f => `
                 <div class="file-item">
+                    <span class="icon">${getFileIcon(f.name)}</span>
                     <span class="name">${f.name}</span>
                     <a href="${f.url}" class="download-link" target="_blank">Скачать</a>
                 </div>
@@ -283,6 +376,32 @@
             `;
         }
 
+        // Переключение темы
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('themeToggle');
+            body.classList.toggle('dark');
+            if (body.classList.contains('dark')) {
+                btn.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                btn.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Загрузка темы при открытии
+        function loadTheme() {
+            const saved = localStorage.getItem('theme');
+            const btn = document.getElementById('themeToggle');
+            if (saved === 'dark') {
+                document.body.classList.add('dark');
+                btn.textContent = '🌙';
+            } else {
+                btn.textContent = '☀️';
+            }
+        }
+
         function loadLibrary() {
             const container = document.getElementById('sections-container');
             const callbackName = 'jsonp_callback_' + Date.now();
@@ -295,7 +414,7 @@
             window[callbackName] = function(sections) {
                 clearTimeout(timeout);
                 if (!sections || !sections.length) {
-                    container.innerHTML = '<div class="loading">Папки не найдены.</div>';
+                    container.innerHTML = '<div class="loading">Папки не найдены. Проверьте структуру Google Диска.</div>';
                     delete window[callbackName];
                     return;
                 }
@@ -313,6 +432,8 @@
             document.body.appendChild(script);
         }
 
+        // Инициализация
+        loadTheme();
         setTimeout(loadLibrary, 300);
     </script>
 </body>

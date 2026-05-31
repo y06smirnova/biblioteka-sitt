@@ -9,22 +9,28 @@
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --green: #082924;
-            --green-hover: #0b3b33;
+            --green: #125c5f;
+            --green-dark: #0d4547;
+            --green-light: #1a7a7e;
+            --green-lighter: #208f94;
+            --green-bg: #e8f2f2;
+            --green-bg-hover: #d4e8e8;
             --gold: #b8a57a;
+            --gold-light: #d4c9a8;
             --paper: #fdfaf5;
             --text: #2c2c2c;
             --text-light: #5c5c5c;
+            --white: #ffffff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
-            background-color: #f5f2eb;
+            background-color: #0e494b;
             background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(184, 165, 122, 0.08) 19px, rgba(184, 165, 122, 0.08) 20px),
-                repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(184, 165, 122, 0.08) 19px, rgba(184, 165, 122, 0.08) 20px);
+                repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(184, 165, 122, 0.05) 19px, rgba(184, 165, 122, 0.05) 20px),
+                repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(184, 165, 122, 0.05) 19px, rgba(184, 165, 122, 0.05) 20px);
             padding: 2rem;
             color: var(--text);
             min-height: 100vh;
@@ -36,19 +42,18 @@
         .container {
             width: 100%;
             max-width: 860px;
-            background: var(--paper);
+            background: var(--white);
             padding: 2.5rem 2.2rem;
             border-radius: 4px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .container::before {
             content: '';
             display: block;
-            height: 2px;
-            background: var(--gold);
+            height: 3px;
+            background: linear-gradient(90deg, var(--green), var(--gold), var(--green));
             margin-bottom: 2rem;
-            opacity: 0.6;
         }
 
         h1 {
@@ -58,28 +63,32 @@
             text-transform: uppercase;
             color: var(--green);
             margin-bottom: 0.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(184, 165, 122, 0.35);
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--green);
         }
 
         .section {
-            background: #fffefb;
-            border: 1px solid #e5ded0;
-            border-left: 4px solid var(--green);
-            border-radius: 2px;
+            background: var(--green-bg);
+            border: 2px solid var(--green);
+            border-left: 6px solid var(--green);
+            border-radius: 4px;
             padding: 1.1rem 1.4rem;
             margin-bottom: 1rem;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 6px rgba(18, 92, 95, 0.1);
         }
 
-        .section:hover { background: #f9f6f0; }
+        .section:hover {
+            background: var(--green-bg-hover);
+            box-shadow: 0 4px 12px rgba(18, 92, 95, 0.2);
+        }
 
         .section h2 {
             font-size: 1.25rem;
-            font-weight: 400;
+            font-weight: 700;
             letter-spacing: 0.8px;
-            color: var(--green);
+            color: var(--green-dark);
             display: flex;
             align-items: center;
             gap: 0.3rem;
@@ -88,38 +97,46 @@
         .section h2::before {
             content: '▸';
             color: var(--green);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
         .section .desc {
-            color: var(--text-light);
+            color: var(--green-light);
             font-size: 0.95rem;
             margin-top: 0.25rem;
+            font-weight: 400;
         }
 
         .section-content {
             display: none;
             margin-top: 1rem;
             padding-left: 1.2rem;
-            border-left: 2px solid rgba(184, 165, 122, 0.3);
+            border-left: 3px solid var(--green);
         }
 
         .section-content.active { display: block; }
 
         .subfolder {
-            background: #faf8f2;
-            border: 1px solid #e0d8c0;
-            border-left: 3px solid var(--gold);
-            border-radius: 2px;
+            background: var(--white);
+            border: 1px solid var(--green);
+            border-left: 4px solid var(--gold);
+            border-radius: 3px;
             padding: 0.8rem 1rem;
             margin: 0.5rem 0;
             cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 3px rgba(18, 92, 95, 0.05);
+        }
+
+        .subfolder:hover {
+            background: #f5f7f5;
+            box-shadow: 0 2px 6px rgba(18, 92, 95, 0.1);
         }
 
         .subfolder h3 {
             font-size: 1.05rem;
-            font-weight: 400;
-            color: #5e4a2e;
+            font-weight: 700;
+            color: var(--green-dark);
         }
 
         .subfolder h3::before {
@@ -131,7 +148,7 @@
             display: none;
             margin-top: 0.5rem;
             padding-left: 1rem;
-            border-left: 2px solid rgba(184, 165, 122, 0.2);
+            border-left: 2px solid var(--gold-light);
         }
 
         .subfolder-content.active { display: block; }
@@ -141,35 +158,58 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.5rem 0;
-            border-bottom: 1px dashed #e0d7c6;
+            border-bottom: 1px dashed var(--gold-light);
             font-size: 0.95rem;
         }
 
-        .file-item .name { flex: 1; color: #3d3d3d; }
+        .file-item .name {
+            flex: 1;
+            color: var(--text);
+            font-weight: 400;
+        }
+
         .file-item .name::before {
             content: '— ';
-            color: var(--gold);
+            color: var(--green);
             font-weight: bold;
         }
 
         .download-link {
-            color: var(--green);
+            color: var(--white);
             text-decoration: none;
             font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            padding: 2px 10px;
-            border: 1px solid var(--green);
+            padding: 4px 14px;
+            background: var(--green);
+            border: 2px solid var(--green);
             border-radius: 3px;
+            transition: all 0.2s;
         }
 
         .download-link:hover {
-            background: var(--green-hover);
-            color: #fff;
+            background: var(--green-lighter);
+            border-color: var(--green-lighter);
+            color: var(--white);
         }
 
-        .empty-message { color: #b0a590; font-style: italic; padding: 0.4rem 0; }
-        .loading { text-align: center; color: #9a9488; padding: 1rem; font-style: italic; }
-        .note { margin-top: 2rem; font-style: italic; color: #9a9488; text-align: center; font-size: 0.9rem; }
+        .download-link:active {
+            background: var(--green-light);
+            border-color: var(--green-light);
+        }
+
+        .empty-message { color: var(--text-light); font-style: italic; padding: 0.4rem 0; }
+        .loading { text-align: center; color: var(--green-light); padding: 1rem; font-style: italic; }
+        .note {
+            margin-top: 2rem;
+            font-style: italic;
+            color: var(--text-light);
+            text-align: center;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--gold-light);
+            padding-top: 1.5rem;
+        }
     </style>
 </head>
 <body>
@@ -181,10 +221,21 @@
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnjiqKWznABpb_vB9os9kR8P-8Df3-AEH-KFjdVX1NLje3Svu9COWTdzZ1HPPOkj3CIw/exec';
+        
+        const PROXY_URLS = [
+            'https://api.allorigins.win/raw?url=' + encodeURIComponent(SCRIPT_URL),
+            'https://corsproxy.io/?' + encodeURIComponent(SCRIPT_URL)
+        ];
 
         const sectionDescriptions = {
             'Проектная документация(технологическая разработка спектакля)': 'Планировки, разрезы, монтажные листы, ведомости декораций.',
             'Проектная документация(световая разработка спектакля)': 'Световые карты, паспорта приборов, схемы подвеса.',
+            'Проектная документация (художник-технолог сцены)': 'Планы сцены, разрезы, монтажные листы, ведомости декораций.',
+            'Проектная документация (художник по свету)': 'Световые карты, паспорта приборов, схемы подвеса.',
+            'Рабочая документация': 'Чертежи узлов, деталировочные листы, спецификации материалов.',
+            'Гастрольная документация': 'Технический райдер, схемы застройки, паспорта площадок.',
+            'Расчёт театральных конструкций': 'Нагрузки, подбор сечений, примеры расчётов ферм и балок.',
+            'Организация театрального дела': 'Должностные инструкции, графики выпуска спектакля, нормативы.'
         };
 
         function toggleElement(id) {
@@ -234,26 +285,32 @@
             `;
         }
 
-        function loadLibrary() {
+        async function tryFetchWithProxies(urls) {
+            for (const url of urls) {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) continue;
+                    const data = await response.json();
+                    return data;
+                } catch (e) {
+                    continue;
+                }
+            }
+            throw new Error('Все прокси недоступны');
+        }
+
+        async function loadLibrary() {
             const container = document.getElementById('sections-container');
-            const callbackName = 'jsonp_callback_' + Date.now();
-            
-            window[callbackName] = function(sections) {
+            try {
+                const sections = await tryFetchWithProxies(PROXY_URLS);
                 if (!sections.length) {
-                    container.innerHTML = '<div class="loading">Папки не найдены.</div>';
+                    container.innerHTML = '<div class="loading">Папки не найдены. Проверьте структуру Google Диска.</div>';
                     return;
                 }
                 container.innerHTML = sections.map((s, i) => renderSection(s, i)).join('');
-                delete window[callbackName];
-            };
-
-            const script = document.createElement('script');
-            script.src = SCRIPT_URL + '?callback=' + callbackName;
-            script.onerror = function() {
-                container.innerHTML = '<div class="loading">Ошибка загрузки библиотеки.</div>';
-                delete window[callbackName];
-            };
-            document.body.appendChild(script);
+            } catch (e) {
+                container.innerHTML = `<div class="loading">Ошибка загрузки: ${e.message}. Попробуйте обновить страницу.</div>`;
+            }
         }
 
         loadLibrary();

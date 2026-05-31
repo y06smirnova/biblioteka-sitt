@@ -27,7 +27,6 @@
             --border-light: rgba(184, 165, 122, 0.3);
         }
 
-        /* Тёмная тема */
         body.dark {
             --green: #208f94;
             --green-dark: #1a7a7e;
@@ -77,7 +76,6 @@
             padding: 2.5rem 2.2rem;
             border-radius: 4px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            position: relative;
             transition: background-color 0.3s, box-shadow 0.3s;
         }
 
@@ -90,31 +88,6 @@
             opacity: 0.7;
         }
 
-        /* Переключатель темы */
-        .theme-toggle {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            background: none;
-            border: 1px solid var(--green);
-            color: var(--green);
-            font-size: 1.1rem;
-            cursor: pointer;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s, color 0.2s;
-            line-height: 1;
-        }
-
-        .theme-toggle:hover {
-            background: var(--green);
-            color: var(--white);
-        }
-
         h1 {
             font-size: 1.7rem;
             font-weight: 400;
@@ -124,7 +97,6 @@
             margin-bottom: 0.5rem;
             padding-bottom: 0.8rem;
             border-bottom: 1px solid var(--gold-light);
-            padding-right: 3rem; /* чтобы не наезжало на кнопку темы */
         }
 
         .section {
@@ -223,13 +195,6 @@
             font-size: 0.9rem;
         }
 
-        .file-item .icon {
-            font-size: 1rem;
-            flex-shrink: 0;
-            width: 20px;
-            text-align: center;
-        }
-
         .file-item .name {
             flex: 1;
             color: var(--text);
@@ -272,13 +237,42 @@
             border-top: 1px solid var(--border-light);
             padding-top: 1.5rem;
         }
+
+        /* Кнопка темы — фиксированная в правом нижнем углу */
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--green);
+            color: var(--green);
+            font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            line-height: 1;
+        }
+
+        .theme-toggle:hover {
+            background: var(--green);
+            color: var(--white);
+            border-color: var(--green);
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Кнопка переключения темы -->
-        <button class="theme-toggle" id="themeToggle" title="Переключить тему" onclick="toggleTheme()">☀️</button>
+    <!-- Кнопка переключения темы — вне контейнера, фиксированная -->
+    <button class="theme-toggle" id="themeToggle" title="День / Ночь" onclick="toggleTheme()">◐</button>
 
+    <div class="container">
         <h1>Библиотека факультета Сценографии и Театральной технологии</h1>
         <div id="sections-container"><div class="loading">Загрузка библиотеки...</div></div>
         <p class="note">Добавьте файл или папку на Google Диск — и они появятся здесь автоматически.</p>
@@ -297,31 +291,7 @@
             '7. Организация театрального дела': 'Сметы по спектаклям, нормативные документы'
         };
 
-        // Определение иконки по расширению файла
-        function getFileIcon(filename) {
-            const ext = filename.split('.').pop().toLowerCase();
-            const icons = {
-                'pdf': '📄',
-                'dwg': '📐',
-                'sldprt': '⚙️',
-                'sldasm': '⚙️',
-                'slddrw': '⚙️',
-                'docx': '📝',
-                'doc': '📝',
-                'png': '🖼️',
-                'jpg': '🖼️',
-                'jpeg': '🖼️',
-                'zip': '🗜️',
-                'rar': '🗜️',
-                '7z': '🗜️',
-                'xlsx': '📊',
-                'xlsm': '📊',
-                'xls': '📊'
-            };
-            return icons[ext] || '📁';
-        }
-
-        // Естественная сортировка (1, 2, 10, а не 1, 10, 2)
+        // Естественная сортировка
         function naturalSort(a, b) {
             return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
         }
@@ -334,11 +304,9 @@
 
         function renderFiles(files) {
             if (!files.length) return '<div class="empty-message">Нет файлов</div>';
-            // Сортируем файлы по алфавиту с учётом цифр
             const sorted = [...files].sort(naturalSort);
             return sorted.map(f => `
                 <div class="file-item">
-                    <span class="icon">${getFileIcon(f.name)}</span>
                     <span class="name">${f.name}</span>
                     <a href="${f.url}" class="download-link" target="_blank">Скачать</a>
                 </div>
@@ -376,29 +344,27 @@
             `;
         }
 
-        // Переключение темы
         function toggleTheme() {
             const body = document.body;
             const btn = document.getElementById('themeToggle');
             body.classList.toggle('dark');
             if (body.classList.contains('dark')) {
-                btn.textContent = '🌙';
+                btn.textContent = '◑';
                 localStorage.setItem('theme', 'dark');
             } else {
-                btn.textContent = '☀️';
+                btn.textContent = '◐';
                 localStorage.setItem('theme', 'light');
             }
         }
 
-        // Загрузка темы при открытии
         function loadTheme() {
             const saved = localStorage.getItem('theme');
             const btn = document.getElementById('themeToggle');
             if (saved === 'dark') {
                 document.body.classList.add('dark');
-                btn.textContent = '🌙';
+                btn.textContent = '◑';
             } else {
-                btn.textContent = '☀️';
+                btn.textContent = '◐';
             }
         }
 
@@ -432,7 +398,6 @@
             document.body.appendChild(script);
         }
 
-        // Инициализация
         loadTheme();
         setTimeout(loadLibrary, 300);
     </script>

@@ -25,7 +25,6 @@
             --section-hover: #f9fbfb;
             --subfolder-hover: #fdfdfb;
             --border-light: rgba(184, 165, 122, 0.3);
-            --star-color: #b8a57a;
         }
 
         body.dark {
@@ -45,7 +44,6 @@
             --section-hover: #252525;
             --subfolder-hover: #252525;
             --border-light: rgba(158, 139, 92, 0.3);
-            --star-color: #9e8b5c;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -101,13 +99,13 @@
             border-bottom: 1px solid var(--gold-light);
         }
 
-        /* Поиск */
         .search-box {
             width: 100%;
-            padding: 0.6rem 1rem;
-            margin-bottom: 1rem;
+            padding: 0.5rem 0.8rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
             font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
-            font-size: 1rem;
+            font-size: 0.95rem;
             border: 1px solid var(--green);
             border-radius: 3px;
             background: transparent;
@@ -120,28 +118,12 @@
         .search-box:focus { border-color: var(--green-light); }
 
         .search-info {
-            text-align: center;
             color: var(--text-light);
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            margin-bottom: 0.8rem;
             font-style: italic;
-            min-height: 1.2rem;
+            min-height: 1rem;
         }
-
-        /* Избранное */
-        .favorites-toggle {
-            display: inline-block;
-            margin-bottom: 1rem;
-            font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
-            font-size: 0.9rem;
-            color: var(--green);
-            cursor: pointer;
-            user-select: none;
-            border-bottom: 1px dashed var(--green);
-            transition: color 0.2s;
-        }
-
-        .favorites-toggle:hover { color: var(--green-lighter); }
 
         .section {
             background: transparent;
@@ -250,44 +232,22 @@
             color: var(--green);
         }
 
-        /* Звёздочка избранного */
-        .fav-star {
-            cursor: pointer;
-            color: var(--star-color);
-            font-size: 1rem;
-            transition: color 0.2s, transform 0.2s;
-            user-select: none;
-            flex-shrink: 0;
-        }
-
-        .fav-star:hover { transform: scale(1.2); }
-        .fav-star.active { color: #e0b030; }
-
-        /* Кнопки действий */
-        .file-actions {
-            display: flex;
-            gap: 0.3rem;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .download-link, .view-link {
+        .download-link {
             color: var(--green);
             text-decoration: none;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 400;
             letter-spacing: 0.5px;
             text-transform: uppercase;
-            padding: 3px 8px;
+            padding: 3px 10px;
             border: 1px solid var(--green);
             border-radius: 3px;
             transition: all 0.2s;
             background: transparent;
             white-space: nowrap;
-            cursor: pointer;
         }
 
-        .download-link:hover, .view-link:hover {
+        .download-link:hover {
             background: var(--green);
             color: var(--white);
         }
@@ -341,7 +301,6 @@
         
         <input type="text" class="search-box" id="searchBox" placeholder="Поиск по файлам и папкам..." oninput="filterLibrary()">
         <div class="search-info" id="searchInfo"></div>
-        <div class="favorites-toggle" onclick="toggleFavorites()">★ Избранное (<span id="favCount">0</span>)</div>
 
         <div id="sections-container"><div class="loading">Загрузка библиотеки...</div></div>
         <p class="note">Добавьте файл или папку на Google Диск — и они появятся здесь автоматически.</p>
@@ -360,59 +319,6 @@
             '7. Организация театрального дела': 'Сметы по спектаклям, нормативные документы'
         };
 
-        let allSections = [];
-        let favorites = JSON.parse(localStorage.getItem('library_favorites') || '{}');
-        let showingFavorites = false;
-
-        function saveFavorites() {
-            localStorage.setItem('library_favorites', JSON.stringify(favorites));
-            updateFavCount();
-        }
-
-        function toggleFavorite(fileUrl, starElement) {
-            if (favorites[fileUrl]) {
-                delete favorites[fileUrl];
-                if (starElement) starElement.classList.remove('active');
-                if (starElement) starElement.textContent = '☆';
-            } else {
-                favorites[fileUrl] = true;
-                if (starElement) starElement.classList.add('active');
-                if (starElement) starElement.textContent = '★';
-            }
-            saveFavorites();
-            if (showingFavorites) filterLibrary();
-        }
-
-        function updateFavCount() {
-            const count = Object.keys(favorites).length;
-            document.getElementById('favCount').textContent = count;
-        }
-
-        function toggleFavorites() {
-            showingFavorites = !showingFavorites;
-            const toggle = document.querySelector('.favorites-toggle');
-            if (showingFavorites) {
-                toggle.innerHTML = '★ Все файлы';
-                document.getElementById('searchBox').value = '';
-                document.getElementById('searchInfo').textContent = 'Показано избранное';
-            } else {
-                toggle.innerHTML = '★ Избранное (<span id="favCount">' + Object.keys(favorites).length + '</span>)';
-                document.getElementById('searchInfo').textContent = '';
-            }
-            filterLibrary();
-        }
-
-        function countFiles(section) {
-            let count = (section.files || []).length;
-            (section.folders || []).forEach(sub => { count += (sub.files || []).length; });
-            return count;
-        }
-
-        function getViewUrl(fileUrl) {
-            // Превращаем ссылку на скачивание в ссылку на просмотр
-            return fileUrl.replace('/uc?export=download&id=', '/file/d/') + '/view';
-        }
-
         function naturalSort(a, b) {
             return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
         }
@@ -426,36 +332,25 @@
         function renderFiles(files) {
             if (!files.length) return '';
             const sorted = [...files].sort(naturalSort);
-            return sorted.map(f => {
-                const isFav = favorites[f.url];
-                return `
-                <div class="file-item" data-filename="${f.name.toLowerCase()}" data-fileurl="${f.url}">
-                    <span class="fav-star${isFav ? ' active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${f.url.replace(/'/g, "\\'")}', this)" title="В избранное">${isFav ? '★' : '☆'}</span>
+            return sorted.map(f => `
+                <div class="file-item" data-filename="${f.name.toLowerCase()}">
                     <span class="name">${f.name}</span>
-                    <div class="file-actions">
-                        <a href="${getViewUrl(f.url)}" class="view-link" target="_blank" title="Смотреть">Смотреть</a>
-                        <a href="${f.url}" class="download-link" target="_blank">Скачать</a>
-                    </div>
+                    <a href="${f.url}" class="download-link" target="_blank">Скачать</a>
                 </div>
-            `;
-            }).join('');
+            `).join('');
         }
 
         function renderSection(section, index) {
             const sectionId = 'section-' + index;
             const desc = sectionDescriptions[section.name] || 'Материалы раздела.';
-            const fileCount = countFiles(section);
-            const countText = fileCount > 0 ? ` (${fileCount} ${fileCount === 1 ? 'файл' : fileCount < 5 ? 'файла' : 'файлов'})` : '';
             
             let inner = '';
             
             (section.folders || []).forEach((sub, si) => {
                 const subId = 'sub-' + index + '-' + si;
-                const subFileCount = (sub.files || []).length;
-                const subCountText = subFileCount > 0 ? ` (${subFileCount})` : '';
                 inner += `
                     <div class="subfolder" onclick="event.stopPropagation(); toggleElement('${subId}')" data-foldername="${sub.name.toLowerCase()}">
-                        <h3>${sub.name}${subCountText}</h3>
+                        <h3>${sub.name}</h3>
                         <div id="${subId}" class="subfolder-content">
                             ${renderFiles(sub.files || [])}
                         </div>
@@ -468,7 +363,7 @@
 
             return `
                 <div class="section" onclick="toggleElement('${sectionId}')" data-sectionname="${section.name.toLowerCase()}">
-                    <h2>${section.name}${countText}</h2>
+                    <h2>${section.name}</h2>
                     <p class="desc">${desc}</p>
                     <div id="${sectionId}" class="section-content">${inner}</div>
                 </div>
@@ -476,17 +371,16 @@
         }
 
         function filterLibrary() {
-            const query = showingFavorites ? '' : document.getElementById('searchBox').value.toLowerCase().trim();
+            const query = document.getElementById('searchBox').value.toLowerCase().trim();
             const sections = document.querySelectorAll('.section');
             const searchInfo = document.getElementById('searchInfo');
             let visibleCount = 0;
 
             sections.forEach(section => {
-                if (!query && !showingFavorites) {
+                if (!query) {
                     section.style.display = '';
-                    searchInfo.textContent = '';
-                    // Показываем все элементы внутри
                     section.querySelectorAll('.file-item, .subfolder').forEach(el => el.style.display = '');
+                    searchInfo.textContent = '';
                     return;
                 }
 
@@ -499,50 +393,26 @@
 
                 fileItems.forEach(item => {
                     const filename = item.getAttribute('data-filename') || '';
-                    const fileUrl = item.getAttribute('data-fileurl') || '';
-                    const isFav = favorites[fileUrl];
-                    
-                    if (showingFavorites) {
-                        if (isFav) {
-                            item.style.display = '';
-                            hasVisibleFiles = true;
-                        } else {
-                            item.style.display = 'none';
-                        }
+                    if (filename.includes(query) || sectionName.includes(query)) {
+                        item.style.display = '';
+                        hasVisibleFiles = true;
                     } else {
-                        if (filename.includes(query) || sectionName.includes(query)) {
-                            item.style.display = '';
-                            hasVisibleFiles = true;
-                        } else {
-                            item.style.display = 'none';
-                        }
+                        item.style.display = 'none';
                     }
                 });
 
                 subfolders.forEach(sub => {
                     const folderName = sub.getAttribute('data-foldername') || '';
                     const subFiles = sub.querySelectorAll('.file-item');
-                    let subHasVisible = showingFavorites ? false : folderName.includes(query);
+                    let subHasVisible = folderName.includes(query);
 
                     subFiles.forEach(item => {
                         const filename = item.getAttribute('data-filename') || '';
-                        const fileUrl = item.getAttribute('data-fileurl') || '';
-                        const isFav = favorites[fileUrl];
-
-                        if (showingFavorites) {
-                            if (isFav) {
-                                item.style.display = '';
-                                subHasVisible = true;
-                            } else {
-                                item.style.display = 'none';
-                            }
+                        if (filename.includes(query) || folderName.includes(query) || sectionName.includes(query)) {
+                            item.style.display = '';
+                            subHasVisible = true;
                         } else {
-                            if (filename.includes(query) || folderName.includes(query) || sectionName.includes(query)) {
-                                item.style.display = '';
-                                subHasVisible = true;
-                            } else {
-                                item.style.display = 'none';
-                            }
+                            item.style.display = 'none';
                         }
                     });
 
@@ -558,9 +428,7 @@
                 }
             });
 
-            if (showingFavorites) {
-                searchInfo.textContent = visibleCount > 0 ? 'Избранное' : 'Нет избранных файлов';
-            } else if (query) {
+            if (query) {
                 searchInfo.textContent = visibleCount > 0 ? `Найдено в ${visibleCount} разделах` : 'Ничего не найдено';
             } else {
                 searchInfo.textContent = '';
@@ -603,13 +471,11 @@
             window[callbackName] = function(sections) {
                 clearTimeout(timeout);
                 if (!sections || !sections.length) {
-                    container.innerHTML = '<div class="loading">Папки не найдены.</div>';
+                    container.innerHTML = '<div class="loading">Папки не найдены. Проверьте структуру Google Диска.</div>';
                     delete window[callbackName];
                     return;
                 }
-                allSections = sections;
                 container.innerHTML = sections.map((s, i) => renderSection(s, i)).join('');
-                updateFavCount();
                 delete window[callbackName];
             };
 
@@ -624,7 +490,6 @@
         }
 
         loadTheme();
-        updateFavCount();
         setTimeout(loadLibrary, 300);
     </script>
 </body>

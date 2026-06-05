@@ -13,17 +13,14 @@
             --green-dark: #0d4547;
             --green-light: #1a7a7e;
             --green-lighter: #208f94;
-            --green-bg: #f5f9f9;
             --gold: #b8a57a;
             --gold-light: #d4c9a8;
-            --paper: #fdfaf5;
             --text: #2c2c2c;
             --text-light: #5c5c5c;
             --white: #ffffff;
             --bg: #f5f2eb;
             --card-bg: #ffffff;
             --section-hover: #f9fbfb;
-            --subfolder-hover: #fdfdfb;
             --border-light: rgba(184, 165, 122, 0.3);
         }
 
@@ -32,17 +29,14 @@
             --green-dark: #1a7a7e;
             --green-light: #125c5f;
             --green-lighter: #28a0a5;
-            --green-bg: #1a2a2a;
             --gold: #9e8b5c;
             --gold-light: #6b5d3e;
-            --paper: #2c2c2c;
             --text: #e0dcd0;
             --text-light: #b0a890;
             --white: #1e1e1e;
             --bg: #151515;
             --card-bg: #1e1e1e;
             --section-hover: #252525;
-            --subfolder-hover: #252525;
             --border-light: rgba(158, 139, 92, 0.3);
         }
 
@@ -51,15 +45,6 @@
         body {
             font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
             background-color: var(--bg);
-            background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(18, 92, 95, 0.08) 39px, rgba(18, 92, 95, 0.08) 40px),
-                repeating-linear-gradient(0deg, transparent, transparent 119px, rgba(18, 92, 95, 0.12) 119px, rgba(18, 92, 95, 0.12) 120px),
-                repeating-linear-gradient(90deg, transparent 0px, transparent 199px, rgba(18, 92, 95, 0.06) 199px, rgba(18, 92, 95, 0.06) 200px, transparent 200px, transparent 399px, rgba(18, 92, 95, 0.06) 399px, rgba(18, 92, 95, 0.06) 400px),
-                repeating-linear-gradient(90deg, transparent 0px, transparent 49px, rgba(18, 92, 95, 0.04) 49px, rgba(18, 92, 95, 0.04) 50px, transparent 50px, transparent 349px, rgba(18, 92, 95, 0.04) 349px, rgba(18, 92, 95, 0.04) 350px),
-                linear-gradient(135deg, transparent 49.7%, rgba(18, 92, 95, 0.04) 49.7%, rgba(18, 92, 95, 0.04) 50.3%, transparent 50.3%),
-                linear-gradient(45deg, transparent 49.7%, rgba(18, 92, 95, 0.04) 49.7%, rgba(18, 92, 95, 0.04) 50.3%, transparent 50.3%);
-            background-size: 400px 200px;
-            background-position: center top;
             padding: 2rem;
             color: var(--text);
             min-height: 100vh;
@@ -76,7 +61,6 @@
             padding: 2.5rem 2.2rem;
             border-radius: 4px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
         .container::before {
@@ -111,19 +95,10 @@
             background: transparent;
             color: var(--text);
             outline: none;
-            transition: border-color 0.2s;
         }
 
         .search-box::placeholder { color: var(--text-light); font-style: italic; }
-        .search-box:focus { border-color: var(--green-light); }
-
-        .search-info {
-            color: var(--text-light);
-            font-size: 0.8rem;
-            margin-bottom: 0.8rem;
-            font-style: italic;
-            min-height: 1rem;
-        }
+        .search-info { color: var(--text-light); font-size: 0.8rem; margin-bottom: 0.8rem; font-style: italic; min-height: 1rem; }
 
         .section {
             background: transparent;
@@ -133,15 +108,9 @@
             padding: 0.9rem 1.2rem;
             margin-bottom: 0.6rem;
             cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-            box-shadow: none;
+            transition: background 0.2s;
         }
-
-        .section:hover {
-            background: var(--section-hover);
-            border-left-color: var(--green-light);
-        }
-
+        .section:hover { background: var(--section-hover); }
         .section h2 {
             font-size: 1.15rem;
             font-weight: 400;
@@ -151,28 +120,9 @@
             align-items: center;
             gap: 0.3rem;
         }
-
-        .section h2::before {
-            content: '▸';
-            color: var(--green);
-            font-size: 1rem;
-            font-weight: 400;
-        }
-
-        .section .desc {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin-top: 0.15rem;
-            font-weight: 400;
-        }
-
-        .section-content {
-            display: none;
-            margin-top: 0.8rem;
-            padding-left: 1.2rem;
-            border-left: 1px solid var(--gold-light);
-        }
-
+        .section h2::before { content: '▸'; color: var(--green); font-size: 1rem; }
+        .section .desc { color: var(--text-light); font-size: 0.9rem; margin-top: 0.15rem; }
+        .section-content { display: none; margin-top: 0.8rem; padding-left: 1.2rem; border-left: 1px solid var(--gold-light); }
         .section-content.active { display: block; }
 
         .subfolder {
@@ -183,33 +133,12 @@
             padding: 0.6rem 0.8rem;
             margin: 0.3rem 0;
             cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-            box-shadow: none;
+            transition: background 0.2s;
         }
-
-        .subfolder:hover {
-            background: var(--subfolder-hover);
-            border-left-color: var(--green);
-        }
-
-        .subfolder h3 {
-            font-size: 1rem;
-            font-weight: 400;
-            color: var(--text);
-        }
-
-        .subfolder h3::before {
-            content: '▹ ';
-            color: var(--gold);
-        }
-
-        .subfolder-content {
-            display: none;
-            margin-top: 0.4rem;
-            padding-left: 1rem;
-            border-left: 1px solid var(--border-light);
-        }
-
+        .subfolder:hover { background: #fdfdfb; }
+        .subfolder h3 { font-size: 1rem; font-weight: 400; color: var(--text); }
+        .subfolder h3::before { content: '▹ '; color: var(--gold); }
+        .subfolder-content { display: none; margin-top: 0.4rem; padding-left: 1rem; border-left: 1px solid var(--border-light); }
         .subfolder-content.active { display: block; }
 
         .file-item {
@@ -220,17 +149,8 @@
             border-bottom: 1px dotted var(--border-light);
             font-size: 0.9rem;
         }
-
-        .file-item .name {
-            flex: 1;
-            color: var(--text);
-            font-weight: 400;
-        }
-
-        .file-item .name::before {
-            content: '— ';
-            color: var(--green);
-        }
+        .file-item .name { flex: 1; color: var(--text); }
+        .file-item .name::before { content: '— '; color: var(--green); }
 
         .download-link {
             color: var(--green);
@@ -246,19 +166,15 @@
             background: transparent;
             white-space: nowrap;
         }
-
-        .download-link:hover {
-            background: var(--green);
-            color: var(--white);
-        }
+        .download-link:hover { background: var(--green); color: var(--white); }
 
         .empty-message { color: var(--text-light); font-style: italic; padding: 0.4rem 0; font-size: 0.9rem; }
         .loading { text-align: center; color: var(--text-light); padding: 1rem; font-style: italic; }
 
-        .theme-toggle {
+        /* Угловые кнопки */
+        .corner-btn {
             position: fixed;
             bottom: 2rem;
-            right: 2rem;
             background: var(--card-bg);
             border: 1px solid var(--green);
             color: var(--green);
@@ -271,34 +187,164 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s, color 0.2s, border-color 0.2s;
+            transition: background 0.2s, color 0.2s;
             z-index: 100;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             line-height: 1;
         }
+        .corner-btn:hover { background: var(--green); color: var(--white); }
+        .theme-toggle { right: 2rem; }
+        .analyzer-btn { left: 2rem; font-size: 0.85rem; font-weight: 700; width: auto; padding: 0 0.8rem; border-radius: 20px; }
 
-        .theme-toggle:hover {
-            background: var(--green);
-            color: var(--white);
-            border-color: var(--green);
+        /* Панель анализатора */
+        .analyzer-panel {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
         }
+        .analyzer-panel.active { display: flex; }
+
+        .analyzer-content {
+            background: var(--card-bg);
+            border-radius: 6px;
+            padding: 1.5rem;
+            width: 95%;
+            max-width: 1100px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            color: var(--text);
+        }
+
+        .analyzer-close {
+            position: absolute;
+            top: 0.5rem; right: 1rem;
+            background: none; border: none;
+            font-size: 1.5rem; cursor: pointer;
+            color: var(--text-light);
+        }
+        .analyzer-close:hover { color: var(--text); }
+
+        .analyzer-content h2 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: var(--green);
+            margin-bottom: 1rem;
+        }
+
+        .analyzer-tools {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .analyzer-tools button, .analyzer-tools label {
+            font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
+            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--green);
+            border-radius: 3px;
+            background: transparent;
+            color: var(--green);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .analyzer-tools button:hover, .analyzer-tools label:hover { background: var(--green); color: var(--white); }
+        .analyzer-tools button.active { background: var(--green); color: var(--white); }
+
+        .analyzer-tools input[type="file"] { display: none; }
+        .analyzer-tools input[type="number"] {
+            width: 80px;
+            padding: 0.3rem;
+            border: 1px solid var(--green);
+            border-radius: 3px;
+            background: transparent;
+            color: var(--text);
+            font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
+            text-align: center;
+        }
+
+        .canvas-container {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+
+        canvas { display: block; max-width: 100%; height: auto; }
+
+        .measurements {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        .measurements table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+        .measurements th, .measurements td {
+            border: 1px solid var(--border-light);
+            padding: 0.3rem 0.6rem;
+            text-align: center;
+        }
+        .measurements th { background: var(--green); color: var(--white); font-weight: 400; }
     </style>
 </head>
 <body>
-    <button class="theme-toggle" id="themeToggle" title="День / Ночь" onclick="toggleTheme()">◐</button>
+    <!-- Кнопки -->
+    <button class="corner-btn theme-toggle" id="themeToggle" title="День / Ночь" onclick="toggleTheme()">◐</button>
+    <button class="corner-btn analyzer-btn" id="analyzerBtn" title="Анализатор эскиза" onclick="toggleAnalyzer()">📐 Анализатор</button>
 
+    <!-- Панель анализатора -->
+    <div class="analyzer-panel" id="analyzerPanel">
+        <div class="analyzer-content">
+            <button class="analyzer-close" onclick="toggleAnalyzer()">×</button>
+            <h2>Анализатор эскиза (перспективный метод)</h2>
+            
+            <div class="analyzer-tools">
+                <label for="imageUpload">📁 Загрузить эскиз</label>
+                <input type="file" id="imageUpload" accept="image/*" onchange="loadImage(event)">
+                <button id="rayBtn" onclick="setMode('ray')">📏 Луч</button>
+                <button id="refBtn" onclick="setMode('reference')">📐 Опорный размер</button>
+                <button id="measureBtn" onclick="setMode('measure')">📋 Измерение</button>
+                <button onclick="clearAll()">🗑️ Очистить</button>
+                <span style="font-size:0.8rem; color:var(--text-light);">
+                    Масштаб: 1 px = <input type="number" id="scaleInput" value="1" min="0.01" step="0.1" onchange="updateScale()" style="width:60px;"> см
+                </span>
+            </div>
+
+            <div class="canvas-container" id="canvasContainer">
+                <canvas id="mainCanvas"></canvas>
+            </div>
+
+            <div class="measurements" id="measurements">
+                <p>Измерения появятся здесь после задания опорного размера.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Библиотека -->
     <div class="container">
         <h1>Библиотека факультета Сценографии и Театральной технологии</h1>
-        
         <input type="text" class="search-box" id="searchBox" placeholder="Поиск по файлам и папкам..." oninput="filterLibrary()">
         <div class="search-info" id="searchInfo"></div>
-
         <div id="sections-container"><div class="loading">Загрузка библиотеки...</div></div>
     </div>
 
     <script>
+        // ==================== БИБЛИОТЕКА ====================
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnjiqKWznABpb_vB9os9kR8P-8Df3-AEH-KFjdVX1NLje3Svu9COWTdzZ1HPPOkj3CIw/exec';
-
         const sectionDescriptions = {
             '1. Проектная документация (технология)': 'Шаблоны для создания графической и текстовой документации : чертежи общего вида, монтировочная опись, лист развески',
             '2. Проектная документация (свет)': 'LightPlot, системы управления, элементы электробутафории',
@@ -309,15 +355,8 @@
             '7. Организация театрального дела': 'Сметы по спектаклям, нормативные документы'
         };
 
-        function naturalSort(a, b) {
-            return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
-        }
-
-        function toggleElement(id) {
-            const el = document.getElementById(id);
-            if (!el) return;
-            el.classList.toggle('active');
-        }
+        function naturalSort(a, b) { return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }); }
+        function toggleElement(id) { const el = document.getElementById(id); if (el) el.classList.toggle('active'); }
 
         function renderFiles(files) {
             if (!files.length) return '';
@@ -333,31 +372,14 @@
         function renderSection(section, index) {
             const sectionId = 'section-' + index;
             const desc = sectionDescriptions[section.name] || 'Материалы раздела.';
-            
             let inner = '';
-            
             (section.folders || []).forEach((sub, si) => {
                 const subId = 'sub-' + index + '-' + si;
-                inner += `
-                    <div class="subfolder" onclick="event.stopPropagation(); toggleElement('${subId}')" data-foldername="${sub.name.toLowerCase()}">
-                        <h3>${sub.name}</h3>
-                        <div id="${subId}" class="subfolder-content">
-                            ${renderFiles(sub.files || [])}
-                        </div>
-                    </div>
-                `;
+                inner += `<div class="subfolder" onclick="event.stopPropagation(); toggleElement('${subId}')" data-foldername="${sub.name.toLowerCase()}"><h3>${sub.name}</h3><div id="${subId}" class="subfolder-content">${renderFiles(sub.files || [])}</div></div>`;
             });
-            
             inner += renderFiles(section.files || []);
             if (!inner) inner = '<div class="empty-message">Раздел пуст</div>';
-
-            return `
-                <div class="section" onclick="toggleElement('${sectionId}')" data-sectionname="${section.name.toLowerCase()}">
-                    <h2>${section.name}</h2>
-                    <p class="desc">${desc}</p>
-                    <div id="${sectionId}" class="section-content">${inner}</div>
-                </div>
-            `;
+            return `<div class="section" onclick="toggleElement('${sectionId}')" data-sectionname="${section.name.toLowerCase()}"><h2>${section.name}</h2><p class="desc">${desc}</p><div id="${sectionId}" class="section-content">${inner}</div></div>`;
         }
 
         function filterLibrary() {
@@ -365,7 +387,6 @@
             const sections = document.querySelectorAll('.section');
             const searchInfo = document.getElementById('searchInfo');
             let visibleCount = 0;
-
             sections.forEach(section => {
                 if (!query) {
                     section.style.display = '';
@@ -373,105 +394,53 @@
                     searchInfo.textContent = '';
                     return;
                 }
-
                 const sectionName = section.getAttribute('data-sectionname') || '';
                 const fileItems = section.querySelectorAll('.file-item');
                 const subfolders = section.querySelectorAll('.subfolder');
-                
-                let sectionVisible = sectionName.includes(query);
                 let hasVisibleFiles = false;
-
                 fileItems.forEach(item => {
                     const filename = item.getAttribute('data-filename') || '';
-                    if (filename.includes(query) || sectionName.includes(query)) {
-                        item.style.display = '';
-                        hasVisibleFiles = true;
-                    } else {
-                        item.style.display = 'none';
-                    }
+                    if (filename.includes(query) || sectionName.includes(query)) { item.style.display = ''; hasVisibleFiles = true; }
+                    else { item.style.display = 'none'; }
                 });
-
                 subfolders.forEach(sub => {
                     const folderName = sub.getAttribute('data-foldername') || '';
                     const subFiles = sub.querySelectorAll('.file-item');
                     let subHasVisible = folderName.includes(query);
-
                     subFiles.forEach(item => {
                         const filename = item.getAttribute('data-filename') || '';
-                        if (filename.includes(query) || folderName.includes(query) || sectionName.includes(query)) {
-                            item.style.display = '';
-                            subHasVisible = true;
-                        } else {
-                            item.style.display = 'none';
-                        }
+                        if (filename.includes(query) || folderName.includes(query) || sectionName.includes(query)) { item.style.display = ''; subHasVisible = true; }
+                        else { item.style.display = 'none'; }
                     });
-
                     sub.style.display = subHasVisible ? '' : 'none';
                     if (subHasVisible) hasVisibleFiles = true;
                 });
-
-                if (hasVisibleFiles || sectionVisible) {
-                    section.style.display = '';
-                    visibleCount++;
-                } else {
-                    section.style.display = 'none';
-                }
+                if (hasVisibleFiles || sectionName.includes(query)) { section.style.display = ''; visibleCount++; }
+                else { section.style.display = 'none'; }
             });
-
-            if (query) {
-                searchInfo.textContent = visibleCount > 0 ? `Найдено в ${visibleCount} разделах` : 'Ничего не найдено';
-            } else {
-                searchInfo.textContent = '';
-            }
-        }
-
-        function toggleTheme() {
-            const body = document.body;
-            const btn = document.getElementById('themeToggle');
-            body.classList.toggle('dark');
-            if (body.classList.contains('dark')) {
-                btn.textContent = '◑';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                btn.textContent = '◐';
-                localStorage.setItem('theme', 'light');
-            }
-        }
-
-        function loadTheme() {
-            const saved = localStorage.getItem('theme');
-            const btn = document.getElementById('themeToggle');
-            if (saved === 'dark') {
-                document.body.classList.add('dark');
-                btn.textContent = '◑';
-            } else {
-                btn.textContent = '◐';
-            }
+            searchInfo.textContent = query ? (visibleCount > 0 ? `Найдено в ${visibleCount} разделах` : 'Ничего не найдено') : '';
         }
 
         function loadLibrary() {
             const container = document.getElementById('sections-container');
             const callbackName = 'jsonp_callback_' + Date.now();
-            
-            const timeout = setTimeout(function() {
+            const timeout = setTimeout(() => {
                 container.innerHTML = '<div class="loading">Превышено время ожидания. <a href="javascript:location.reload()" style="color:var(--green);">Обновить</a></div>';
                 delete window[callbackName];
             }, 15000);
-            
             window[callbackName] = function(sections) {
                 clearTimeout(timeout);
                 if (!sections || !sections.length) {
-                    container.innerHTML = '<div class="loading">Папки не найдены. Проверьте структуру Google Диска.</div>';
+                    container.innerHTML = '<div class="loading">Папки не найдены.</div>';
                     delete window[callbackName];
                     return;
                 }
                 container.innerHTML = sections.map((s, i) => renderSection(s, i)).join('');
                 delete window[callbackName];
             };
-
             const script = document.createElement('script');
             script.src = SCRIPT_URL + '?callback=' + callbackName;
-            script.onerror = function() {
+            script.onerror = () => {
                 clearTimeout(timeout);
                 container.innerHTML = '<div class="loading">Ошибка загрузки. <a href="javascript:location.reload()" style="color:var(--green);">Обновить</a></div>';
                 delete window[callbackName];
@@ -479,6 +448,260 @@
             document.body.appendChild(script);
         }
 
+        // ==================== ТЕМА ====================
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('themeToggle');
+            body.classList.toggle('dark');
+            if (body.classList.contains('dark')) { btn.textContent = '◑'; localStorage.setItem('theme', 'dark'); }
+            else { btn.textContent = '◐'; localStorage.setItem('theme', 'light'); }
+        }
+        function loadTheme() {
+            const saved = localStorage.getItem('theme');
+            const btn = document.getElementById('themeToggle');
+            if (saved === 'dark') { document.body.classList.add('dark'); btn.textContent = '◑'; }
+            else { btn.textContent = '◐'; }
+        }
+
+        // ==================== АНАЛИЗАТОР ====================
+        let canvas, ctx, img = null;
+        let mode = 'ray'; // 'ray' | 'reference' | 'measure'
+        let rays = [];
+        let vanishingPoint = null;
+        let referenceLine = null; // {x1,y1,x2,y2, realCm}
+        let measurements = [];
+        let tempLine = null;
+        let isDrawing = false;
+        let scalePxPerCm = 1; // 1 пиксель = 1 см по умолчанию
+
+        function toggleAnalyzer() {
+            const panel = document.getElementById('analyzerPanel');
+            panel.classList.toggle('active');
+            if (panel.classList.contains('active')) {
+                initCanvas();
+            }
+        }
+
+        function initCanvas() {
+            canvas = document.getElementById('mainCanvas');
+            ctx = canvas.getContext('2d');
+            if (img) {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                drawAll();
+            }
+        }
+
+        function loadImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                img = new Image();
+                img.onload = function() {
+                    canvas = document.getElementById('mainCanvas');
+                    ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    rays = [];
+                    vanishingPoint = null;
+                    referenceLine = null;
+                    measurements = [];
+                    drawAll();
+                    document.getElementById('measurements').innerHTML = '<p>Измерения появятся здесь после задания опорного размера.</p>';
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function setMode(newMode) {
+            mode = newMode;
+            document.getElementById('rayBtn').classList.toggle('active', mode === 'ray');
+            document.getElementById('refBtn').classList.toggle('active', mode === 'reference');
+            document.getElementById('measureBtn').classList.toggle('active', mode === 'measure');
+        }
+
+        function updateScale() {
+            scalePxPerCm = parseFloat(document.getElementById('scaleInput').value) || 1;
+            drawAll();
+            updateMeasurementsTable();
+        }
+
+        // Поиск пересечения двух отрезков
+        function lineIntersection(x1,y1,x2,y2,x3,y3,x4,y4) {
+            const d = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4);
+            if (Math.abs(d) < 1e-10) return null;
+            const t = ((x1-x3)*(y3-y4) - (y1-y3)*(x3-x4)) / d;
+            const u = -((x1-x2)*(y1-y3) - (y1-y2)*(x1-x3)) / d;
+            if (t >= 0 && u >= 0) {
+                return { x: x1 + t*(x2-x1), y: y1 + t*(y2-y1) };
+            }
+            // Для поиска точки схода используем бесконечные линии
+            return { x: x1 + t*(x2-x1), y: y1 + t*(y2-y1) };
+        }
+
+        function findVanishingPoint() {
+            if (rays.length < 2) return null;
+            return lineIntersection(
+                rays[0].x1, rays[0].y1, rays[0].x2, rays[0].y2,
+                rays[1].x1, rays[1].y1, rays[1].x2, rays[1].y2
+            );
+        }
+
+        function drawAll() {
+            if (!ctx || !img) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+
+            // Лучи
+            ctx.strokeStyle = '#208f94';
+            ctx.lineWidth = 1.5;
+            rays.forEach(r => {
+                ctx.beginPath();
+                ctx.moveTo(r.x1, r.y1);
+                ctx.lineTo(r.x2, r.y2);
+                ctx.stroke();
+            });
+
+            // Точка схода
+            vanishingPoint = findVanishingPoint();
+            if (vanishingPoint) {
+                ctx.fillStyle = '#e0b030';
+                ctx.beginPath();
+                ctx.arc(vanishingPoint.x, vanishingPoint.y, 6, 0, Math.PI*2);
+                ctx.fill();
+                ctx.strokeStyle = '#125c5f';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            // Опорный отрезок
+            if (referenceLine) {
+                ctx.strokeStyle = '#e0b030';
+                ctx.lineWidth = 2.5;
+                ctx.setLineDash([5, 3]);
+                ctx.beginPath();
+                ctx.moveTo(referenceLine.x1, referenceLine.y1);
+                ctx.lineTo(referenceLine.x2, referenceLine.y2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                // Подписи
+                ctx.fillStyle = '#125c5f';
+                ctx.font = '12px PT Sans Narrow, Arial Narrow, sans-serif';
+                ctx.fillText(`${referenceLine.realCm} см`, (referenceLine.x1+referenceLine.x2)/2, (referenceLine.y1+referenceLine.y2)/2 - 8);
+            }
+
+            // Измерения
+            measurements.forEach((m, i) => {
+                ctx.strokeStyle = '#e0b030';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([4, 2]);
+                ctx.beginPath();
+                ctx.moveTo(m.x1, m.y1);
+                ctx.lineTo(m.x2, m.y2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = '#125c5f';
+                ctx.font = '12px PT Sans Narrow, Arial Narrow, sans-serif';
+                ctx.fillText(`${m.realCm.toFixed(1)} см`, (m.x1+m.x2)/2 + 5, (m.y1+m.y2)/2 - 5);
+            });
+
+            // Временная линия при рисовании
+            if (tempLine) {
+                ctx.strokeStyle = '#ff6666';
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(tempLine.x1, tempLine.y1);
+                ctx.lineTo(tempLine.x2, tempLine.y2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+        }
+
+        canvas = document.getElementById('mainCanvas');
+        canvas.addEventListener('mousedown', (e) => {
+            if (!img) return;
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
+            isDrawing = true;
+            tempLine = { x1: x, y1: y, x2: x, y2: y };
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing || !tempLine) return;
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            tempLine.x2 = (e.clientX - rect.left) * scaleX;
+            tempLine.y2 = (e.clientY - rect.top) * scaleY;
+            drawAll();
+        });
+
+        canvas.addEventListener('mouseup', (e) => {
+            if (!isDrawing || !tempLine) { isDrawing = false; return; }
+            isDrawing = false;
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            tempLine.x2 = (e.clientX - rect.left) * scaleX;
+            tempLine.y2 = (e.clientY - rect.top) * scaleY;
+
+            if (mode === 'ray') {
+                rays.push({ x1: tempLine.x1, y1: tempLine.y1, x2: tempLine.x2, y2: tempLine.y2 });
+            } else if (mode === 'reference') {
+                const realCm = parseFloat(prompt('Реальный размер этого отрезка (в см):', '100'));
+                if (realCm && realCm > 0) {
+                    referenceLine = { x1: tempLine.x1, y1: tempLine.y1, x2: tempLine.x2, y2: tempLine.y2, realCm: realCm };
+                    const pixelLength = Math.hypot(tempLine.x2 - tempLine.x1, tempLine.y2 - tempLine.y1);
+                    scalePxPerCm = pixelLength / realCm;
+                    document.getElementById('scaleInput').value = scalePxPerCm.toFixed(3);
+                }
+            } else if (mode === 'measure') {
+                if (!referenceLine) {
+                    alert('Сначала задайте опорный размер!');
+                } else {
+                    const pixelLength = Math.hypot(tempLine.x2 - tempLine.x1, tempLine.y2 - tempLine.y1);
+                    const realCm = pixelLength / scalePxPerCm;
+                    measurements.push({ x1: tempLine.x1, y1: tempLine.y1, x2: tempLine.x2, y2: tempLine.y2, realCm: realCm });
+                    updateMeasurementsTable();
+                }
+            }
+            tempLine = null;
+            drawAll();
+        });
+
+        function clearAll() {
+            rays = [];
+            vanishingPoint = null;
+            referenceLine = null;
+            measurements = [];
+            document.getElementById('measurements').innerHTML = '<p>Измерения появятся здесь после задания опорного размера.</p>';
+            document.getElementById('scaleInput').value = '1';
+            scalePxPerCm = 1;
+            drawAll();
+        }
+
+        function updateMeasurementsTable() {
+            const container = document.getElementById('measurements');
+            if (measurements.length === 0) {
+                container.innerHTML = '<p>Измерения появятся здесь после задания опорного размера.</p>';
+                return;
+            }
+            let html = '<table><tr><th>№</th><th>Длина (px)</th><th>Реальный размер (см)</th><th>Реальный размер (м)</th></tr>';
+            measurements.forEach((m, i) => {
+                const px = Math.hypot(m.x2 - m.x1, m.y2 - m.y1);
+                html += `<tr><td>${i+1}</td><td>${px.toFixed(1)}</td><td>${m.realCm.toFixed(1)}</td><td>${(m.realCm/100).toFixed(2)}</td></tr>`;
+            });
+            html += '</table>';
+            container.innerHTML = html;
+        }
+
+        // Инициализация
         loadTheme();
         setTimeout(loadLibrary, 300);
     </script>

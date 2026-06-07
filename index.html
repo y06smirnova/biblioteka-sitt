@@ -13,18 +13,17 @@
             --green-dark: #0d4547;
             --green-light: #1a7a7e;
             --green-lighter: #208f94;
-            --green-bg: #f5f9f9;
             --gold: #b8a57a;
             --gold-light: #d4c9a8;
-            --paper: #fdfaf5;
             --text: #2c2c2c;
             --text-light: #5c5c5c;
             --white: #ffffff;
             --bg: #f5f2eb;
             --card-bg: #ffffff;
             --section-hover: #f9fbfb;
-            --subfolder-hover: #fdfdfb;
             --border-light: rgba(184, 165, 122, 0.3);
+            --correct: #2e7d32;
+            --wrong: #c62828;
         }
 
         body.dark {
@@ -32,18 +31,17 @@
             --green-dark: #1a7a7e;
             --green-light: #125c5f;
             --green-lighter: #28a0a5;
-            --green-bg: #1a2a2a;
             --gold: #9e8b5c;
             --gold-light: #6b5d3e;
-            --paper: #2c2c2c;
             --text: #e0dcd0;
             --text-light: #b0a890;
             --white: #1e1e1e;
             --bg: #151515;
             --card-bg: #1e1e1e;
             --section-hover: #252525;
-            --subfolder-hover: #252525;
             --border-light: rgba(158, 139, 92, 0.3);
+            --correct: #4caf50;
+            --wrong: #ef5350;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -188,7 +186,7 @@
         }
 
         .subfolder:hover {
-            background: var(--subfolder-hover);
+            background: #fdfdfb;
             border-left-color: var(--green);
         }
 
@@ -255,10 +253,10 @@
         .empty-message { color: var(--text-light); font-style: italic; padding: 0.4rem 0; font-size: 0.9rem; }
         .loading { text-align: center; color: var(--text-light); padding: 1rem; font-style: italic; }
 
-        .theme-toggle {
+        /* Угловые кнопки */
+        .corner-btn {
             position: fixed;
             bottom: 2rem;
-            right: 2rem;
             background: var(--card-bg);
             border: 1px solid var(--green);
             color: var(--green);
@@ -271,33 +269,148 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s, color 0.2s, border-color 0.2s;
+            transition: background 0.2s, color 0.2s;
             z-index: 100;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             line-height: 1;
         }
+        .corner-btn:hover { background: var(--green); color: var(--white); }
+        .theme-toggle { right: 2rem; }
+        .game-btn { left: 2rem; font-size: 0.8rem; font-weight: 700; width: auto; padding: 0 1rem; border-radius: 20px; }
 
-        .theme-toggle:hover {
+        /* Панель игры */
+        .game-panel {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+        .game-panel.active { display: flex; }
+
+        .game-content {
+            background: var(--card-bg);
+            border-radius: 6px;
+            padding: 1.5rem;
+            width: 95%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            color: var(--text);
+            text-align: center;
+        }
+
+        .game-close {
+            position: absolute;
+            top: 0.5rem; right: 1rem;
+            background: none; border: none;
+            font-size: 1.5rem; cursor: pointer;
+            color: var(--text-light);
+        }
+        .game-close:hover { color: var(--text); }
+
+        .game-content h2 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: var(--green);
+            margin-bottom: 0.5rem;
+        }
+
+        .game-image {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 4px;
+            border: 1px solid var(--border-light);
+            margin-bottom: 1rem;
+        }
+
+        .game-question {
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+        }
+
+        .game-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .game-option {
+            font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--green);
+            border-radius: 3px;
+            background: transparent;
+            color: var(--green);
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 120px;
+        }
+
+        .game-option:hover { background: var(--green); color: var(--white); }
+        .game-option.correct { background: var(--correct); color: var(--white); border-color: var(--correct); }
+        .game-option.wrong { background: var(--wrong); color: var(--white); border-color: var(--wrong); }
+        .game-option:disabled { pointer-events: none; opacity: 0.7; }
+
+        .game-score {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .game-next {
+            font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
+            font-size: 0.9rem;
+            padding: 0.5rem 1.5rem;
             background: var(--green);
             color: var(--white);
-            border-color: var(--green);
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            display: none;
+            margin: 0 auto;
         }
+
+        .game-next:hover { background: var(--green-lighter); }
+        .game-next.show { display: inline-block; }
     </style>
 </head>
 <body>
-    <button class="theme-toggle" id="themeToggle" title="День / Ночь" onclick="toggleTheme()">◐</button>
+    <!-- Кнопки -->
+    <button class="corner-btn theme-toggle" id="themeToggle" title="День / Ночь" onclick="toggleTheme()">◐</button>
+    <button class="corner-btn game-btn" id="gameBtn" title="Угадай соединение" onclick="toggleGame()">🔧 Угадай соединение</button>
 
+    <!-- Панель игры -->
+    <div class="game-panel" id="gamePanel">
+        <div class="game-content">
+            <button class="game-close" onclick="toggleGame()">×</button>
+            <h2>Угадай соединение</h2>
+            <div id="gameContainer">
+                <p>Загрузка игры...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Библиотека -->
     <div class="container">
         <h1>Библиотека факультета Сценографии и Театральной технологии</h1>
-        
         <input type="text" class="search-box" id="searchBox" placeholder="Поиск по файлам и папкам..." oninput="filterLibrary()">
         <div class="search-info" id="searchInfo"></div>
-
         <div id="sections-container"><div class="loading">Загрузка библиотеки...</div></div>
     </div>
 
     <script>
+        // ==================== БИБЛИОТЕКА ====================
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnjiqKWznABpb_vB9os9kR8P-8Df3-AEH-KFjdVX1NLje3Svu9COWTdzZ1HPPOkj3CIw/exec';
+        const GAME_FOLDER = 'Игра - соединения';
 
         const sectionDescriptions = {
             '1. Проектная документация (технология)': 'Шаблоны для создания графической и текстовой документации : чертежи общего вида, монтировочная опись, лист развески',
@@ -309,15 +422,8 @@
             '7. Организация театрального дела': 'Сметы по спектаклям, нормативные документы'
         };
 
-        function naturalSort(a, b) {
-            return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
-        }
-
-        function toggleElement(id) {
-            const el = document.getElementById(id);
-            if (!el) return;
-            el.classList.toggle('active');
-        }
+        function naturalSort(a, b) { return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }); }
+        function toggleElement(id) { const el = document.getElementById(id); if (el) el.classList.toggle('active'); }
 
         function renderFiles(files) {
             if (!files.length) return '';
@@ -333,31 +439,14 @@
         function renderSection(section, index) {
             const sectionId = 'section-' + index;
             const desc = sectionDescriptions[section.name] || 'Материалы раздела.';
-            
             let inner = '';
-            
             (section.folders || []).forEach((sub, si) => {
                 const subId = 'sub-' + index + '-' + si;
-                inner += `
-                    <div class="subfolder" onclick="event.stopPropagation(); toggleElement('${subId}')" data-foldername="${sub.name.toLowerCase()}">
-                        <h3>${sub.name}</h3>
-                        <div id="${subId}" class="subfolder-content">
-                            ${renderFiles(sub.files || [])}
-                        </div>
-                    </div>
-                `;
+                inner += `<div class="subfolder" onclick="event.stopPropagation(); toggleElement('${subId}')" data-foldername="${sub.name.toLowerCase()}"><h3>${sub.name}</h3><div id="${subId}" class="subfolder-content">${renderFiles(sub.files || [])}</div></div>`;
             });
-            
             inner += renderFiles(section.files || []);
             if (!inner) inner = '<div class="empty-message">Раздел пуст</div>';
-
-            return `
-                <div class="section" onclick="toggleElement('${sectionId}')" data-sectionname="${section.name.toLowerCase()}">
-                    <h2>${section.name}</h2>
-                    <p class="desc">${desc}</p>
-                    <div id="${sectionId}" class="section-content">${inner}</div>
-                </div>
-            `;
+            return `<div class="section" onclick="toggleElement('${sectionId}')" data-sectionname="${section.name.toLowerCase()}"><h2>${section.name}</h2><p class="desc">${desc}</p><div id="${sectionId}" class="section-content">${inner}</div></div>`;
         }
 
         function filterLibrary() {
@@ -365,7 +454,6 @@
             const sections = document.querySelectorAll('.section');
             const searchInfo = document.getElementById('searchInfo');
             let visibleCount = 0;
-
             sections.forEach(section => {
                 if (!query) {
                     section.style.display = '';
@@ -373,105 +461,55 @@
                     searchInfo.textContent = '';
                     return;
                 }
-
                 const sectionName = section.getAttribute('data-sectionname') || '';
                 const fileItems = section.querySelectorAll('.file-item');
                 const subfolders = section.querySelectorAll('.subfolder');
-                
-                let sectionVisible = sectionName.includes(query);
                 let hasVisibleFiles = false;
-
                 fileItems.forEach(item => {
                     const filename = item.getAttribute('data-filename') || '';
-                    if (filename.includes(query) || sectionName.includes(query)) {
-                        item.style.display = '';
-                        hasVisibleFiles = true;
-                    } else {
-                        item.style.display = 'none';
-                    }
+                    if (filename.includes(query) || sectionName.includes(query)) { item.style.display = ''; hasVisibleFiles = true; }
+                    else { item.style.display = 'none'; }
                 });
-
                 subfolders.forEach(sub => {
                     const folderName = sub.getAttribute('data-foldername') || '';
                     const subFiles = sub.querySelectorAll('.file-item');
                     let subHasVisible = folderName.includes(query);
-
                     subFiles.forEach(item => {
                         const filename = item.getAttribute('data-filename') || '';
-                        if (filename.includes(query) || folderName.includes(query) || sectionName.includes(query)) {
-                            item.style.display = '';
-                            subHasVisible = true;
-                        } else {
-                            item.style.display = 'none';
-                        }
+                        if (filename.includes(query) || folderName.includes(query) || sectionName.includes(query)) { item.style.display = ''; subHasVisible = true; }
+                        else { item.style.display = 'none'; }
                     });
-
                     sub.style.display = subHasVisible ? '' : 'none';
                     if (subHasVisible) hasVisibleFiles = true;
                 });
-
-                if (hasVisibleFiles || sectionVisible) {
-                    section.style.display = '';
-                    visibleCount++;
-                } else {
-                    section.style.display = 'none';
-                }
+                if (hasVisibleFiles || sectionName.includes(query)) { section.style.display = ''; visibleCount++; }
+                else { section.style.display = 'none'; }
             });
-
-            if (query) {
-                searchInfo.textContent = visibleCount > 0 ? `Найдено в ${visibleCount} разделах` : 'Ничего не найдено';
-            } else {
-                searchInfo.textContent = '';
-            }
-        }
-
-        function toggleTheme() {
-            const body = document.body;
-            const btn = document.getElementById('themeToggle');
-            body.classList.toggle('dark');
-            if (body.classList.contains('dark')) {
-                btn.textContent = '◑';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                btn.textContent = '◐';
-                localStorage.setItem('theme', 'light');
-            }
-        }
-
-        function loadTheme() {
-            const saved = localStorage.getItem('theme');
-            const btn = document.getElementById('themeToggle');
-            if (saved === 'dark') {
-                document.body.classList.add('dark');
-                btn.textContent = '◑';
-            } else {
-                btn.textContent = '◐';
-            }
+            searchInfo.textContent = query ? (visibleCount > 0 ? `Найдено в ${visibleCount} разделах` : 'Ничего не найдено') : '';
         }
 
         function loadLibrary() {
             const container = document.getElementById('sections-container');
             const callbackName = 'jsonp_callback_' + Date.now();
-            
-            const timeout = setTimeout(function() {
+            const timeout = setTimeout(() => {
                 container.innerHTML = '<div class="loading">Превышено время ожидания. <a href="javascript:location.reload()" style="color:var(--green);">Обновить</a></div>';
                 delete window[callbackName];
             }, 15000);
-            
             window[callbackName] = function(sections) {
                 clearTimeout(timeout);
                 if (!sections || !sections.length) {
-                    container.innerHTML = '<div class="loading">Папки не найдены. Проверьте структуру Google Диска.</div>';
+                    container.innerHTML = '<div class="loading">Папки не найдены.</div>';
                     delete window[callbackName];
                     return;
                 }
-                container.innerHTML = sections.map((s, i) => renderSection(s, i)).join('');
+                // Фильтруем: не показываем папку "Игра - соединения"
+                const filtered = sections.filter(s => !s.name.startsWith('Игра -'));
+                container.innerHTML = filtered.map((s, i) => renderSection(s, i)).join('');
                 delete window[callbackName];
             };
-
             const script = document.createElement('script');
             script.src = SCRIPT_URL + '?callback=' + callbackName;
-            script.onerror = function() {
+            script.onerror = () => {
                 clearTimeout(timeout);
                 container.innerHTML = '<div class="loading">Ошибка загрузки. <a href="javascript:location.reload()" style="color:var(--green);">Обновить</a></div>';
                 delete window[callbackName];
@@ -479,8 +517,255 @@
             document.body.appendChild(script);
         }
 
-        loadTheme();
-        setTimeout(loadLibrary, 300);
-    </script>
-</body>
-</html>
+        // ==================== ТЕМА ====================
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('themeToggle');
+            body.classList.toggle('dark');
+            if (body.classList.contains('dark')) { btn.textContent = '◑'; localStorage.setItem('theme', 'dark'); }
+            else { btn.textContent = '◐'; localStorage.setItem('theme', 'light'); }
+        }
+        function loadTheme() {
+            const saved = localStorage.getItem('theme');
+            const btn = document.getElementById('themeToggle');
+            if (saved === 'dark') { document.body.classList.add('dark'); btn.textContent = '◑'; }
+            else { btn.textContent = '◐'; }
+        }
+
+        // ==================== ИГРА ====================
+        const classificationMap = {
+            'Болтовое':   { integrity: 'Разъёмное', category: 'Резьбовое', subcategory: null },
+            'Винтовое':   { integrity: 'Разъёмное', category: 'Резьбовое', subcategory: null },
+            'Шпилечное':  { integrity: 'Разъёмное', category: 'Резьбовое', subcategory: null },
+            'Шпоночное':  { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
+            'Штифтовое':  { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
+            'Зубчатое':   { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
+            'Клиновое':   { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
+            'Шплинтовое': { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
+            'Клеевое':    { integrity: 'Неразъёмное', category: 'Клеевое', subcategory: ['Угловое', 'Серединное', 'Боковое', 'Торцевое'] },
+            'Сварное':    { integrity: 'Неразъёмное', category: null, subcategory: null },
+            'Клёпаное':   { integrity: 'Неразъёмное', category: null, subcategory: null },
+            'Паяное':     { integrity: 'Неразъёмное', category: null, subcategory: null },
+            'Сшивное':    { integrity: 'Неразъёмное', category: null, subcategory: null },
+            'Посадка с натягом': { integrity: 'Неразъёмное', category: null, subcategory: null }
+        };
+
+        let gameData = [];       // все файлы для игры
+        let currentQuestion = null;
+        let currentStep = 0;     // 0=целостность, 1=категория, 2=конечный тип, 3=название (или подтип для клеевых)
+        let scoreTotal = 0;
+        let scoreCorrect = 0;
+        let answered = false;
+
+        function toggleGame() {
+            const panel = document.getElementById('gamePanel');
+            panel.classList.toggle('active');
+            if (panel.classList.contains('active')) {
+                loadGameData();
+            }
+        }
+
+        async function loadGameData() {
+            const container = document.getElementById('gameContainer');
+            container.innerHTML = '<p>Загрузка игры...</p>';
+            try {
+                const response = await fetch(SCRIPT_URL + '?callback=' + Date.now());
+                const text = await response.text();
+                // Парсим JSONP
+                const start = text.indexOf('(');
+                const end = text.lastIndexOf(')');
+                const json = JSON.parse(text.substring(start + 1, end));
+                // Ищем папку "Игра - соединения"
+                const gameFolder = json.find(s => s.name.startsWith('Игра -'));
+                if (!gameFolder) {
+                    container.innerHTML = '<p>Папка "Игра - соединения" не найдена на Google Диске.</p>';
+                    return;
+                }
+                // Собираем все файлы из конечных подпапок
+                gameData = [];
+                (gameFolder.folders || []).forEach(typeFolder => {
+                    const typeName = typeFolder.name;
+                    const classInfo = classificationMap[typeName];
+                    if (!classInfo) return;
+                    
+                    // Проверяем подпапки (для клеевых)
+                    (typeFolder.folders || []).forEach(subFolder => {
+                        (subFolder.files || []).forEach(file => {
+                            gameData.push({
+                                ...file,
+                                typeName: typeName,
+                                subType: subFolder.name,
+                                classInfo: classInfo
+                            });
+                        });
+                    });
+                    
+                    // Файлы в корне папки типа
+                    (typeFolder.files || []).forEach(file => {
+                        gameData.push({
+                            ...file,
+                            typeName: typeName,
+                            subType: null,
+                            classInfo: classInfo
+                        });
+                    });
+                });
+                
+                if (gameData.length < 2) {
+                    container.innerHTML = '<p>Недостаточно файлов для игры. Загрузите больше изображений в папку "Игра - соединения".</p>';
+                    return;
+                }
+                
+                scoreTotal = 0;
+                scoreCorrect = 0;
+                nextQuestion();
+            } catch (e) {
+                container.innerHTML = `<p>Ошибка загрузки: ${e.message}</p>`;
+            }
+        }
+
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function nextQuestion() {
+            answered = false;
+            currentStep = 0;
+            // Выбираем случайный файл
+            const file = gameData[Math.floor(Math.random() * gameData.length)];
+            const classInfo = file.classInfo;
+            
+            // Определяем правильные ответы для всех этапов
+            const answers = {
+                integrity: classInfo.integrity,        // "Разъёмное" или "Неразъёмное"
+                category: classInfo.category,           // "Резьбовое", "Нерезьбовое", "Клеевое" или null
+                typeName: file.typeName,                // "Болтовое", "Сварное" и т.д.
+                subType: file.subType || null,          // подтип клеевого или null
+                fileName: file.name.replace(/\.[^.]+$/, '') // имя файла без расширения
+            };
+            
+            currentQuestion = {
+                file: file,
+                answers: answers,
+                classInfo: classInfo
+            };
+            
+            renderStep();
+        }
+
+        function renderStep() {
+            const container = document.getElementById('gameContainer');
+            const q = currentQuestion;
+            const a = q.answers;
+            
+            let questionText = '';
+            let options = [];
+            
+            if (currentStep === 0) {
+                // Этап 1: целостность
+                questionText = 'Какой тип соединения по целостности?';
+                options = ['Разъёмное', 'Неразъёмное'];
+            } else if (currentStep === 1) {
+                // Этап 2: категория
+                if (a.integrity === 'Разъёмное') {
+                    questionText = 'Какой тип разъёмного соединения?';
+                    options = ['Резьбовое', 'Нерезьбовое'];
+                } else {
+                    // Неразъёмное: все возможные типы
+                    questionText = 'Какой тип неразъёмного соединения?';
+                    options = ['Клеевое', 'Сварное', 'Клёпаное', 'Паяное', 'Сшивное', 'Посадка с натягом'];
+                }
+            } else if (currentStep === 2) {
+                // Этап 3: конечный тип
+                if (a.category === 'Резьбовое') {
+                    questionText = 'Какое резьбовое соединение?';
+                    options = ['Болтовое', 'Винтовое', 'Шпилечное'];
+                } else if (a.category === 'Нерезьбовое') {
+                    questionText = 'Какое нерезьбовое соединение?';
+                    options = ['Шпоночное', 'Штифтовое', 'Зубчатое', 'Клиновое', 'Шплинтовое'];
+                } else if (a.category === 'Клеевое') {
+                    // Для клеевых: спрашиваем подтип вместо названия
+                    questionText = 'Какой подтип клеевого соединения?';
+                    options = ['Угловое', 'Серединное', 'Боковое', 'Торцевое'];
+                } else {
+                    // Остальные неразъёмные: спрашиваем название
+                    currentStep = 3; // перепрыгиваем к названию
+                }
+            }
+            
+            if (currentStep === 3 || (currentStep === 2 && a.category !== 'Резьбовое' && a.category !== 'Нерезьбовое' && a.category !== 'Клеевое')) {
+                // Этап 4: название соединения
+                questionText = 'Какое название у этого соединения?';
+                // Правильное название
+                const correctName = a.fileName;
+                // 3 случайных неправильных названия из других файлов
+                const otherNames = gameData
+                    .filter(f => f.name !== q.file.name)
+                    .map(f => f.name.replace(/\.[^.]+$/, ''));
+                const shuffled = shuffle([...new Set(otherNames)]);
+                options = shuffle([correctName, ...shuffled.slice(0, 3)]);
+            }
+            
+            if (!questionText) {
+                // Переход к следующему этапу
+                currentStep++;
+                renderStep();
+                return;
+            }
+            
+            const correctAnswer = currentStep === 0 ? a.integrity :
+                                  currentStep === 1 ? a.category :
+                                  currentStep === 2 ? (a.category === 'Клеевое' ? a.subType : a.typeName) :
+                                  a.fileName;
+            
+            container.innerHTML = `
+                <img src="${q.file.url}" class="game-image" alt="Соединение" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22><rect fill=%22%23ddd%22 width=%22200%22 height=%22150%22/><text x=%22100%22 y=%2275%22 text-anchor=%22middle%22 fill=%22%23999%22>Изображение</text></svg>'">
+                <div class="game-score">Вопрос ${scoreTotal + 1} | Правильно: ${scoreCorrect} из ${scoreTotal}</div>
+                <div class="game-question">${questionText}</div>
+                <div class="game-options" id="gameOptions">
+                    ${options.map(opt => `
+                        <button class="game-option" onclick="checkAnswer(this, '${opt.replace(/'/g, "\\'")}', '${correctAnswer.replace(/'/g, "\\'")}')">${opt}</button>
+                    `).join('')}
+                </div>
+                <button class="game-next" id="gameNext" onclick="nextStep()">Дальше</button>
+            `;
+        }
+
+        function checkAnswer(btn, selected, correct) {
+            if (answered) return;
+            answered = true;
+            scoreTotal++;
+            
+            const allOptions = document.querySelectorAll('#gameOptions .game-option');
+            allOptions.forEach(opt => opt.disabled = true);
+            
+            if (selected === correct) {
+                btn.classList.add('correct');
+                scoreCorrect++;
+            } else {
+                btn.classList.add('wrong');
+                // Подсвечиваем правильный
+                allOptions.forEach(opt => {
+                    if (opt.textContent === correct) opt.classList.add('correct');
+                });
+            }
+            
+            document.getElementById('gameNext').classList.add('show');
+            document.getElementById('gameScore').textContent = `Правильно: ${scoreCorrect} из ${scoreTotal}`;
+        }
+
+        function nextStep() {
+            const q = currentQuestion;
+            const a = q.answers;
+            
+            // Определяем, был ли это последний этап
+            let isLast = false;
+            if (currentStep === 0) {
+                currentStep = 1;
+            } else if (currentStep === 1) {
+                currentStep = 2;

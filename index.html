@@ -496,6 +496,8 @@
         };
 
         let gameData = [];
+        let questionQueue = [];
+        let queueIndex = 0;
         let currentQuestion = null;
         let currentStep = 0;
         let scoreTotal = 0;
@@ -534,6 +536,8 @@
                 if (cached && cached.length >= 2) {
                     gameData = cached;
                     scoreTotal = 0; scoreCorrect = 0;
+                    questionQueue = shuffle([...gameData]);
+                    queueIndex = 0;
                     nextQuestion();
                     return;
                 }
@@ -585,6 +589,8 @@
                 }
                 cacheGameData(gameData);
                 scoreTotal = 0; scoreCorrect = 0;
+                questionQueue = shuffle([...gameData]);
+                queueIndex = 0;
                 nextQuestion();
                 delete window[callbackName];
             };
@@ -610,7 +616,15 @@
         function nextQuestion() {
             answered = false;
             currentStep = 0;
-            const file = gameData[Math.floor(Math.random() * gameData.length)];
+            
+            if (questionQueue.length === 0 || queueIndex >= questionQueue.length) {
+                questionQueue = shuffle([...gameData]);
+                queueIndex = 0;
+            }
+            
+            const file = questionQueue[queueIndex];
+            queueIndex++;
+            
             const classInfo = file.classInfo;
             const answers = {
                 integrity: classInfo.integrity,

@@ -608,6 +608,9 @@
                 return;
             }
             
+            // Сбрасываем состояние перед новым шагом
+            answered = false;
+            
             container.innerHTML = `
                 <img src="${q.file.url}" class="game-image" alt="Соединение" onerror="this.style.display='none'">
                 <div class="game-score">Вопрос ${scoreTotal + 1} | Правильно: ${scoreCorrect} из ${scoreTotal}</div>

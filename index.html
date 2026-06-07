@@ -328,7 +328,7 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnjiqKWznABpb_vB9os9kR8P-8Df3-AEH-KFjdVX1NLje3Svu9COWTdzZ1HPPOkj3CIw/exec';
         const LIBRARY_CACHE_KEY = 'library_data_cache';
         const GAME_CACHE_KEY = 'game_data_cache';
-        const CACHE_TIME = 30 * 60 * 1000; // 30 минут
+        const CACHE_TIME = 30 * 60 * 1000;
 
         const sectionDescriptions = {
             '1. Проектная документация (технология)': 'Шаблоны для создания графической и текстовой документации : чертежи общего вида, монтировочная опись, лист развески',
@@ -406,7 +406,6 @@
             searchInfo.textContent = query ? (visibleCount > 0 ? `Найдено в ${visibleCount} разделах` : 'Ничего не найдено') : '';
         }
 
-        // Кэш для библиотеки
         function getCachedLibrary() {
             try {
                 const cached = localStorage.getItem(LIBRARY_CACHE_KEY);
@@ -418,9 +417,7 @@
         }
 
         function cacheLibrary(data) {
-            try {
-                localStorage.setItem(LIBRARY_CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
-            } catch (e) {}
+            try { localStorage.setItem(LIBRARY_CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() })); } catch (e) {}
         }
 
         function refreshLibrary() {
@@ -430,7 +427,6 @@
 
         function loadLibrary(forceRefresh) {
             const container = document.getElementById('sections-container');
-            
             if (!forceRefresh) {
                 const cached = getCachedLibrary();
                 if (cached && cached.length > 0) {
@@ -438,15 +434,12 @@
                     return;
                 }
             }
-            
             container.innerHTML = '<div class="loading">Загрузка библиотеки...</div>';
-            
             const callbackName = 'jsonp_callback_' + Date.now();
             const timeout = setTimeout(() => {
                 container.innerHTML = '<div class="loading">Превышено время ожидания. <a href="javascript:void(0)" onclick="loadLibrary(true)" style="color:var(--green);">Обновить</a></div>';
                 delete window[callbackName];
             }, 15000);
-            
             window[callbackName] = function(sections) {
                 clearTimeout(timeout);
                 if (!sections || !sections.length) {
@@ -454,13 +447,11 @@
                     delete window[callbackName];
                     return;
                 }
-                // Фильтруем папку "Игра - соединения" и любые другие, начинающиеся с "Игра -"
                 const filtered = sections.filter(s => !s.name.startsWith('Игра -'));
                 cacheLibrary(filtered);
                 container.innerHTML = filtered.map((s, i) => renderSection(s, i)).join('');
                 delete window[callbackName];
             };
-            
             const script = document.createElement('script');
             script.src = SCRIPT_URL + '?callback=' + callbackName;
             script.onerror = () => {
@@ -495,7 +486,7 @@
             'Зубчатое':   { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
             'Клиновое':   { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
             'Шплинтовое': { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
-            'Петли':      { integrity: 'Разъёмное', category: 'Петлевое', subcategory: null },
+            'Петли':      { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
             'Клеевое':    { integrity: 'Неразъёмное', category: 'Клеевое', subcategory: ['Угловое', 'Серединное', 'Боковое', 'Торцевое'] },
             'Сварное':    { integrity: 'Неразъёмное', category: null, subcategory: null },
             'Клёпаное':   { integrity: 'Неразъёмное', category: null, subcategory: null },
@@ -522,9 +513,7 @@
         }
 
         function cacheGameData(data) {
-            try {
-                localStorage.setItem(GAME_CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
-            } catch (e) {}
+            try { localStorage.setItem(GAME_CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() })); } catch (e) {}
         }
 
         function refreshGameData() {
@@ -535,33 +524,26 @@
         function toggleGame() {
             const panel = document.getElementById('gamePanel');
             panel.classList.toggle('active');
-            if (panel.classList.contains('active')) {
-                loadGameData(false);
-            }
+            if (panel.classList.contains('active')) loadGameData(false);
         }
 
         function loadGameData(forceRefresh) {
             const container = document.getElementById('gameContainer');
-            
             if (!forceRefresh) {
                 const cached = getCachedGameData();
                 if (cached && cached.length >= 2) {
                     gameData = cached;
-                    scoreTotal = 0;
-                    scoreCorrect = 0;
+                    scoreTotal = 0; scoreCorrect = 0;
                     nextQuestion();
                     return;
                 }
             }
-            
             container.innerHTML = '<p>Загрузка игры...</p>';
-            
             const callbackName = 'game_callback_' + Date.now();
             const timeout = setTimeout(() => {
                 container.innerHTML = '<p>Ошибка загрузки игры. <a href="javascript:void(0)" onclick="loadGameData(true)" style="color:var(--green);">Попробовать ещё раз</a></p>';
                 delete window[callbackName];
             }, 15000);
-            
             window[callbackName] = function(sections) {
                 clearTimeout(timeout);
                 if (!sections || !sections.length) {
@@ -569,15 +551,12 @@
                     delete window[callbackName];
                     return;
                 }
-                
                 const gameFolder = sections[0];
                 gameData = [];
-                
                 (gameFolder.folders || []).forEach(typeFolder => {
                     const typeName = typeFolder.name;
                     const classInfo = classificationMap[typeName];
                     if (!classInfo) return;
-                    
                     (typeFolder.folders || []).forEach(subFolder => {
                         (subFolder.files || []).forEach(file => {
                             gameData.push({
@@ -589,7 +568,6 @@
                             });
                         });
                     });
-                    
                     (typeFolder.files || []).forEach(file => {
                         gameData.push({
                             name: file.name,
@@ -600,20 +578,16 @@
                         });
                     });
                 });
-                
                 if (gameData.length < 2) {
                     container.innerHTML = '<p>Недостаточно файлов для игры. Загрузите больше изображений.</p>';
                     delete window[callbackName];
                     return;
                 }
-                
                 cacheGameData(gameData);
-                scoreTotal = 0;
-                scoreCorrect = 0;
+                scoreTotal = 0; scoreCorrect = 0;
                 nextQuestion();
                 delete window[callbackName];
             };
-
             const script = document.createElement('script');
             script.src = SCRIPT_URL + '?mode=game&callback=' + callbackName;
             script.onerror = () => {
@@ -664,7 +638,7 @@
             } else if (currentStep === 1) {
                 if (a.integrity === 'Разъёмное') {
                     questionText = 'Какой тип разъёмного соединения?';
-                    options = ['Резьбовое', 'Нерезьбовое', 'Петлевое'];
+                    options = ['Резьбовое', 'Нерезьбовое'];
                     correctAnswer = a.category;
                 } else {
                     questionText = 'Какой тип неразъёмного соединения?';
@@ -678,18 +652,14 @@
                     correctAnswer = a.typeName;
                 } else if (a.category === 'Нерезьбовое') {
                     questionText = 'Какое нерезьбовое соединение?';
-                    options = ['Шпоночное', 'Штифтовое', 'Зубчатое', 'Клиновое', 'Шплинтовое'];
-                    correctAnswer = a.typeName;
-                } else if (a.category === 'Петлевое') {
-                    questionText = 'Какое петлевое соединение?';
-                    options = ['Петли'];
+                    options = ['Шпоночное', 'Штифтовое', 'Зубчатое', 'Клиновое', 'Шплинтовое', 'Петли'];
                     correctAnswer = a.typeName;
                 } else if (a.category === 'Клеевое') {
                     questionText = 'Какой подтип клеевого соединения?';
                     options = ['Угловое', 'Серединное', 'Боковое', 'Торцевое'];
                     correctAnswer = a.subType;
                 }
-            } else if (currentStep === 3 || (currentStep === 2 && a.category !== 'Резьбовое' && a.category !== 'Нерезьбовое' && a.category !== 'Петлевое' && a.category !== 'Клеевое')) {
+            } else if (currentStep === 3 || (currentStep === 2 && a.category !== 'Резьбовое' && a.category !== 'Нерезьбовое' && a.category !== 'Клеевое')) {
                 questionText = 'Какое название у этого соединения?';
                 const correctName = a.fileName;
                 const otherNames = gameData
@@ -701,7 +671,6 @@
             }
             
             if (!questionText) { currentStep++; renderStep(); return; }
-            
             answered = false;
             container.innerHTML = `
                 <img src="${q.file.url}" class="game-image" alt="Соединение" onerror="this.style.display='none'">
@@ -734,10 +703,9 @@
             if (currentStep === 0) currentStep = 1;
             else if (currentStep === 1) currentStep = 2;
             else if (currentStep === 2) {
-                if (a.category === 'Клеевое' || a.category === 'Резьбовое' || a.category === 'Нерезьбовое' || a.category === 'Петлевое') currentStep = 3;
+                if (a.category === 'Клеевое' || a.category === 'Резьбовое' || a.category === 'Нерезьбовое') currentStep = 3;
                 else isLast = true;
             } else if (currentStep === 3) isLast = true;
-            
             if (isLast) nextQuestion();
             else renderStep();
         }

@@ -115,13 +115,7 @@
         .search-box::placeholder { color: var(--text-light); font-style: italic; }
         .search-box:focus { border-color: var(--green-light); }
 
-        .search-info {
-            color: var(--text-light);
-            font-size: 0.8rem;
-            margin-bottom: 0.8rem;
-            font-style: italic;
-            min-height: 1rem;
-        }
+        .search-info { color: var(--text-light); font-size: 0.8rem; margin-bottom: 0.8rem; font-style: italic; min-height: 1rem; }
 
         .section {
             background: transparent;
@@ -134,12 +128,7 @@
             transition: background 0.2s, border-color 0.2s;
             box-shadow: none;
         }
-
-        .section:hover {
-            background: var(--section-hover);
-            border-left-color: var(--green-light);
-        }
-
+        .section:hover { background: var(--section-hover); border-left-color: var(--green-light); }
         .section h2 {
             font-size: 1.15rem;
             font-weight: 400;
@@ -149,28 +138,9 @@
             align-items: center;
             gap: 0.3rem;
         }
-
-        .section h2::before {
-            content: '▸';
-            color: var(--green);
-            font-size: 1rem;
-            font-weight: 400;
-        }
-
-        .section .desc {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin-top: 0.15rem;
-            font-weight: 400;
-        }
-
-        .section-content {
-            display: none;
-            margin-top: 0.8rem;
-            padding-left: 1.2rem;
-            border-left: 1px solid var(--gold-light);
-        }
-
+        .section h2::before { content: '▸'; color: var(--green); font-size: 1rem; }
+        .section .desc { color: var(--text-light); font-size: 0.9rem; margin-top: 0.15rem; }
+        .section-content { display: none; margin-top: 0.8rem; padding-left: 1.2rem; border-left: 1px solid var(--gold-light); }
         .section-content.active { display: block; }
 
         .subfolder {
@@ -181,33 +151,12 @@
             padding: 0.6rem 0.8rem;
             margin: 0.3rem 0;
             cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-            box-shadow: none;
+            transition: background 0.2s;
         }
-
-        .subfolder:hover {
-            background: #fdfdfb;
-            border-left-color: var(--green);
-        }
-
-        .subfolder h3 {
-            font-size: 1rem;
-            font-weight: 400;
-            color: var(--text);
-        }
-
-        .subfolder h3::before {
-            content: '▹ ';
-            color: var(--gold);
-        }
-
-        .subfolder-content {
-            display: none;
-            margin-top: 0.4rem;
-            padding-left: 1rem;
-            border-left: 1px solid var(--border-light);
-        }
-
+        .subfolder:hover { background: #fdfdfb; }
+        .subfolder h3 { font-size: 1rem; font-weight: 400; color: var(--text); }
+        .subfolder h3::before { content: '▹ '; color: var(--gold); }
+        .subfolder-content { display: none; margin-top: 0.4rem; padding-left: 1rem; border-left: 1px solid var(--border-light); }
         .subfolder-content.active { display: block; }
 
         .file-item {
@@ -218,17 +167,8 @@
             border-bottom: 1px dotted var(--border-light);
             font-size: 0.9rem;
         }
-
-        .file-item .name {
-            flex: 1;
-            color: var(--text);
-            font-weight: 400;
-        }
-
-        .file-item .name::before {
-            content: '— ';
-            color: var(--green);
-        }
+        .file-item .name { flex: 1; color: var(--text); }
+        .file-item .name::before { content: '— '; color: var(--green); }
 
         .download-link {
             color: var(--green);
@@ -244,16 +184,11 @@
             background: transparent;
             white-space: nowrap;
         }
-
-        .download-link:hover {
-            background: var(--green);
-            color: var(--white);
-        }
+        .download-link:hover { background: var(--green); color: var(--white); }
 
         .empty-message { color: var(--text-light); font-style: italic; padding: 0.4rem 0; font-size: 0.9rem; }
         .loading { text-align: center; color: var(--text-light); padding: 1rem; font-style: italic; }
 
-        /* Угловые кнопки */
         .corner-btn {
             position: fixed;
             bottom: 2rem;
@@ -278,7 +213,6 @@
         .theme-toggle { right: 2rem; }
         .game-btn { left: 2rem; font-size: 0.8rem; font-weight: 700; width: auto; padding: 0 1rem; border-radius: 20px; }
 
-        /* Панель игры */
         .game-panel {
             display: none;
             position: fixed;
@@ -303,7 +237,6 @@
             color: var(--text);
             text-align: center;
         }
-
         .game-close {
             position: absolute;
             top: 0.5rem; right: 1rem;
@@ -312,27 +245,9 @@
             color: var(--text-light);
         }
         .game-close:hover { color: var(--text); }
-
-        .game-content h2 {
-            font-size: 1.3rem;
-            font-weight: 400;
-            color: var(--green);
-            margin-bottom: 0.5rem;
-        }
-
-        .game-image {
-            max-width: 100%;
-            max-height: 250px;
-            border-radius: 4px;
-            border: 1px solid var(--border-light);
-            margin-bottom: 1rem;
-        }
-
-        .game-question {
-            font-size: 1rem;
-            margin-bottom: 0.8rem;
-            color: var(--text);
-        }
+        .game-content h2 { font-size: 1.3rem; font-weight: 400; color: var(--green); margin-bottom: 0.5rem; }
+        .game-image { max-width: 100%; max-height: 250px; border-radius: 4px; border: 1px solid var(--border-light); margin-bottom: 1rem; }
+        .game-question { font-size: 1rem; margin-bottom: 0.8rem; color: var(--text); }
 
         .game-options {
             display: flex;
@@ -341,7 +256,6 @@
             justify-content: center;
             margin-bottom: 0.8rem;
         }
-
         .game-option {
             font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
             font-size: 0.9rem;
@@ -354,18 +268,12 @@
             transition: all 0.2s;
             min-width: 120px;
         }
-
         .game-option:hover { background: var(--green); color: var(--white); }
         .game-option.correct { background: var(--correct); color: var(--white); border-color: var(--correct); }
         .game-option.wrong { background: var(--wrong); color: var(--white); border-color: var(--wrong); }
         .game-option:disabled { pointer-events: none; opacity: 0.7; }
 
-        .game-score {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            margin-bottom: 0.5rem;
-        }
-
+        .game-score { font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem; }
         .game-next {
             font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
             font-size: 0.9rem;
@@ -378,28 +286,22 @@
             display: none;
             margin: 0 auto;
         }
-
         .game-next:hover { background: var(--green-lighter); }
         .game-next.show { display: inline-block; }
     </style>
 </head>
 <body>
-    <!-- Кнопки -->
     <button class="corner-btn theme-toggle" id="themeToggle" title="День / Ночь" onclick="toggleTheme()">◐</button>
     <button class="corner-btn game-btn" id="gameBtn" title="Угадай соединение" onclick="toggleGame()">🔧 Угадай соединение</button>
 
-    <!-- Панель игры -->
     <div class="game-panel" id="gamePanel">
         <div class="game-content">
             <button class="game-close" onclick="toggleGame()">×</button>
             <h2>Угадай соединение</h2>
-            <div id="gameContainer">
-                <p>Загрузка игры...</p>
-            </div>
+            <div id="gameContainer"><p>Загрузка игры...</p></div>
         </div>
     </div>
 
-    <!-- Библиотека -->
     <div class="container">
         <h1>Библиотека факультета Сценографии и Театральной технологии</h1>
         <input type="text" class="search-box" id="searchBox" placeholder="Поиск по файлам и папкам..." oninput="filterLibrary()">
@@ -408,9 +310,7 @@
     </div>
 
     <script>
-        // ==================== БИБЛИОТЕКА ====================
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnjiqKWznABpb_vB9os9kR8P-8Df3-AEH-KFjdVX1NLje3Svu9COWTdzZ1HPPOkj3CIw/exec';
-        const GAME_FOLDER = 'Игра - соединения';
 
         const sectionDescriptions = {
             '1. Проектная документация (технология)': 'Шаблоны для создания графической и текстовой документации : чертежи общего вида, монтировочная опись, лист развески',
@@ -502,9 +402,7 @@
                     delete window[callbackName];
                     return;
                 }
-                // Фильтруем: не показываем папку "Игра - соединения"
-                const filtered = sections.filter(s => !s.name.startsWith('Игра -'));
-                container.innerHTML = filtered.map((s, i) => renderSection(s, i)).join('');
+                container.innerHTML = sections.map((s, i) => renderSection(s, i)).join('');
                 delete window[callbackName];
             };
             const script = document.createElement('script');
@@ -517,7 +415,6 @@
             document.body.appendChild(script);
         }
 
-        // ==================== ТЕМА ====================
         function toggleTheme() {
             const body = document.body;
             const btn = document.getElementById('themeToggle');
@@ -550,9 +447,9 @@
             'Посадка с натягом': { integrity: 'Неразъёмное', category: null, subcategory: null }
         };
 
-        let gameData = [];       // все файлы для игры
+        let gameData = [];
         let currentQuestion = null;
-        let currentStep = 0;     // 0=целостность, 1=категория, 2=конечный тип, 3=название (или подтип для клеевых)
+        let currentStep = 0;
         let scoreTotal = 0;
         let scoreCorrect = 0;
         let answered = false;
@@ -565,30 +462,33 @@
             }
         }
 
-        async function loadGameData() {
+        function loadGameData() {
             const container = document.getElementById('gameContainer');
             container.innerHTML = '<p>Загрузка игры...</p>';
-            try {
-                const response = await fetch(SCRIPT_URL + '?callback=' + Date.now());
-                const text = await response.text();
-                // Парсим JSONP
-                const start = text.indexOf('(');
-                const end = text.lastIndexOf(')');
-                const json = JSON.parse(text.substring(start + 1, end));
-                // Ищем папку "Игра - соединения"
-                const gameFolder = json.find(s => s.name.startsWith('Игра -'));
-                if (!gameFolder) {
+            
+            const callbackName = 'game_callback_' + Date.now();
+            
+            const timeout = setTimeout(() => {
+                container.innerHTML = '<p>Ошибка загрузки игры. <a href="javascript:void(0)" onclick="loadGameData()" style="color:var(--green);">Попробовать ещё раз</a></p>';
+                delete window[callbackName];
+            }, 15000);
+            
+            window[callbackName] = function(sections) {
+                clearTimeout(timeout);
+                if (!sections || !sections.length) {
                     container.innerHTML = '<p>Папка "Игра - соединения" не найдена на Google Диске.</p>';
+                    delete window[callbackName];
                     return;
                 }
-                // Собираем все файлы из конечных подпапок
+                
+                const gameFolder = sections[0];
                 gameData = [];
+                
                 (gameFolder.folders || []).forEach(typeFolder => {
                     const typeName = typeFolder.name;
                     const classInfo = classificationMap[typeName];
                     if (!classInfo) return;
                     
-                    // Проверяем подпапки (для клеевых)
                     (typeFolder.folders || []).forEach(subFolder => {
                         (subFolder.files || []).forEach(file => {
                             gameData.push({
@@ -600,7 +500,6 @@
                         });
                     });
                     
-                    // Файлы в корне папки типа
                     (typeFolder.files || []).forEach(file => {
                         gameData.push({
                             ...file,
@@ -612,16 +511,25 @@
                 });
                 
                 if (gameData.length < 2) {
-                    container.innerHTML = '<p>Недостаточно файлов для игры. Загрузите больше изображений в папку "Игра - соединения".</p>';
+                    container.innerHTML = '<p>Недостаточно файлов для игры. Загрузите больше изображений.</p>';
+                    delete window[callbackName];
                     return;
                 }
                 
                 scoreTotal = 0;
                 scoreCorrect = 0;
                 nextQuestion();
-            } catch (e) {
-                container.innerHTML = `<p>Ошибка загрузки: ${e.message}</p>`;
-            }
+                delete window[callbackName];
+            };
+
+            const script = document.createElement('script');
+            script.src = SCRIPT_URL + '?mode=game&callback=' + callbackName;
+            script.onerror = () => {
+                clearTimeout(timeout);
+                container.innerHTML = '<p>Ошибка загрузки игры.</p>';
+                delete window[callbackName];
+            };
+            document.body.appendChild(script);
         }
 
         function shuffle(arr) {
@@ -636,25 +544,18 @@
         function nextQuestion() {
             answered = false;
             currentStep = 0;
-            // Выбираем случайный файл
             const file = gameData[Math.floor(Math.random() * gameData.length)];
             const classInfo = file.classInfo;
             
-            // Определяем правильные ответы для всех этапов
             const answers = {
-                integrity: classInfo.integrity,        // "Разъёмное" или "Неразъёмное"
-                category: classInfo.category,           // "Резьбовое", "Нерезьбовое", "Клеевое" или null
-                typeName: file.typeName,                // "Болтовое", "Сварное" и т.д.
-                subType: file.subType || null,          // подтип клеевого или null
-                fileName: file.name.replace(/\.[^.]+$/, '') // имя файла без расширения
+                integrity: classInfo.integrity,
+                category: classInfo.category,
+                typeName: file.typeName,
+                subType: file.subType || null,
+                fileName: file.name.replace(/\.[^.]+$/, '')
             };
             
-            currentQuestion = {
-                file: file,
-                answers: answers,
-                classInfo: classInfo
-            };
-            
+            currentQuestion = { file, answers, classInfo };
             renderStep();
         }
 
@@ -665,66 +566,55 @@
             
             let questionText = '';
             let options = [];
+            let correctAnswer = '';
             
             if (currentStep === 0) {
-                // Этап 1: целостность
                 questionText = 'Какой тип соединения по целостности?';
                 options = ['Разъёмное', 'Неразъёмное'];
+                correctAnswer = a.integrity;
             } else if (currentStep === 1) {
-                // Этап 2: категория
                 if (a.integrity === 'Разъёмное') {
                     questionText = 'Какой тип разъёмного соединения?';
                     options = ['Резьбовое', 'Нерезьбовое'];
+                    correctAnswer = a.category;
                 } else {
-                    // Неразъёмное: все возможные типы
                     questionText = 'Какой тип неразъёмного соединения?';
                     options = ['Клеевое', 'Сварное', 'Клёпаное', 'Паяное', 'Сшивное', 'Посадка с натягом'];
+                    correctAnswer = a.category || a.typeName;
                 }
             } else if (currentStep === 2) {
-                // Этап 3: конечный тип
                 if (a.category === 'Резьбовое') {
                     questionText = 'Какое резьбовое соединение?';
                     options = ['Болтовое', 'Винтовое', 'Шпилечное'];
+                    correctAnswer = a.typeName;
                 } else if (a.category === 'Нерезьбовое') {
                     questionText = 'Какое нерезьбовое соединение?';
                     options = ['Шпоночное', 'Штифтовое', 'Зубчатое', 'Клиновое', 'Шплинтовое'];
+                    correctAnswer = a.typeName;
                 } else if (a.category === 'Клеевое') {
-                    // Для клеевых: спрашиваем подтип вместо названия
                     questionText = 'Какой подтип клеевого соединения?';
                     options = ['Угловое', 'Серединное', 'Боковое', 'Торцевое'];
-                } else {
-                    // Остальные неразъёмные: спрашиваем название
-                    currentStep = 3; // перепрыгиваем к названию
+                    correctAnswer = a.subType;
                 }
-            }
-            
-            if (currentStep === 3 || (currentStep === 2 && a.category !== 'Резьбовое' && a.category !== 'Нерезьбовое' && a.category !== 'Клеевое')) {
-                // Этап 4: название соединения
+            } else if (currentStep === 3 || (currentStep === 2 && a.category !== 'Резьбовое' && a.category !== 'Нерезьбовое' && a.category !== 'Клеевое')) {
                 questionText = 'Какое название у этого соединения?';
-                // Правильное название
                 const correctName = a.fileName;
-                // 3 случайных неправильных названия из других файлов
                 const otherNames = gameData
                     .filter(f => f.name !== q.file.name)
                     .map(f => f.name.replace(/\.[^.]+$/, ''));
                 const shuffled = shuffle([...new Set(otherNames)]);
                 options = shuffle([correctName, ...shuffled.slice(0, 3)]);
+                correctAnswer = correctName;
             }
             
             if (!questionText) {
-                // Переход к следующему этапу
                 currentStep++;
                 renderStep();
                 return;
             }
             
-            const correctAnswer = currentStep === 0 ? a.integrity :
-                                  currentStep === 1 ? a.category :
-                                  currentStep === 2 ? (a.category === 'Клеевое' ? a.subType : a.typeName) :
-                                  a.fileName;
-            
             container.innerHTML = `
-                <img src="${q.file.url}" class="game-image" alt="Соединение" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22><rect fill=%22%23ddd%22 width=%22200%22 height=%22150%22/><text x=%22100%22 y=%2275%22 text-anchor=%22middle%22 fill=%22%23999%22>Изображение</text></svg>'">
+                <img src="${q.file.url}" class="game-image" alt="Соединение" onerror="this.style.display='none'">
                 <div class="game-score">Вопрос ${scoreTotal + 1} | Правильно: ${scoreCorrect} из ${scoreTotal}</div>
                 <div class="game-question">${questionText}</div>
                 <div class="game-options" id="gameOptions">
@@ -749,29 +639,25 @@
                 scoreCorrect++;
             } else {
                 btn.classList.add('wrong');
-                // Подсвечиваем правильный
                 allOptions.forEach(opt => {
                     if (opt.textContent === correct) opt.classList.add('correct');
                 });
             }
             
             document.getElementById('gameNext').classList.add('show');
-            document.getElementById('gameScore').textContent = `Правильно: ${scoreCorrect} из ${scoreTotal}`;
         }
 
         function nextStep() {
             const q = currentQuestion;
             const a = q.answers;
-            
-            // Определяем, был ли это последний этап
             let isLast = false;
+            
             if (currentStep === 0) {
                 currentStep = 1;
             } else if (currentStep === 1) {
                 currentStep = 2;
             } else if (currentStep === 2) {
                 if (a.category === 'Клеевое') {
-                    // После подтипа клеевого спрашиваем название
                     currentStep = 3;
                 } else if (a.category === 'Резьбовое' || a.category === 'Нерезьбовое') {
                     currentStep = 3;
@@ -789,9 +675,7 @@
             }
         }
 
-        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
         loadTheme();
         setTimeout(loadLibrary, 300);
     </script>
-</body>
-</html>
+</

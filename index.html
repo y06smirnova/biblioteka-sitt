@@ -769,3 +769,29 @@
                 currentStep = 1;
             } else if (currentStep === 1) {
                 currentStep = 2;
+            } else if (currentStep === 2) {
+                if (a.category === 'Клеевое') {
+                    // После подтипа клеевого спрашиваем название
+                    currentStep = 3;
+                } else if (a.category === 'Резьбовое' || a.category === 'Нерезьбовое') {
+                    currentStep = 3;
+                } else {
+                    isLast = true;
+                }
+            } else if (currentStep === 3) {
+                isLast = true;
+            }
+            
+            if (isLast) {
+                nextQuestion();
+            } else {
+                renderStep();
+            }
+        }
+
+        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+        loadTheme();
+        setTimeout(loadLibrary, 300);
+    </script>
+</body>
+</html>

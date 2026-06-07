@@ -432,6 +432,7 @@
             'Зубчатое':   { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
             'Клиновое':   { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
             'Шплинтовое': { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
+            'Петли':      { integrity: 'Разъёмное', category: 'Петлевое', subcategory: null },
             'Клеевое':    { integrity: 'Неразъёмное', category: 'Клеевое', subcategory: ['Угловое', 'Серединное', 'Боковое', 'Торцевое'] },
             'Сварное':    { integrity: 'Неразъёмное', category: null, subcategory: null },
             'Клёпаное':   { integrity: 'Неразъёмное', category: null, subcategory: null },
@@ -570,7 +571,7 @@
             } else if (currentStep === 1) {
                 if (a.integrity === 'Разъёмное') {
                     questionText = 'Какой тип разъёмного соединения?';
-                    options = ['Резьбовое', 'Нерезьбовое'];
+                    options = ['Резьбовое', 'Нерезьбовое', 'Петлевое'];
                     correctAnswer = a.category;
                 } else {
                     questionText = 'Какой тип неразъёмного соединения?';
@@ -586,12 +587,16 @@
                     questionText = 'Какое нерезьбовое соединение?';
                     options = ['Шпоночное', 'Штифтовое', 'Зубчатое', 'Клиновое', 'Шплинтовое'];
                     correctAnswer = a.typeName;
+                } else if (a.category === 'Петлевое') {
+                    questionText = 'Какое петлевое соединение?';
+                    options = ['Петли'];
+                    correctAnswer = a.typeName;
                 } else if (a.category === 'Клеевое') {
                     questionText = 'Какой подтип клеевого соединения?';
                     options = ['Угловое', 'Серединное', 'Боковое', 'Торцевое'];
                     correctAnswer = a.subType;
                 }
-            } else if (currentStep === 3 || (currentStep === 2 && a.category !== 'Резьбовое' && a.category !== 'Нерезьбовое' && a.category !== 'Клеевое')) {
+            } else if (currentStep === 3 || (currentStep === 2 && a.category !== 'Резьбовое' && a.category !== 'Нерезьбовое' && a.category !== 'Петлевое' && a.category !== 'Клеевое')) {
                 questionText = 'Какое название у этого соединения?';
                 const correctName = a.fileName;
                 const otherNames = gameData
@@ -608,7 +613,6 @@
                 return;
             }
             
-            // Сбрасываем состояние перед новым шагом
             answered = false;
             
             container.innerHTML = `
@@ -655,9 +659,7 @@
             } else if (currentStep === 1) {
                 currentStep = 2;
             } else if (currentStep === 2) {
-                if (a.category === 'Клеевое') {
-                    currentStep = 3;
-                } else if (a.category === 'Резьбовое' || a.category === 'Нерезьбовое') {
+                if (a.category === 'Клеевое' || a.category === 'Резьбовое' || a.category === 'Нерезьбовое' || a.category === 'Петлевое') {
                     currentStep = 3;
                 } else {
                     isLast = true;

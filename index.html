@@ -93,6 +93,38 @@
             border-bottom: 1px solid var(--gold-light);
         }
 
+        .login-container {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        .login-btn {
+            font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
+            font-size: 1.1rem;
+            padding: 0.7rem 2rem;
+            background: var(--green);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .login-btn:hover { background: var(--green-lighter); }
+        .logout-btn {
+            font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-left: 1rem;
+        }
+        .user-info {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
         .search-box {
             width: 100%;
             padding: 0.5rem 0.8rem;
@@ -210,12 +242,109 @@
 
     <div class="container">
         <h1>Библиотека факультета Сценографии и Театральной технологии</h1>
-        <input type="text" class="search-box" id="searchBox" placeholder="Поиск по файлам и папкам..." oninput="filterLibrary()">
-        <div class="search-info" id="searchInfo"></div>
-        <div id="sections-container"><div class="loading">Загрузка библиотеки...</div></div>
+        <div id="main-content"></div>
     </div>
 
     <script>
+        // ==================== АВТОРИЗАЦИЯ ====================
+        const AUTH_CLIENT_ID = '8e6fb6fe7c75492698730f78184a1290';
+        const REDIRECT_URI = window.location.origin + window.location.pathname;
+        
+        // Белый список почт (добавляйте новые почты сюда)
+        const ALLOWED_EMAILS = [
+            'y066mirnova@yandex.ru'
+        ];
+
+        function getAccessToken() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            return params.get('access_token');
+        }
+
+        function getUserInfo(token) {
+            return fetch('https://login.yandex.ru/info?format=json', {
+                headers: { 'Authorization': `OAuth ${token}` }
+            }).then(r => r.json());
+        }
+
+        function login() {
+            const authUrl = `https://oauth.yandex.ru/authorize?response_type=token&client_id=${AUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+            window.location.href = authUrl;
+        }
+
+        function logout() {
+            localStorage.removeItem('ya_token');
+            localStorage.removeItem('ya_email');
+            window.location.hash = '';
+            location.reload();
+        }
+
+        async function checkAuth() {
+            // Проверяем токен в URL (после редиректа от Яндекса)
+            let token = getAccessToken();
+            if (token) {
+                localStorage.setItem('ya_token', token);
+                // Очищаем URL от токена
+                window.location.hash = '';
+            }
+            
+            // Проверяем токен в localStorage
+            token = localStorage.getItem('ya_token');
+            if (!token) {
+                showLoginScreen();
+                return;
+            }
+            
+            try {
+                const userInfo = await getUserInfo(token);
+                const email = userInfo.default_email || userInfo.emails?.[0];
+                
+                if (!email || !ALLOWED_EMAILS.includes(email)) {
+                    showAccessDenied(email);
+                    return;
+                }
+                
+                localStorage.setItem('ya_email', email);
+                showLibrary(email);
+            } catch (e) {
+                localStorage.removeItem('ya_token');
+                showLoginScreen();
+            }
+        }
+
+        function showLoginScreen() {
+            document.getElementById('main-content').innerHTML = `
+                <div class="login-container">
+                    <p style="margin-bottom:1.5rem; color:var(--text-light);">Для доступа к библиотеке необходимо авторизоваться через Яндекс.</p>
+                    <button class="login-btn" onclick="login()">Войти через Яндекс</button>
+                </div>
+            `;
+        }
+
+        function showAccessDenied(email) {
+            document.getElementById('main-content').innerHTML = `
+                <div class="login-container">
+                    <p style="margin-bottom:1rem; color:var(--text);">Доступ запрещён.</p>
+                    <p style="margin-bottom:1.5rem; color:var(--text-light);">Почта <b>${email || 'неизвестно'}</b> не в списке разрешённых.</p>
+                    <button class="logout-btn" onclick="logout()">Выйти</button>
+                </div>
+            `;
+        }
+
+        function showLibrary(email) {
+            document.getElementById('main-content').innerHTML = `
+                <div class="user-info">
+                    Вы вошли как <b>${email}</b>
+                    <button class="logout-btn" onclick="logout()">Выйти</button>
+                </div>
+                <input type="text" class="search-box" id="searchBox" placeholder="Поиск по файлам и папкам..." oninput="filterLibrary()">
+                <div class="search-info" id="searchInfo"></div>
+                <div id="sections-container"><div class="loading">Загрузка библиотеки...</div></div>
+            `;
+            loadLibrary();
+        }
+
+        // ==================== БИБЛИОТЕКА ====================
         const YANDEX_TOKEN = 'y0__wgBEPWSg8UGGKWjQyDRt-rtF1fZk7kEBGBv5Rk3hMVs5-xKpuQX';
         const YANDEX_API = 'https://cloud-api.yandex.net/v1/disk/resources';
         const ROOT_PATH = '/Библиотека';
@@ -242,28 +371,39 @@
             return response.json();
         }
 
-        async function getDownloadLink(path) {
-            const url = `${YANDEX_API}/download?path=${encodeURIComponent(path)}`;
-            const response = await fetch(url, {
-                headers: { 'Authorization': `OAuth ${YANDEX_TOKEN}` }
-            });
-            if (!response.ok) throw new Error(`Ошибка ${response.status}`);
-            const data = await response.json();
-            return data.href;
+        async function getPublicLink(file) {
+            if (file.public_url) {
+                const url = `https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=${encodeURIComponent(file.public_url)}`;
+                try {
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        const data = await response.json();
+                        return data.href;
+                    }
+                } catch (e) {}
+            }
+            try {
+                const apiUrl = `${YANDEX_API}/download?path=${encodeURIComponent(file.path)}`;
+                const response = await fetch(apiUrl, {
+                    headers: { 'Authorization': `OAuth ${YANDEX_TOKEN}` }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    return data.href;
+                }
+            } catch (e) {}
+            return file.public_url || '#';
         }
 
         function renderFiles(files) {
             if (!files.length) return '';
             const sorted = [...files].sort(naturalSort);
-            return sorted.map(f => {
-                const downloadUrl = f.downloadUrl || '#';
-                return `
+            return sorted.map(f => `
                 <div class="file-item" data-filename="${f.name.toLowerCase()}">
                     <span class="name">${f.name}</span>
-                    <a href="${downloadUrl}" class="download-link" target="_blank">Скачать</a>
+                    <a href="${f.downloadUrl || '#'}" class="download-link" target="_blank">Скачать</a>
                 </div>
-            `;
-            }).join('');
+            `).join('');
         }
 
         async function renderSection(section, index) {
@@ -271,14 +411,12 @@
             const desc = sectionDescriptions[section.name] || 'Материалы раздела.';
             let inner = '';
             
-            // Загружаем подпапки и файлы
             try {
                 const data = await fetchFromYandex(section.path);
                 const items = data._embedded?.items || [];
                 const subfolders = items.filter(i => i.type === 'dir');
                 const files = items.filter(i => i.type === 'file');
                 
-                // Подпапки
                 for (const sub of subfolders) {
                     const subId = 'sub-' + index + '-' + sub.name.replace(/[^a-zA-Zа-яА-Я0-9]/g, '-');
                     let subInner = '<div class="empty-message">Пусто</div>';
@@ -288,7 +426,7 @@
                         if (subFiles.length > 0) {
                             const filesWithLinks = await Promise.all(subFiles.map(async f => ({
                                 name: f.name,
-                                downloadUrl: await getDownloadLink(f.path)
+                                downloadUrl: await getPublicLink(f)
                             })));
                             subInner = renderFiles(filesWithLinks);
                         }
@@ -302,11 +440,10 @@
                     `;
                 }
                 
-                // Файлы в корне раздела
                 if (files.length > 0) {
                     const filesWithLinks = await Promise.all(files.map(async f => ({
                         name: f.name,
-                        downloadUrl: await getDownloadLink(f.path)
+                        downloadUrl: await getPublicLink(f)
                     })));
                     inner += renderFiles(filesWithLinks);
                 }
@@ -326,9 +463,10 @@
         }
 
         function filterLibrary() {
-            const query = document.getElementById('searchBox').value.toLowerCase().trim();
+            const query = document.getElementById('searchBox')?.value?.toLowerCase().trim() || '';
             const sections = document.querySelectorAll('.section');
             const searchInfo = document.getElementById('searchInfo');
+            if (!searchInfo) return;
             let visibleCount = 0;
             sections.forEach(section => {
                 if (!query) {
@@ -366,6 +504,7 @@
 
         async function loadLibrary() {
             const container = document.getElementById('sections-container');
+            if (!container) return;
             try {
                 const rootData = await fetchFromYandex(ROOT_PATH);
                 const sections = (rootData._embedded?.items || []).filter(i => i.type === 'dir' && !i.name.startsWith('Игра -'));
@@ -398,8 +537,9 @@
             else { btn.textContent = '◐'; }
         }
 
+        // Запуск
         loadTheme();
-        loadLibrary();
+        checkAuth();
     </script>
 </body>
 </html>

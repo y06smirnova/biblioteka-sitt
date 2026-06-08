@@ -22,8 +22,6 @@
             --card-bg: #ffffff;
             --section-hover: #f9fbfb;
             --border-light: rgba(184, 165, 122, 0.3);
-            --correct: #2e7d32;
-            --wrong: #c62828;
         }
 
         body.dark {
@@ -40,8 +38,6 @@
             --card-bg: #1e1e1e;
             --section-hover: #252525;
             --border-light: rgba(158, 139, 92, 0.3);
-            --correct: #4caf50;
-            --wrong: #ef5350;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -188,6 +184,7 @@
         .corner-btn {
             position: fixed;
             bottom: 2rem;
+            right: 2rem;
             background: var(--card-bg);
             border: 1px solid var(--green);
             color: var(--green);
@@ -206,129 +203,22 @@
             line-height: 1;
         }
         .corner-btn:hover { background: var(--green); color: var(--white); }
-        .theme-toggle { right: 2rem; }
-        .game-btn { left: 2rem; font-size: 0.8rem; font-weight: 700; width: auto; padding: 0 1rem; border-radius: 20px; }
-
-        .game-panel {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 200;
-            justify-content: center;
-            align-items: center;
-        }
-        .game-panel.active { display: flex; }
-        .game-content {
-            background: var(--card-bg);
-            border-radius: 6px;
-            padding: 1.5rem;
-            width: 95%;
-            max-width: 650px;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            color: var(--text);
-            text-align: center;
-        }
-        .game-close {
-            position: absolute;
-            top: 0.5rem; right: 1rem;
-            background: none; border: none;
-            font-size: 1.5rem; cursor: pointer;
-            color: var(--text-light);
-        }
-        .game-close:hover { color: var(--text); }
-        .game-content h2 { font-size: 1.3rem; font-weight: 400; color: var(--green); margin-bottom: 0.5rem; }
-        .game-image { max-width: 100%; max-height: 250px; border-radius: 4px; border: 1px solid var(--border-light); margin-bottom: 1rem; }
-        .game-question { font-size: 1rem; margin-bottom: 0.8rem; color: var(--text); }
-        .game-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            justify-content: center;
-            margin-bottom: 0.8rem;
-        }
-        .game-option {
-            font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
-            font-size: 0.9rem;
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--green);
-            border-radius: 3px;
-            background: transparent;
-            color: var(--green);
-            cursor: pointer;
-            transition: all 0.2s;
-            min-width: 120px;
-        }
-        .game-option:hover { background: var(--green); color: var(--white); }
-        .game-option.correct { background: var(--correct); color: var(--white); border-color: var(--correct); }
-        .game-option.wrong { background: var(--wrong); color: var(--white); border-color: var(--wrong); }
-        .game-option:disabled { pointer-events: none; opacity: 0.7; }
-        .game-score { font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem; }
-        .game-next {
-            font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
-            font-size: 0.9rem;
-            padding: 0.5rem 1.5rem;
-            background: var(--green);
-            color: var(--white);
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            display: none;
-            margin: 0 auto;
-        }
-        .game-next:hover { background: var(--green-lighter); }
-        .game-next.show { display: inline-block; }
-        .game-refresh {
-            font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
-            font-size: 0.75rem;
-            color: var(--text-light);
-            cursor: pointer;
-            border: none;
-            background: none;
-            text-decoration: underline;
-            margin-top: 0.5rem;
-        }
-        .refresh-library {
-            display: inline-block;
-            font-family: 'PT Sans Narrow', 'Arial Narrow', sans-serif;
-            font-size: 0.75rem;
-            color: var(--text-light);
-            cursor: pointer;
-            border: none;
-            background: none;
-            text-decoration: underline;
-            margin-left: 0.5rem;
-        }
     </style>
 </head>
 <body>
-    <button class="corner-btn theme-toggle" id="themeToggle" title="День / Ночь" onclick="toggleTheme()">◐</button>
-    <button class="corner-btn game-btn" id="gameBtn" title="Угадай соединение" onclick="toggleGame()">🔧 Угадай соединение</button>
-
-    <div class="game-panel" id="gamePanel">
-        <div class="game-content">
-            <button class="game-close" onclick="toggleGame()">×</button>
-            <h2>Угадай соединение</h2>
-            <div id="gameContainer"><p>Загрузка игры...</p></div>
-            <button class="game-refresh" onclick="refreshGameData()">Обновить данные игры</button>
-        </div>
-    </div>
+    <button class="corner-btn" id="themeToggle" title="День / Ночь" onclick="toggleTheme()">◐</button>
 
     <div class="container">
-        <h1>Библиотека факультета Сценографии и Театральной технологии <button class="refresh-library" onclick="refreshLibrary()">Обновить</button></h1>
+        <h1>Библиотека факультета Сценографии и Театральной технологии</h1>
         <input type="text" class="search-box" id="searchBox" placeholder="Поиск по файлам и папкам..." oninput="filterLibrary()">
         <div class="search-info" id="searchInfo"></div>
         <div id="sections-container"><div class="loading">Загрузка библиотеки...</div></div>
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnjiqKWznABpb_vB9os9kR8P-8Df3-AEH-KFjdVX1NLje3Svu9COWTdzZ1HPPOkj3CIw/exec';
-        const LIBRARY_CACHE_KEY = 'library_data_cache';
-        const GAME_CACHE_KEY = 'game_data_cache';
-        const CACHE_TIME = 30 * 60 * 1000;
+        const YANDEX_TOKEN = 'y0__wgBEPWSg8UGGKWjQyDRt-rtF1fZk7kEBGBv5Rk3hMVs5-xKpuQX';
+        const YANDEX_API = 'https://cloud-api.yandex.net/v1/disk/resources';
+        const ROOT_PATH = '/Библиотека';
 
         const sectionDescriptions = {
             '1. Проектная документация (технология)': 'Шаблоны для создания графической и текстовой документации : чертежи общего вида, монтировочная опись, лист развески',
@@ -343,28 +233,96 @@
         function naturalSort(a, b) { return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }); }
         function toggleElement(id) { const el = document.getElementById(id); if (el) el.classList.toggle('active'); }
 
+        async function fetchFromYandex(path) {
+            const url = `${YANDEX_API}?path=${encodeURIComponent(path)}`;
+            const response = await fetch(url, {
+                headers: { 'Authorization': `OAuth ${YANDEX_TOKEN}` }
+            });
+            if (!response.ok) throw new Error(`Ошибка ${response.status}`);
+            return response.json();
+        }
+
+        async function getDownloadLink(path) {
+            const url = `${YANDEX_API}/download?path=${encodeURIComponent(path)}`;
+            const response = await fetch(url, {
+                headers: { 'Authorization': `OAuth ${YANDEX_TOKEN}` }
+            });
+            if (!response.ok) throw new Error(`Ошибка ${response.status}`);
+            const data = await response.json();
+            return data.href;
+        }
+
         function renderFiles(files) {
             if (!files.length) return '';
             const sorted = [...files].sort(naturalSort);
-            return sorted.map(f => `
+            return sorted.map(f => {
+                const downloadUrl = f.downloadUrl || '#';
+                return `
                 <div class="file-item" data-filename="${f.name.toLowerCase()}">
                     <span class="name">${f.name}</span>
-                    <a href="${f.url}" class="download-link" target="_blank">Скачать</a>
+                    <a href="${downloadUrl}" class="download-link" target="_blank">Скачать</a>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
-        function renderSection(section, index) {
+        async function renderSection(section, index) {
             const sectionId = 'section-' + index;
             const desc = sectionDescriptions[section.name] || 'Материалы раздела.';
             let inner = '';
-            (section.folders || []).forEach((sub, si) => {
-                const subId = 'sub-' + index + '-' + si;
-                inner += `<div class="subfolder" onclick="event.stopPropagation(); toggleElement('${subId}')" data-foldername="${sub.name.toLowerCase()}"><h3>${sub.name}</h3><div id="${subId}" class="subfolder-content">${renderFiles(sub.files || [])}</div></div>`;
-            });
-            inner += renderFiles(section.files || []);
+            
+            // Загружаем подпапки и файлы
+            try {
+                const data = await fetchFromYandex(section.path);
+                const items = data._embedded?.items || [];
+                const subfolders = items.filter(i => i.type === 'dir');
+                const files = items.filter(i => i.type === 'file');
+                
+                // Подпапки
+                for (const sub of subfolders) {
+                    const subId = 'sub-' + index + '-' + sub.name.replace(/[^a-zA-Zа-яА-Я0-9]/g, '-');
+                    let subInner = '<div class="empty-message">Пусто</div>';
+                    try {
+                        const subData = await fetchFromYandex(sub.path);
+                        const subFiles = (subData._embedded?.items || []).filter(i => i.type === 'file');
+                        if (subFiles.length > 0) {
+                            const filesWithLinks = await Promise.all(subFiles.map(async f => ({
+                                name: f.name,
+                                downloadUrl: await getDownloadLink(f.path)
+                            })));
+                            subInner = renderFiles(filesWithLinks);
+                        }
+                    } catch (e) {}
+                    
+                    inner += `
+                        <div class="subfolder" onclick="event.stopPropagation(); toggleElement('${subId}')" data-foldername="${sub.name.toLowerCase()}">
+                            <h3>${sub.name}</h3>
+                            <div id="${subId}" class="subfolder-content">${subInner}</div>
+                        </div>
+                    `;
+                }
+                
+                // Файлы в корне раздела
+                if (files.length > 0) {
+                    const filesWithLinks = await Promise.all(files.map(async f => ({
+                        name: f.name,
+                        downloadUrl: await getDownloadLink(f.path)
+                    })));
+                    inner += renderFiles(filesWithLinks);
+                }
+            } catch (e) {
+                inner = '<div class="empty-message">Ошибка загрузки</div>';
+            }
+            
             if (!inner) inner = '<div class="empty-message">Раздел пуст</div>';
-            return `<div class="section" onclick="toggleElement('${sectionId}')" data-sectionname="${section.name.toLowerCase()}"><h2>${section.name}</h2><p class="desc">${desc}</p><div id="${sectionId}" class="section-content">${inner}</div></div>`;
+            
+            return `
+                <div class="section" onclick="toggleElement('${sectionId}')" data-sectionname="${section.name.toLowerCase()}">
+                    <h2>${section.name}</h2>
+                    <p class="desc">${desc}</p>
+                    <div id="${sectionId}" class="section-content">${inner}</div>
+                </div>
+            `;
         }
 
         function filterLibrary() {
@@ -406,60 +364,24 @@
             searchInfo.textContent = query ? (visibleCount > 0 ? `Найдено в ${visibleCount} разделах` : 'Ничего не найдено') : '';
         }
 
-        function getCachedLibrary() {
-            try {
-                const cached = localStorage.getItem(LIBRARY_CACHE_KEY);
-                if (!cached) return null;
-                const parsed = JSON.parse(cached);
-                if (Date.now() - parsed.timestamp > CACHE_TIME) return null;
-                return parsed.data;
-            } catch (e) { return null; }
-        }
-
-        function cacheLibrary(data) {
-            try { localStorage.setItem(LIBRARY_CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() })); } catch (e) {}
-        }
-
-        function refreshLibrary() {
-            localStorage.removeItem(LIBRARY_CACHE_KEY);
-            loadLibrary(true);
-        }
-
-        function loadLibrary(forceRefresh) {
+        async function loadLibrary() {
             const container = document.getElementById('sections-container');
-            if (!forceRefresh) {
-                const cached = getCachedLibrary();
-                if (cached && cached.length > 0) {
-                    container.innerHTML = cached.map((s, i) => renderSection(s, i)).join('');
+            try {
+                const rootData = await fetchFromYandex(ROOT_PATH);
+                const sections = (rootData._embedded?.items || []).filter(i => i.type === 'dir' && !i.name.startsWith('Игра -'));
+                
+                if (!sections.length) {
+                    container.innerHTML = '<div class="loading">Папки не найдены. Проверьте структуру Яндекс.Диска.</div>';
                     return;
                 }
+                
+                container.innerHTML = '<div class="loading">Загрузка разделов...</div>';
+                
+                const htmlParts = await Promise.all(sections.map((s, i) => renderSection(s, i)));
+                container.innerHTML = htmlParts.join('');
+            } catch (e) {
+                container.innerHTML = `<div class="loading">Ошибка загрузки: ${e.message}. <a href="javascript:location.reload()" style="color:var(--green);">Обновить</a></div>`;
             }
-            container.innerHTML = '<div class="loading">Загрузка библиотеки...</div>';
-            const callbackName = 'jsonp_callback_' + Date.now();
-            const timeout = setTimeout(() => {
-                container.innerHTML = '<div class="loading">Превышено время ожидания. <a href="javascript:void(0)" onclick="loadLibrary(true)" style="color:var(--green);">Обновить</a></div>';
-                delete window[callbackName];
-            }, 15000);
-            window[callbackName] = function(sections) {
-                clearTimeout(timeout);
-                if (!sections || !sections.length) {
-                    container.innerHTML = '<div class="loading">Папки не найдены.</div>';
-                    delete window[callbackName];
-                    return;
-                }
-                const filtered = sections.filter(s => !s.name.startsWith('Игра -'));
-                cacheLibrary(filtered);
-                container.innerHTML = filtered.map((s, i) => renderSection(s, i)).join('');
-                delete window[callbackName];
-            };
-            const script = document.createElement('script');
-            script.src = SCRIPT_URL + '?callback=' + callbackName;
-            script.onerror = () => {
-                clearTimeout(timeout);
-                container.innerHTML = '<div class="loading">Ошибка загрузки. <a href="javascript:void(0)" onclick="loadLibrary(true)" style="color:var(--green);">Обновить</a></div>';
-                delete window[callbackName];
-            };
-            document.body.appendChild(script);
         }
 
         function toggleTheme() {
@@ -476,256 +398,8 @@
             else { btn.textContent = '◐'; }
         }
 
-        // ==================== ИГРА ====================
-        const classificationMap = {
-            'Болтовое':   { integrity: 'Разъёмное', category: 'Резьбовое', subcategory: null },
-            'Винтовое':   { integrity: 'Разъёмное', category: 'Резьбовое', subcategory: null },
-            'Шпилечное':  { integrity: 'Разъёмное', category: 'Резьбовое', subcategory: null },
-            'Шпоночное':  { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
-            'Штифтовое':  { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
-            'Зубчатое':   { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
-            'Клиновое':   { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
-            'Шплинтовое': { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
-            'Петли':      { integrity: 'Разъёмное', category: 'Нерезьбовое', subcategory: null },
-            'Клеевое':    { integrity: 'Неразъёмное', category: 'Клеевое', subcategory: ['Угловое', 'Серединное', 'Боковое', 'Торцевое'] },
-            'Сварное':    { integrity: 'Неразъёмное', category: null, subcategory: null },
-            'Клёпаное':   { integrity: 'Неразъёмное', category: null, subcategory: null },
-            'Паяное':     { integrity: 'Неразъёмное', category: null, subcategory: null },
-            'Сшивное':    { integrity: 'Неразъёмное', category: null, subcategory: null },
-            'Посадка с натягом': { integrity: 'Неразъёмное', category: null, subcategory: null }
-        };
-
-        let gameData = [];
-        let questionQueue = [];
-        let queueIndex = 0;
-        let currentQuestion = null;
-        let currentStep = 0;
-        let scoreTotal = 0;
-        let scoreCorrect = 0;
-        let answered = false;
-
-        function getCachedGameData() {
-            try {
-                const cached = localStorage.getItem(GAME_CACHE_KEY);
-                if (!cached) return null;
-                const parsed = JSON.parse(cached);
-                if (Date.now() - parsed.timestamp > CACHE_TIME) return null;
-                return parsed.data;
-            } catch (e) { return null; }
-        }
-
-        function cacheGameData(data) {
-            try { localStorage.setItem(GAME_CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() })); } catch (e) {}
-        }
-
-        function refreshGameData() {
-            localStorage.removeItem(GAME_CACHE_KEY);
-            loadGameData(true);
-        }
-
-        function toggleGame() {
-            const panel = document.getElementById('gamePanel');
-            panel.classList.toggle('active');
-            if (panel.classList.contains('active')) loadGameData(false);
-        }
-
-        function loadGameData(forceRefresh) {
-            const container = document.getElementById('gameContainer');
-            if (!forceRefresh) {
-                const cached = getCachedGameData();
-                if (cached && cached.length >= 2) {
-                    gameData = cached;
-                    scoreTotal = 0; scoreCorrect = 0;
-                    questionQueue = shuffle([...gameData]);
-                    queueIndex = 0;
-                    nextQuestion();
-                    return;
-                }
-            }
-            container.innerHTML = '<p>Загрузка игры...</p>';
-            const callbackName = 'game_callback_' + Date.now();
-            const timeout = setTimeout(() => {
-                container.innerHTML = '<p>Ошибка загрузки игры. <a href="javascript:void(0)" onclick="loadGameData(true)" style="color:var(--green);">Попробовать ещё раз</a></p>';
-                delete window[callbackName];
-            }, 15000);
-            window[callbackName] = function(sections) {
-                clearTimeout(timeout);
-                if (!sections || !sections.length) {
-                    container.innerHTML = '<p>Папка "Игра - соединения" не найдена на Google Диске.</p>';
-                    delete window[callbackName];
-                    return;
-                }
-                const gameFolder = sections[0];
-                gameData = [];
-                (gameFolder.folders || []).forEach(typeFolder => {
-                    const typeName = typeFolder.name;
-                    const classInfo = classificationMap[typeName];
-                    if (!classInfo) return;
-                    (typeFolder.folders || []).forEach(subFolder => {
-                        (subFolder.files || []).forEach(file => {
-                            gameData.push({
-                                name: file.name,
-                                url: file.url.replace('/uc?export=download&id=', '/thumbnail?id=') + '&sz=w500',
-                                typeName: typeName,
-                                subType: subFolder.name,
-                                classInfo: classInfo
-                            });
-                        });
-                    });
-                    (typeFolder.files || []).forEach(file => {
-                        gameData.push({
-                            name: file.name,
-                            url: file.url.replace('/uc?export=download&id=', '/thumbnail?id=') + '&sz=w500',
-                            typeName: typeName,
-                            subType: null,
-                            classInfo: classInfo
-                        });
-                    });
-                });
-                if (gameData.length < 2) {
-                    container.innerHTML = '<p>Недостаточно файлов для игры. Загрузите больше изображений.</p>';
-                    delete window[callbackName];
-                    return;
-                }
-                cacheGameData(gameData);
-                scoreTotal = 0; scoreCorrect = 0;
-                questionQueue = shuffle([...gameData]);
-                queueIndex = 0;
-                nextQuestion();
-                delete window[callbackName];
-            };
-            const script = document.createElement('script');
-            script.src = SCRIPT_URL + '?mode=game&callback=' + callbackName;
-            script.onerror = () => {
-                clearTimeout(timeout);
-                container.innerHTML = '<p>Ошибка загрузки игры.</p>';
-                delete window[callbackName];
-            };
-            document.body.appendChild(script);
-        }
-
-        function shuffle(arr) {
-            const a = [...arr];
-            for (let i = a.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [a[i], a[j]] = [a[j], a[i]];
-            }
-            return a;
-        }
-
-        function nextQuestion() {
-            answered = false;
-            currentStep = 0;
-            
-            if (questionQueue.length === 0 || queueIndex >= questionQueue.length) {
-                questionQueue = shuffle([...gameData]);
-                queueIndex = 0;
-            }
-            
-            const file = questionQueue[queueIndex];
-            queueIndex++;
-            
-            const classInfo = file.classInfo;
-            const answers = {
-                integrity: classInfo.integrity,
-                category: classInfo.category,
-                typeName: file.typeName,
-                subType: file.subType || null,
-                fileName: file.name.replace(/\.[^.]+$/, '')
-            };
-            currentQuestion = { file, answers, classInfo };
-            renderStep();
-        }
-
-        function renderStep() {
-            const container = document.getElementById('gameContainer');
-            const q = currentQuestion;
-            const a = q.answers;
-            let questionText = '';
-            let options = [];
-            let correctAnswer = '';
-            
-            if (currentStep === 0) {
-                questionText = 'Какой тип соединения по целостности?';
-                options = ['Разъёмное', 'Неразъёмное'];
-                correctAnswer = a.integrity;
-            } else if (currentStep === 1) {
-                if (a.integrity === 'Разъёмное') {
-                    questionText = 'Какой тип разъёмного соединения?';
-                    options = ['Резьбовое', 'Нерезьбовое'];
-                    correctAnswer = a.category;
-                } else {
-                    questionText = 'Какой тип неразъёмного соединения?';
-                    options = ['Клеевое', 'Сварное', 'Клёпаное', 'Паяное', 'Сшивное', 'Посадка с натягом'];
-                    correctAnswer = a.category || a.typeName;
-                }
-            } else if (currentStep === 2) {
-                if (a.category === 'Резьбовое') {
-                    questionText = 'Какое резьбовое соединение?';
-                    options = ['Болтовое', 'Винтовое', 'Шпилечное'];
-                    correctAnswer = a.typeName;
-                } else if (a.category === 'Нерезьбовое') {
-                    questionText = 'Какое нерезьбовое соединение?';
-                    options = ['Шпоночное', 'Штифтовое', 'Зубчатое', 'Клиновое', 'Шплинтовое', 'Петли'];
-                    correctAnswer = a.typeName;
-                } else if (a.category === 'Клеевое') {
-                    questionText = 'Какой подтип клеевого соединения?';
-                    options = ['Угловое', 'Серединное', 'Боковое', 'Торцевое'];
-                    correctAnswer = a.subType;
-                }
-            } else if (currentStep === 3 || (currentStep === 2 && a.category !== 'Резьбовое' && a.category !== 'Нерезьбовое' && a.category !== 'Клеевое')) {
-                questionText = 'Какое название у этого соединения?';
-                const correctName = a.fileName;
-                const otherNames = gameData
-                    .filter(f => f.name !== q.file.name)
-                    .map(f => f.name.replace(/\.[^.]+$/, ''));
-                const shuffled = shuffle([...new Set(otherNames)]);
-                options = shuffle([correctName, ...shuffled.slice(0, 3)]);
-                correctAnswer = correctName;
-            }
-            
-            if (!questionText) { currentStep++; renderStep(); return; }
-            answered = false;
-            container.innerHTML = `
-                <img src="${q.file.url}" class="game-image" alt="Соединение" onerror="this.style.display='none'">
-                <div class="game-score">Вопрос ${scoreTotal + 1} | Правильно: ${scoreCorrect} из ${scoreTotal}</div>
-                <div class="game-question">${questionText}</div>
-                <div class="game-options" id="gameOptions">
-                    ${options.map(opt => `<button class="game-option" onclick="checkAnswer(this, '${opt.replace(/'/g, "\\'")}', '${correctAnswer.replace(/'/g, "\\'")}')">${opt}</button>`).join('')}
-                </div>
-                <button class="game-next" id="gameNext" onclick="nextStep()">Дальше</button>
-            `;
-        }
-
-        function checkAnswer(btn, selected, correct) {
-            if (answered) return;
-            answered = true;
-            scoreTotal++;
-            const allOptions = document.querySelectorAll('#gameOptions .game-option');
-            allOptions.forEach(opt => opt.disabled = true);
-            if (selected === correct) { btn.classList.add('correct'); scoreCorrect++; }
-            else {
-                btn.classList.add('wrong');
-                allOptions.forEach(opt => { if (opt.textContent === correct) opt.classList.add('correct'); });
-            }
-            document.getElementById('gameNext').classList.add('show');
-        }
-
-        function nextStep() {
-            const a = currentQuestion.answers;
-            let isLast = false;
-            if (currentStep === 0) currentStep = 1;
-            else if (currentStep === 1) currentStep = 2;
-            else if (currentStep === 2) {
-                if (a.category === 'Клеевое' || a.category === 'Резьбовое' || a.category === 'Нерезьбовое') currentStep = 3;
-                else isLast = true;
-            } else if (currentStep === 3) isLast = true;
-            if (isLast) nextQuestion();
-            else renderStep();
-        }
-
         loadTheme();
-        loadLibrary(false);
+        loadLibrary();
     </script>
 </body>
 </html>

@@ -286,7 +286,7 @@
         const ROOT_PATH = '/Библиотека';
         const AUTH_CLIENT_ID = '8e6fb6fe7c75492698730f78184a1290';
         const REDIRECT_URI = window.location.origin + window.location.pathname;
-        const PROXY_URL = 'https://api.allorigins.win/raw?url=';
+        const PROXY_DOWNLOAD_URL = 'https://sitt-draft.ru/download.php?path=';
         
         const ALLOWED_EMAILS = ['y066mirnova@yandex.ru'];
 
@@ -384,23 +384,13 @@
             return response.json();
         }
 
-        async function getDownloadUrl(path) {
-            const apiUrl = `${YANDEX_API}/download?path=${encodeURIComponent(path)}`;
-            const response = await fetch(apiUrl, {
-                headers: { 'Authorization': `OAuth ${YANDEX_TOKEN}` }
-            });
-            if (!response.ok) throw new Error('Ошибка');
-            const data = await response.json();
-            return PROXY_URL + encodeURIComponent(data.href);
-        }
-
         function renderFiles(files) {
             if (!files.length) return '';
             const sorted = [...files].sort(naturalSort);
             return sorted.map(f => `
                 <div class="file-item" data-filename="${f.name.toLowerCase()}">
                     <span class="name">${f.name}</span>
-                    <a href="${f.downloadUrl || '#'}" class="download-link" target="_blank">Скачать</a>
+                    <a href="${PROXY_DOWNLOAD_URL}${encodeURIComponent(f.path)}" class="download-link" target="_blank">Скачать</a>
                 </div>
             `).join('');
         }
@@ -423,11 +413,7 @@
                         const subData = await fetchFromYandex(sub.path);
                         const subFiles = (subData._embedded?.items || []).filter(i => i.type === 'file');
                         if (subFiles.length > 0) {
-                            const filesWithLinks = await Promise.all(subFiles.map(async f => ({
-                                name: f.name,
-                                downloadUrl: await getDownloadUrl(f.path)
-                            })));
-                            subInner = renderFiles(filesWithLinks);
+                            subInner = renderFiles(subFiles);
                         }
                     } catch (e) {}
                     
@@ -440,11 +426,7 @@
                 }
                 
                 if (files.length > 0) {
-                    const filesWithLinks = await Promise.all(files.map(async f => ({
-                        name: f.name,
-                        downloadUrl: await getDownloadUrl(f.path)
-                    })));
-                    inner += renderFiles(filesWithLinks);
+                    inner += renderFiles(files);
                 }
             } catch (e) {
                 inner = '<div class="empty-message">Ошибка загрузки</div>';

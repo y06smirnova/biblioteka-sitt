@@ -286,7 +286,7 @@
         const ROOT_PATH = '/Библиотека';
         const AUTH_CLIENT_ID = '8e6fb6fe7c75492698730f78184a1290';
         const REDIRECT_URI = window.location.origin + window.location.pathname;
-        const PROXY_URL = 'https://corsproxy.io/?';
+        const PROXY_URL = 'https://api.allorigins.win/raw?url=';
         
         const ALLOWED_EMAILS = ['y066mirnova@yandex.ru'];
 
@@ -303,7 +303,6 @@
         function naturalSort(a, b) { return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }); }
         function toggleElement(id) { const el = document.getElementById(id); if (el) el.classList.toggle('active'); }
 
-        // Авторизация
         function getAccessTokenFromHash() {
             const hash = window.location.hash.substring(1);
             const params = new URLSearchParams(hash);
@@ -376,7 +375,6 @@
             document.getElementById('yandexLoginBtn').href = `https://oauth.yandex.ru/authorize?response_type=token&client_id=${AUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
         }
 
-        // Библиотека
         async function fetchFromYandex(path) {
             const url = `${YANDEX_API}?path=${encodeURIComponent(path)}`;
             const response = await fetch(url, {
